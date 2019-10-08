@@ -48,3 +48,9 @@ El juego se basa en los siguientes conceptos:
 - **Alta relevancia:** Aprovechamos la tracción y fama que tuvo el evento de asaltar el Área 51 y centramos la temática de nuestro juego en ese suceso, disminuyendo nuestro trabajo y obteniendo ventaja respecto otros juegos similares.
 - **Carrera por vidas:** Para prevenir que un mal movimiento pueda acabar con el progreso del jugador, cada uno de ellos contará con 3 vidas, para que así los jugadores tengan oportunidades de solventar sus errores sin costarles la partida.
 - **Circuitos generados:** A diferencia de otros juegos que tienen distintos circuitos que pueden llegar a ser predecibles y repetitivos, nosotros ofrecemos dinamismo a este concepto mediante la generación aleatoria del circuito, consiguiendo que cada carrera tenga ese frescor y novedad como si fuera la primera vez que se recorre el circuito. Esto y la aleatoriedad que conlleva jugar con otros jugadores proporcionará que por muchas carreras que se hagan, nunca serán una igual a la otra.
+
+
+#### 1.3 Género
+El género de nuestro juego es una mezcla entre un juego de plataformas y de carreras:
+- **De carreras:** Los jugadores compiten entre sí por ser el último jugador en la carrera y para ello tienen a su disposición power-ups e habilidades que le ayudarán conseguir este objetivo.
+- **De plataformas:** Durante la carrera los jugadores tendrán que sortear numerosos obstáculos, ya sea saltando, agachándose o esquivandolo mediante habilidades o power-ups. 
