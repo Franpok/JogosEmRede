@@ -97,7 +97,7 @@ La condición de victoria es bastante simple. El último participante que acabe 
 #### 2.4 Personajes
 Todos los personajes cuentan con los mismo stats base, para que empezar con uno u otro sea justo. Para variar la jugabilidad, cada uno contará con un “power-up” distintivo.
 
-<img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/6c94b600-e3d2-4ba7-88a3-468057a0e27f.jpeg">
+<img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/6c94b600-e3d2-4ba7-88a3-468057a0e27f.jpg">
 
 ###### 2.4.1 Alienígena
 Ser de otro planeta con el que experimentaban dentro del Área 51 y su único entretenimiento era ver anime. Físicamente es un ser humanoide bípedo y verde con una bandana de Naruto en la frente. Su modo de correr se asemeja a la que se usa en dicha serie (que es su favorita).
