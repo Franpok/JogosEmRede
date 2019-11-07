@@ -1,3 +1,12 @@
+let gameOptions = {
+    platformStartSpeed: 350,
+    //spawnRange: [100, 350],
+    platformSize: 250,
+    playerGravity: 900,
+    jumpForce: 400,
+    playerStartPosition: 200
+}
+
 var config = {
     type: Phaser.AUTO,
     width: 1080,
