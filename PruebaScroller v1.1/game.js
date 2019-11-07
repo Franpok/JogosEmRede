@@ -3,7 +3,7 @@ let game;
 // global game options
 let gameOptions = {
     platformStartSpeed: 350,
-    spawnRange: [100, 350],
+    spawnRange: [0, 0],
     platformSizeRange: [50, 250],
     playerGravity: 900,
     jumpForce: 400,
@@ -31,7 +31,7 @@ window.onload = function () {
     resize();
     window.addEventListener("resize", resize, false);
 }
-
+var vache =0;
 // playGame scene
 class playGame extends Phaser.Scene {
     constructor() {
@@ -78,16 +78,18 @@ class playGame extends Phaser.Scene {
         this.input.keyboard.on('keydown_W', this.jump, this);
         this.input.keyboard.on('keydown_UP', this.jump, this);
     }
-
+    
     // the core of the script: platform are added from the pool or created on the fly
     addPlatform(platformWidth, posX) {
         let platform;
+        
         if (this.platformPool.getLength()) {
             platform = this.platformPool.getFirst();
             platform.x = posX;
             platform.active = true;
             platform.visible = true;
             this.platformPool.remove(platform);
+            
         }
         else {
             platform = this.physics.add.sprite(posX, game.config.height * 0.8, "platform");
@@ -96,7 +98,14 @@ class playGame extends Phaser.Scene {
             this.platformGroup.add(platform);
         }
         platform.displayWidth = platformWidth;
-        this.nextPlatformDistance = Phaser.Math.Between(gameOptions.spawnRange[0], gameOptions.spawnRange[1]);
+        if(vache == 5){
+            this.nextPlatformDistance = 100;
+            vache = 0;
+        }else{
+            this.nextPlatformDistance = 0;
+            vache++;
+        }
+        
     }
 
     // the player jumps when on the ground, or once in the air as long as there are jumps left and the first jump was on the ground
