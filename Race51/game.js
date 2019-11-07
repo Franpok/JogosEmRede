@@ -1,16 +1,17 @@
-let gameOptions = {
+/*let gameOptions = {
     platformStartSpeed: 350,
     //spawnRange: [100, 350],
     platformSize: 250,
     playerGravity: 900,
     jumpForce: 400,
     playerStartPosition: 200
-}
+}*/
 
 var config = {
     type: Phaser.AUTO,
     width: 1080,
     height: 720,
+    //scene: playGame,
     physics: {
         default: 'arcade',
         arcade: {
@@ -23,15 +24,15 @@ var config = {
         create: create,
         update: update
     }
-};
+}
 
 var player;
 var stars;
 var platforms;
 var cursors;
-var score = 0;
+//var score = 0;
 var lives = 3;
-var scoreText;
+//var scoreText;
 var livesText;
 var bombs;
 
@@ -43,7 +44,7 @@ function preload ()
     this.load.image('ground', 'resources/platform.png');
     this.load.image('star', 'resources/star.png');
     this.load.image('bomb', 'resources/bomb.png');
-    this.load.spritesheet('alien', 'resources/alien.png', { frameWidth: 200, frameHeight: 185 });
+    this.load.spritesheet('alien', 'resources/alien.png', { frameWidth: 86, frameHeight: 80 });
 }
 
 function create ()
@@ -54,7 +55,7 @@ function create ()
 
     platforms.create(400, 568, 'ground').setScale(4).refreshBody();
 
-    player = this.physics.add.sprite(50, 600, 'alien');
+    player = this.physics.add.sprite(100, 100, 'alien');
 
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
@@ -99,8 +100,8 @@ function create ()
         setXY: { x: 500, y: 0, stepX: 70 }
     });
 
-    scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
-    livesText = this.add.text(16, 50, 'Lives:' + lives, { fontSize: '32px', fill: '#000' });
+    //scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+    livesText = this.add.text(16, 16, 'Lives:' + lives, { fontSize: '32px', fill: '#000' });
 
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(stars, platforms);
@@ -144,8 +145,8 @@ function collectStar (player, star)
 {
     star.disableBody(true, true);
 
-    score += 10;
-    scoreText.setText('Score: ' + score);
+    /*score += 10;
+    scoreText.setText('Score: ' + score);*/
 }
 
 function ouch (player, bomb)
