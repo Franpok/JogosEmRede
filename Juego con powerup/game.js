@@ -92,7 +92,7 @@ class playGame extends Phaser.Scene {
         this.player.setGravityY(gameOptions.playerGravity);
 
         //Mi jugador tiene power-up, necesito un boolean basicamente
-       this.tengoPowerup = false;
+       var tengoPowerup = false;
         
         // setting collisions between the player and the platform group
         this.physics.add.collider(this.player, this.platformGroup);
@@ -102,8 +102,8 @@ class playGame extends Phaser.Scene {
  
             this.tweens.add({
                 targets: powerup,
-                this:tengoPowerup = true,//Activo mi boolean para más adelante activar doble salto (En teoria debería ser this.tengoPowerup pero me da error no se porque)
-                
+                this:tengoPowerup == true,//Activo mi boolean para más adelante activar doble salto (En teoria debería ser this.tengoPowerup pero me da error no se porque)
+               
                 /*y: powerup.y - 100, 
                 alpha: 0,
                 duration: 800,
@@ -184,7 +184,7 @@ class playGame extends Phaser.Scene {
                 gameOptions.duracion = 10
             }
             if(gameOptions.duracion == 0){
-                this.tengoPowerup = false
+                this.tengoPowerup == false
             }
 
             this.player.setVelocityY(gameOptions.jumpForce * -1);
