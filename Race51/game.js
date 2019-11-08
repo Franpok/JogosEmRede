@@ -1,158 +1,161 @@
-/*let gameOptions = {
+let game;
+
+// global game options
+let gameOptions = {
     platformStartSpeed: 350,
-    //spawnRange: [100, 350],
-    platformSize: 250,
+    spawnRange: [0, 0],
+    platformSizeRange: [50, 250],
     playerGravity: 900,
     jumpForce: 400,
-    playerStartPosition: 200
-}*/
+    playerStartPosition: 200,
+    jumps: 2
+}
 
-var config = {
-    type: Phaser.AUTO,
-    width: 1080,
-    height: 720,
-    //scene: playGame,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 700 },
-            debug: false
+window.onload = function () {
+
+    // object containing configuration options
+    let gameConfig = {
+        type: Phaser.AUTO,
+        width: 1334,
+        height: 750,
+        scene: playGame,
+        backgroundColor: 0x444444,
+
+        // physics settings
+        physics: {
+            default: "arcade"
         }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
     }
+    game = new Phaser.Game(gameConfig);
+    window.focus();
+    resize();
+    window.addEventListener("resize", resize, false);
 }
+var vache =0;
+// playGame scene
+class playGame extends Phaser.Scene {
+    constructor() {
+        super("PlayGame");
+    }
+    preload() {
+        this.load.image("platform", "platform.png");
+        this.load.image("player", "player.png");
+    }
+    create() {
 
-var player;
-var stars;
-var platforms;
-var cursors;
-//var score = 0;
-var lives = 3;
-//var scoreText;
-var livesText;
-var bombs;
+        // group with all active platforms.
+        this.platformGroup = this.add.group({
 
-var game = new Phaser.Game(config);
+            // once a platform is removed, it's added to the pool
+            removeCallback: function (platform) {
+                platform.scene.platformPool.add(platform)
+            }
+        });
 
-function preload ()
-{
-    this.load.image('sky', 'resources/sky.png');
-    this.load.image('ground', 'resources/platform.png');
-    this.load.image('star', 'resources/star.png');
-    this.load.image('bomb', 'resources/bomb.png');
-    this.load.spritesheet('alien', 'resources/alien.png', { frameWidth: 86, frameHeight: 80 });
-}
+        // pool
+        this.platformPool = this.add.group({
 
-function create ()
-{
-    this.add.image(400, 300, 'sky').setScale(2); //
+            // once a platform is removed from the pool, it's added to the active platforms group
+            removeCallback: function (platform) {
+                platform.scene.platformGroup.add(platform)
+            }
+        });
 
-    platforms = this.physics.add.staticGroup();
+        // number of consecutive jumps made by the player
+        this.playerJumps = 0;
 
-    platforms.create(400, 568, 'ground').setScale(4).refreshBody();
+        // adding a platform to the game, the arguments are platform width and x position
+        this.addPlatform(game.config.width, game.config.width / 2);
 
-    player = this.physics.add.sprite(100, 100, 'alien');
+        // adding the player;
+        this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height / 2, "player");
+        this.player.setGravityY(gameOptions.playerGravity);
 
-    player.setBounce(0.2);
-    player.setCollideWorldBounds(true);
+        // setting collisions between the player and the platform group
+        this.physics.add.collider(this.player, this.platformGroup);
 
-    /*this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-    this.anims.create({
-        key: 'turn',
-        frames: [ { key: 'dude', frame: 4 } ],
-        frameRate: 20
-    });*/
-
-    this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('alien', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-    cursors = this.input.keyboard.createCursorKeys();
-
-    stars = this.physics.add.group({
-        key: 'star',
-        repeat: 11,
-        setXY: { x: 12, y: 0, stepX: 70 }
-    });
-
-    stars.children.iterate(function (child) {
-
-        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-
-    });
-
-    bombs = this.physics.add.group({
-        key: 'bomb',
-        repeat: 3,
-        setXY: { x: 500, y: 0, stepX: 70 }
-    });
-
-    //scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
-    livesText = this.add.text(16, 16, 'Lives:' + lives, { fontSize: '32px', fill: '#000' });
-
-    this.physics.add.collider(player, platforms);
-    this.physics.add.collider(stars, platforms);
-    this.physics.add.collider(bombs, platforms);
-
-    this.physics.add.overlap(player, stars, collectStar, null, this);
-    this.physics.add.overlap(player, bombs, ouch, null, this);
-}
-
-function update ()
-{
-    player.setVelocityX(160);
-    player.anims.play('right', true);
+        // checking for input
+        this.input.keyboard.on('keydown_W', this.jump, this);
+        this.input.keyboard.on('keydown_UP', this.jump, this);
+    }
+    
+    // the core of the script: platform are added from the pool or created on the fly
+    addPlatform(platformWidth, posX) {
+        let platform;
         
-    /*if (cursors.left.isDown)
-    {
-        player.setVelocityX(-160);
-
-        player.anims.play('left', true);
+        if (this.platformPool.getLength()) {
+            platform = this.platformPool.getFirst();
+            platform.x = posX;
+            platform.active = true;
+            platform.visible = true;
+            this.platformPool.remove(platform);
+            
+        }
+        else {
+            platform = this.physics.add.sprite(posX, game.config.height * 0.8, "platform");
+            platform.setImmovable(true);
+            platform.setVelocityX(gameOptions.platformStartSpeed * -1);
+            this.platformGroup.add(platform);
+        }
+        platform.displayWidth = platformWidth;
+        if(vache == 5){
+            this.nextPlatformDistance = 100;
+            vache = 0;
+        }else{
+            this.nextPlatformDistance = 0;
+            vache++;
+        }
+        
     }
-    else if (cursors.right.isDown)
-    {
-        player.setVelocityX(160);
 
-        player.anims.play('right', true);
+    // the player jumps when on the ground, or once in the air as long as there are jumps left and the first jump was on the ground
+    jump() {
+        if (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps)) {
+            if (this.player.body.touching.down) {
+                this.playerJumps = 0;
+            }
+            this.player.setVelocityY(gameOptions.jumpForce * -1);
+            this.playerJumps++;
+        }
     }
-    else
-    {
-        player.setVelocityX(0);
+    update() {
 
-        player.anims.play('turn');
-    }*/
+        // game over
+        if (this.player.y > game.config.height) {
+            this.scene.start("PlayGame");
+        }
+        this.player.x = gameOptions.playerStartPosition;
 
-    if (cursors.up.isDown && player.body.touching.down)
-    {
-        player.setVelocityY(-330);
+        // recycling platforms
+        let minDistance = game.config.width;
+        this.platformGroup.getChildren().forEach(function (platform) {
+            let platformDistance = game.config.width - platform.x - platform.displayWidth / 2;
+            minDistance = Math.min(minDistance, platformDistance);
+            if (platform.x < - platform.displayWidth / 2) {
+                this.platformGroup.killAndHide(platform);
+                this.platformGroup.remove(platform);
+            }
+        }, this);
+
+        // adding new platforms
+        if (minDistance > this.nextPlatformDistance) {
+            var nextPlatformWidth = Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
+            this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
+        }
     }
-}
-
-function collectStar (player, star)
-{
-    star.disableBody(true, true);
-
-    /*score += 10;
-    scoreText.setText('Score: ' + score);*/
-}
-
-function ouch (player, bomb)
-{
-    bomb.disableBody(true, true);
-
-    lives = lives - 1;
-    livesText.setText('Lives: ' + lives);
+};
+function resize() {
+    let canvas = document.querySelector("canvas");
+    let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
+    let windowRatio = windowWidth / windowHeight;
+    let gameRatio = game.config.width / game.config.height;
+    if (windowRatio < gameRatio) {
+        canvas.style.width = windowWidth + "px";
+        canvas.style.height = (windowWidth / gameRatio) + "px";
+    }
+    else {
+        canvas.style.width = (windowHeight * gameRatio) + "px";
+        canvas.style.height = windowHeight + "px";
+    }
 }
