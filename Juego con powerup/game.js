@@ -8,7 +8,7 @@ let gameOptions = {
     playerGravity: 900,
     jumpForce: 400,
     playerStartPosition: 200,
-    powerupProbabilidad : 10,
+    powerupProbabilidad : 50,
     jumps: 1, // He creado un power up de doble salto, así que me creo una variable que me permita controlar el número de saltos que puedo hacer
     duracion : 0 //Una variable duración que me permita controlar el tiempo 
 }
@@ -69,7 +69,7 @@ class playGame extends Phaser.Scene {
  
             // Cuando coja un power-up, lo añado a la piscina
             removeCallback: function(powerup){
-                powerup.scene.coinPowerup.add(powerup)
+                powerup.scene.powerupPool.add(powerup)
             }
         });
  
@@ -156,14 +156,14 @@ class playGame extends Phaser.Scene {
             if(this.powerupPool.getLength()){
                 let powerup = this.powerupPool.getFirst();
                 powerup.x = posX;
-                powerup.y = posY - 96;
+                powerup.y = game.config.height * 0.7;
                 powerup.alpha = 1;
                 powerup.active = true;
                 powerup.visible = true;
                 this.powerupPool.remove(powerup);
             }
             else{
-                let powerup = this.physics.add.sprite(posX, posY - 96, "powerup");
+                let powerup = this.physics.add.sprite(posX, game.config.height * 0.7, "powerup");
                 powerup.setImmovable(true);
                 powerup.setVelocityX(platform.body.velocity.x);
                 powerup.setDepth(2);
