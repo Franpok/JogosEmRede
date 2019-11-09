@@ -30,17 +30,22 @@ window.onload = function () {
     resize();
     window.addEventListener("resize", resize, false);
 }
-var vache =0;
+
+var vache = 0;
+
 // playGame scene
 class playGame extends Phaser.Scene {
     constructor() {
         super("PlayGame");
     }
     preload() {
+        this.load.image("sky", "resources/sky.png");
         this.load.image("platform", "resources/platform.png");
         this.load.image("player", "resources/player.png");
     }
     create() {
+        // background image
+        this.add.image(540, 360, 'sky');    
 
         // group with all active platforms.
         this.platformGroup = this.add.group({
@@ -114,7 +119,6 @@ class playGame extends Phaser.Scene {
                 this.playerJumps = 0;
             }
             this.player.setVelocityY(gameOptions.jumpForce * -1);
-            this.playerJumps++;
         }
     }
 
@@ -147,16 +151,16 @@ class playGame extends Phaser.Scene {
 
 function resize() {
     let canvas = document.querySelector("canvas");
-    let windowWidth = window.innerWidth;
+    /*let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
-    let windowRatio = windowWidth / windowHeight;
+    let windowRatio = windowWidth / windowHeight;*/
     let gameRatio = game.config.width / game.config.height;
-    /*if (windowRatio < gameRatio) {
+    if (windowRatio < gameRatio) {
         canvas.style.width = windowWidth + "px";
         canvas.style.height = (windowHeight / gameRatio) + "px";
     }
-    else {*/
+    else {
         canvas.style.width = (windowHeight * gameRatio) + "px";
         canvas.style.height = windowHeight + "px";
-    /*}*/
+    }
 }

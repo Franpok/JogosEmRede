@@ -1,6 +1,6 @@
 body {
- background-image: url("resources/fondo.jpg");
- text-align: center;
+    background-image: url("resources/fondo.jpg");
+    text-align: center;
 }
 #logoB{
     width: 260px;
