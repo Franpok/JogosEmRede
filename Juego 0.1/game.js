@@ -41,11 +41,11 @@ class playGame extends Phaser.Scene {
     preload() {
         this.load.image("sky", "resources/sky.png");
         this.load.image("platform", "resources/platform.png");
-        this.load.image("player", "resources/player.png");
+        this.load.spritesheet('alien', "resources/alien.png", {frameWidth: 56, frameHeight: 100});
     }
     create() {
         // background image
-        this.add.image(540, 360, 'sky');    
+        this.add.image(540, 360, 'sky');
 
         // group with all active platforms.
         this.platformGroup = this.add.group({
@@ -65,18 +65,39 @@ class playGame extends Phaser.Scene {
             }
         });
 
-        // number of consecutive jumps made by the player
-        this.playerJumps = 0;
-
         // adding a platform to the game, the arguments are platform width and x position
         this.addPlatform(game.config.width, game.config.width / 2);
 
         // adding the player;
-        this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height / 2, "player");
+        this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.7, 'alien', 0);
         this.player.setGravityY(gameOptions.playerGravity);
+        //this.player.setDepth(2);
+
+        // adding player's running animation
+        this.anims.create({
+            key: 'right',
+            frameRate: 10,
+
+            frames: this.anims.generateFrameNumbers('alien', { start: 0, end: 7 }),
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'jump',
+            frameRate: 10,
+            frames: this.anims.generateFrameNumbers('alien', { start: 0, end: 0}),
+            repeat: -1
+        });
+        
+        this.player.anims.play('right');
 
         // setting collisions between the player and the platform group
-        this.physics.add.collider(this.player, this.platformGroup);
+        this.physics.add.collider(this.player, this.platformGroup);/*, function(){
+            // play "run" animation if the player is on a platform
+            if(!this.player.anims.isPlaying){
+                this.player.anims.play("right");
+            }
+        }, null, this);*/
 
         // checking for input
         this.input.keyboard.on('keydown_W', this.jump, this);
@@ -123,7 +144,6 @@ class playGame extends Phaser.Scene {
     }
 
     update() {
-
         // game over
         if (this.player.y > game.config.height) {
             this.scene.start("PlayGame");
@@ -151,9 +171,9 @@ class playGame extends Phaser.Scene {
 
 function resize() {
     let canvas = document.querySelector("canvas");
-    /*let windowWidth = window.innerWidth;
+    let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
-    let windowRatio = windowWidth / windowHeight;*/
+    let windowRatio = windowWidth / windowHeight;
     let gameRatio = game.config.width / game.config.height;
     if (windowRatio < gameRatio) {
         canvas.style.width = windowWidth + "px";
