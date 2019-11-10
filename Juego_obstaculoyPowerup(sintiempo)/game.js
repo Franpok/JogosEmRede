@@ -22,7 +22,7 @@ window.onload = function () {
         type: Phaser.AUTO,
         width: 1080,
         height: 720,
-        scene: playGame,
+        scene: [menu,muerto,playGame],
         backgroundColor: 0x444444,
 
         // physics settings
@@ -36,7 +36,7 @@ window.onload = function () {
     window.addEventListener("resize", resize, false);
 }
 //var vache =0;
-// playGame scene
+//playGame scene
 class playGame extends Phaser.Scene {
     constructor() {
         super("PlayGame");
@@ -46,6 +46,7 @@ class playGame extends Phaser.Scene {
         this.load.image("player", "resources/player.png");
         this.load.image("powerup", "resources/star.png",); //La imagen preliminar del powerup es la estrella del phaser
         this.load.image("obstaculo", "resources/bomb.png",); //La imagen preliminar del obstaculo es la bomba del phaser
+        this.load.image("playerAgachado", "resources/player_agachado.png",); //La imagen preliminar del obstaculo es la bomba del phaser
     }
     create() {
 
@@ -111,7 +112,7 @@ class playGame extends Phaser.Scene {
         this.addPlatform(game.config.width, game.config.width / 2);
 
         // adding the player;
-        this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height / 2, "player");
+        this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.74, "player");
         this.player.setGravityY(gameOptions.playerGravity);
 
         //Mi jugador ha muerto?
@@ -163,6 +164,10 @@ class playGame extends Phaser.Scene {
         // checking for input
         this.input.keyboard.on('keydown_W', this.jump, this);
         this.input.keyboard.on('keydown_UP', this.jump, this);
+        this.input.keyboard.on('keydown_DOWN', this.agachar, this);
+        this.input.keyboard.on('keydown_S', this.agachar, this);
+        this.input.keyboard.on('keyup_DOWN', this.sinAgachar, this);
+        this.input.keyboard.on('keyup_S', this.sinAgachar, this);
     }
     
     // the core of the script: platform are added from the pool or created on the fly
@@ -256,6 +261,32 @@ class playGame extends Phaser.Scene {
         }
     }
 
+    agachar(){
+        if(!this.dying && this.player.body.touching.down){
+       /*
+        this.anims.create({
+            key: 'down',
+            frames: this.anims.generateFrameNumbers('playerAgachado', { start: 0, end: 0 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.player.anims.play("down");*/
+
+        }
+    }
+
+    sinAgachar(){
+        //this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height*0.74, "player");
+        //this.player.setGravityY(gameOptions.playerGravity);
+       // this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function(){}, null, this);
+       /*this.anims.create({
+        key: 'up',
+        frames: this.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    this.player.anims.play("up");*/
+    }
     update() {
 
         // game over
@@ -264,6 +295,7 @@ class playGame extends Phaser.Scene {
             gameOptions.vidas = 3;
             this.dying= false;
             console.log (gameOptions.vidas);
+            this.scene.start("menuMuerte");
         }
         this.player.x = gameOptions.playerStartPosition;
 
