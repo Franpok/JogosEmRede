@@ -196,7 +196,7 @@ class playGame extends Phaser.Scene {
             platform = this.platformPool.getFirst();
             platform.x = posX;
             platform.active = true;
-            platform.visible = true;
+            platform.visible = false;
             this.platformPool.remove(platform);
             
         }
@@ -205,15 +205,11 @@ class playGame extends Phaser.Scene {
             platform.setImmovable(true);
             platform.setVelocityX(gameOptions.platformStartSpeed * -1);
             this.platformGroup.add(platform);
+            platform.visible = false;
         }
         platform.displayWidth = platformWidth;
-        /*if(vache == 5){
-            this.nextPlatformDistance = 100;
-            vache = 0;
-        }else{*/
-            this.nextPlatformDistance = 0;
-            /*vache++;
-        }*/
+        this.nextPlatformDistance = 0;
+     
         // AQUI DECIDO SI VOY A SPAWNEAR UN POWER UP O NO EN UNA PLATAFORMA
         if(Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad){
             if(this.powerupPool.getLength()){
@@ -317,8 +313,9 @@ class playGame extends Phaser.Scene {
 
         // adding new platforms
         if (minDistance > this.nextPlatformDistance) {
-            var nextPlatformWidth = Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
+            var nextPlatformWidth =200;// Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
             this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
+            //this.platform.visible = false;
         }
     }
 };
