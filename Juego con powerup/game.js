@@ -99,15 +99,14 @@ class playGame extends Phaser.Scene {
 
         //COLISION JUGADOR POWERUP (No se si esto esta bien)
         this.physics.add.overlap(this.player, this.powerupGroup, function(player, powerup){
- 
+            this.tengoPowerup == true,//Activo mi boolean para más adelante activar doble salto (En teoria debería ser this.tengoPowerup pero me da error no se porque)
+               
             this.tweens.add({
                 targets: powerup,
-                this:tengoPowerup == true,//Activo mi boolean para más adelante activar doble salto (En teoria debería ser this.tengoPowerup pero me da error no se porque)
-               
-                /*y: powerup.y - 100, 
+                y: powerup.y - 100, 
                 alpha: 0,
                 duration: 800,
-                ease: "Cubic.easeOut",*/ //Esto por ahora esta comentado
+                ease: "Cubic.easeOut", //Esto por ahora esta comentado
                 callbackScope: this,
                 onComplete: function(){
                     this.powerupGroup.killAndHide(powerup);
