@@ -50,6 +50,7 @@ class playGame extends Phaser.Scene {
         this.load.image("powerup", "resources/star.png",); //La imagen preliminar del powerup es la estrella del phaser
         this.load.image("obstaculo", "resources/bomb.png",); //La imagen preliminar del obstaculo es la bomba del phaser
         this.load.image("playerAgachado", "resources/player_agachado.png",); //La imagen preliminar del obstaculo es la bomba del phaser
+        this.load.audio("fondo", "resources/MusicaJuego.mp3");
     }
     create() {
 
