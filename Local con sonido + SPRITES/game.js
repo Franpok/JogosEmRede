@@ -40,17 +40,22 @@ window.onload = function () {
 }
 //var vache =0;
 //playGame scene
+var jumping1 = false;
+var jumping2 = false;
 let sonido;
 class playGame extends Phaser.Scene {
     constructor() {
         super("PlayGame");
     }
     preload() {
+        this.load.image("sky", "resources/sky.png");
         this.load.image("platform", "resources/platform.png");
         this.load.image("player", "resources/player.png");
+        this.load.spritesheet('alien', "resources/alien.png", {frameWidth: 56, frameHeight: 100});
+        this.load.spritesheet('alien2', "resources/alien2.png", {frameWidth: 56, frameHeight: 100});
         this.load.image("powerup", "resources/star.png",); //La imagen preliminar del powerup es la estrella del phaser
-        this.load.image("obstaculo", "resources/bomb.png",); //La imagen preliminar del obstaculo es la bomba del phaser
-        this.load.image("playerAgachado", "resources/player_agachado.png",); //La imagen preliminar del obstaculo es la bomba del phaser
+        this.load.image("obstaculo", "resources/pinchos.png",);
+        //this.load.image("playerAgachado", "resources/player_agachado.png",);
         this.load.audio("fondo", ["resources/MusicaJuego.mp3"]);
     }
   
@@ -59,6 +64,10 @@ class playGame extends Phaser.Scene {
         sonido.loop = true;
         sonido.mute= true;
         sonido.play();
+
+        // background image
+        this.add.image(540, 360, 'sky');
+
         // group with all active platforms.
         this.platformGroup = this.add.group({
 
@@ -121,12 +130,32 @@ class playGame extends Phaser.Scene {
         this.addPlatform(game.config.width, game.config.width / 2);
 
         // adding the player;
-        this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.74, "player");
+        this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.64, 'alien', 0);
         this.player.setGravityY(gameOptions.playerGravity);
 
-        // adding the player2;
-        this.player2 = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.34, "player");
+        // adding player's running animation
+        this.anims.create({
+            key: 'r1',
+            frameRate: 12,
+            frames: this.anims.generateFrameNumbers('alien', { start: 0, end: 7 }),
+            repeat: -1
+        });
+        
+        this.player.anims.play('r1');
+
+        // adding player2;
+        this.player2 = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.24, 'alien2', 0);
         this.player2.setGravityY(gameOptions.playerGravity);
+
+        // adding player 2's running animation
+        this.anims.create({
+            key: 'r2',
+            frameRate: 12,
+            frames: this.anims.generateFrameNumbers('alien2', { start: 0, end: 7 }),
+            repeat: -1
+        });
+        
+        this.player2.anims.play('r2');
 
         //Mi jugador ha muerto?
         var dying = false;
@@ -393,6 +422,8 @@ class playGame extends Phaser.Scene {
 
             this.player.setVelocityY(gameOptions.jumpForce * -1);
             this.playerJumps++;
+            jumping1 = true;
+            this.player.anims.stop();
         }
     }
 
@@ -411,6 +442,8 @@ class playGame extends Phaser.Scene {
 
             this.player2.setVelocityY(gameOptions.jumpForce * -1);
             this.playerJumps++;
+            jumping2 = true;
+            this.player2.anims.stop();
         }
     }
 
@@ -443,6 +476,17 @@ class playGame extends Phaser.Scene {
     update() {
 
         sonido.mute= false;
+
+        if(this.player.body.touching.down && jumping1 == true){
+            this.player.anims.play('r1');
+            jumping1 = false;
+        }
+
+        if(this.player2.body.touching.down && jumping2 == true){
+            this.player2.anims.play('r2');
+            jumping2 = false;
+        }
+
         // game over
         if (this.dying == true ) {
             this.scene.start("PlayGame");
