@@ -17,9 +17,9 @@ class creditos extends Phaser.Scene {
     .on('pointerover', () => this.enterButtonHoverState2() )
     .on('pointerout', () => this.enterButtonRestState2() );
     
-    const juego1 = this.add.text(500,200, "Francisco ", {font: "30px Arial", fill: "yellow"})
-    const juego2 = this.add.text(500,300, "David Martinez Martin", {font: "30px Arial", fill: "blue"})
-    const juego3 = this.add.text(500,400, "Daniel", {font: "30px Arial", fill: "red"})
+    const juego1 = this.add.text(500,200, "Francisco Manuel González Gómez", {font: "30px Arial", fill: "yellow"})
+    const juego2 = this.add.text(500,300, "David Martínez Martín", {font: "30px Arial", fill: "blue"})
+    const juego3 = this.add.text(500,400, "Daniel Ayllón Peinado", {font: "30px Arial", fill: "red"})
   }
     
   /*updateClickCountText(clickCount) {

@@ -25,7 +25,7 @@ window.onload = function () {
         type: Phaser.AUTO,
         width: 1080,
         height: 720,
-        scene: [menu,creditos,muerto,playGame],
+        scene: [menu,creditos,muerto,playGame,salir],
         backgroundColor: 0x444444,
 
         // physics settings
@@ -218,10 +218,17 @@ class playGame extends Phaser.Scene {
         this.input.keyboard.on('keydown_S', this.agachar, this);
         this.input.keyboard.on('keyup_DOWN', this.sinAgachar, this);
         this.input.keyboard.on('keyup_S', this.sinAgachar, this);
+        this.input.keyboard.on('keydown_P', this.pause, this);
+
+        
+    }
+
+
+    pause(){
+            this.scene.launch("salir");
+            this.scene.pause();  
     }
     
-
-
  ///////////////////////////////////////////////////////////////////// CREACIÓN DE PLATAFORMAS, OBSTACULOS... ///////////////////////////////////////////////   
     addPlatform(platformWidth, posX) {
         let platform;
@@ -467,6 +474,8 @@ class playGame extends Phaser.Scene {
             var nextPlatformWidth = Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
             this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
         }
+
+        
     }
 };
 
