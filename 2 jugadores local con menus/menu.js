@@ -20,7 +20,7 @@ class menu extends Phaser.Scene {
          .on('pointerover', () => this.enterButtonHoverState2() )
          .on('pointerout', () => this.enterButtonRestState2() );
     
-        this.updateClickCountText(clickCount);
+       // this.updateClickCountText(clickCount);
       }
     //update(){
       
