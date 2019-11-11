@@ -50,10 +50,14 @@ class playGame extends Phaser.Scene {
         this.load.image("powerup", "resources/star.png",); //La imagen preliminar del powerup es la estrella del phaser
         this.load.image("obstaculo", "resources/bomb.png",); //La imagen preliminar del obstaculo es la bomba del phaser
         this.load.image("playerAgachado", "resources/player_agachado.png",); //La imagen preliminar del obstaculo es la bomba del phaser
-        this.load.audio("fondo", "resources/MusicaJuego.mp3");
+        this.load.audio("fondo", ["resources/MusicaJuego.mp3"]);
     }
-    create() {
+    
 
+    create() {
+        var sonido = this.sound.add("fondo");
+        sonido.loop = true;
+        sonido.play();
         // group with all active platforms.
         this.platformGroup = this.add.group({
 
@@ -184,10 +188,12 @@ class playGame extends Phaser.Scene {
                // this.obstaculoPool.add(obstaculo);
             }else{
             console.log("He muerto");
+            //fondo.stop();
             this.dying = true;
             //this.player.anims.stop();
             //this.player.setFrame(2);
             this.player.visible=false;
+            
             this.player.body.setVelocityY(-200);
             this.physics.world.removeCollider(this.platformCollider);
             }
@@ -204,10 +210,12 @@ class playGame extends Phaser.Scene {
                // this.obstaculoPool.add(obstaculo);
             }else{
             console.log("He muerto");
+            //fondo.stop();
             this.dying2 = true;
             //this.player.anims.stop();
             //this.player.setFrame(2);
             this.player.visible=false;
+            
             this.player2.body.setVelocityY(-200);
             this.physics.world.removeCollider(this.platformCollider2);
             }
@@ -439,8 +447,10 @@ class playGame extends Phaser.Scene {
             gameOptions.vidas2 = 3;
             this.dying= false;
             this.dying2= false;
+            
             console.log (gameOptions.vidas);
             this.scene.start("menuMuerte");
+            
         }
         if(this.dying2==true) {
             this.scene.start("PlayGame");
@@ -448,6 +458,7 @@ class playGame extends Phaser.Scene {
             gameOptions.vidas2 = 3;
             this.dying= false;
             this.dying2= false;
+            
             console.log (gameOptions.vidas);
             this.scene.start("menuMuerte2");
         }
