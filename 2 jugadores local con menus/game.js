@@ -186,6 +186,7 @@ class playGame extends Phaser.Scene {
             this.dying = true;
             //this.player.anims.stop();
             //this.player.setFrame(2);
+            this.player.visible=false;
             this.player.body.setVelocityY(-200);
             this.physics.world.removeCollider(this.platformCollider);
             }
@@ -205,6 +206,7 @@ class playGame extends Phaser.Scene {
             this.dying2 = true;
             //this.player.anims.stop();
             //this.player.setFrame(2);
+            this.player.visible=false;
             this.player2.body.setVelocityY(-200);
             this.physics.world.removeCollider(this.platformCollider2);
             }
@@ -430,7 +432,7 @@ class playGame extends Phaser.Scene {
     update() {
 
         // game over
-        if ((this.player.y > game.config.height )&&(this.player2.y > game.config.height)) {
+        if ((this.dying == true )||(this.dying2==true)) {
             this.scene.start("PlayGame");
             gameOptions.vidas1 = 3;
             gameOptions.vidas2 = 3;
