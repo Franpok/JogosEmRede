@@ -297,7 +297,7 @@ class playGame extends Phaser.Scene {
     
     pause(){
             this.scene.launch("salir");
-            this.scene.pause();  
+            this.scene.pause(); 
     }
     
  ///////////////////////////////////////////////////////////////////// CREACIÓN DE PLATAFORMAS, OBSTACULOS... ///////////////////////////////////////////////   
@@ -503,8 +503,10 @@ class playGame extends Phaser.Scene {
     this.player.anims.play("up");*/
     }
     update() {
-
-        sonido.mute= false;
+        
+            sonido.mute= false;
+            
+        
 
         if(this.player.body.touching.down && jumping1 == true){
             this.player.anims.play('r1');
