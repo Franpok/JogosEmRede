@@ -25,7 +25,7 @@ window.onload = function () {
         type: Phaser.AUTO,
         width: 1080,
         height: 720,
-        scene: [menu,creditos,muerto,playGame,salir],
+        scene: [menu,creditos,muerto,playGame,salir,muerto2],
         backgroundColor: 0x444444,
 
         // physics settings
@@ -432,7 +432,7 @@ class playGame extends Phaser.Scene {
     update() {
 
         // game over
-        if ((this.dying == true )||(this.dying2==true)) {
+        if (this.dying == true ) {
             this.scene.start("PlayGame");
             gameOptions.vidas1 = 3;
             gameOptions.vidas2 = 3;
@@ -440,6 +440,15 @@ class playGame extends Phaser.Scene {
             this.dying2= false;
             console.log (gameOptions.vidas);
             this.scene.start("menuMuerte");
+        }
+        if(this.dying2==true) {
+            this.scene.start("PlayGame");
+            gameOptions.vidas1 = 3;
+            gameOptions.vidas2 = 3;
+            this.dying= false;
+            this.dying2= false;
+            console.log (gameOptions.vidas);
+            this.scene.start("menuMuerte2");
         }
         this.player.x = gameOptions.playerStartPosition;
         this.player2.x = gameOptions.playerStartPosition;
