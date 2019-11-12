@@ -8,7 +8,7 @@ class creditos extends Phaser.Scene {
     }
     create(){
     //const juego = this.add.text(500,100, "Juan Manuel Carretero Ávila", {font: "50px Arial", fill: "green"})
-    var back = this.add.image(200, 200, 'back')
+    var back = this.add.image(200, 600, 'back')
     back.setScale(0.5);
     this.clickButton = back
          .setInteractive()
