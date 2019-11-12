@@ -133,8 +133,8 @@ class playGame extends Phaser.Scene {
         });
 
         // number of consecutive jumps made by the player
-        this.playerJumps = 0;
-
+        this.playerJumps1 = 0;
+        this.playerJumps2 = 0;
 
         // adding a platform to the game, the arguments are platform width and x position
         this.addPlatform(game.config.width, game.config.width / 2);
@@ -196,11 +196,11 @@ class playGame extends Phaser.Scene {
                         this.powerupGroup.remove(powerup);
                         if (this.tengoPowerup) {
                             this.time.addEvent({
-                                delay: 10000,
+                                delay: 5000,
                                 callback: this.dobleSalto,
                                 callbackScope: this,
                                 repeat: 1
-                            })
+                            });
                         }
                     }
                 });
@@ -221,11 +221,11 @@ class playGame extends Phaser.Scene {
                         this.powerupGroup.remove(powerup);
                         if (this.tengoPowerup2) {
                             this.time.addEvent({
-                                delay: 10000,
+                                delay: 5000,
                                 callback: this.dobleSalto2,
                                 callbackScope: this,
                                 repeat: 1
-                            })
+                            });
                         }
                     }
                 });
@@ -324,12 +324,12 @@ class playGame extends Phaser.Scene {
     }
 
     dobleSalto2() {
-        if (this.player2.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps)) {
+        if (this.player2.body.touching.down || (this.playerJumps2 > 0 && this.playerJumps2 < gameOptions.jumps)) {
             if (this.player2.body.touching.down) {
-                this.playerJumps = 0;
+                this.playerJumps2 = 0;
             }
             this.player2.setVelocityY(gameOptions.jumpForce * -1);
-            this.playerJumps++;
+            this.playerJumps2++;
         }
     }
 
@@ -488,9 +488,9 @@ class playGame extends Phaser.Scene {
     }
 
     jump2() {
-        if ((!this.dying2) && (this.player2.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps))) {
+        if ((!this.dying2) && (this.player2.body.touching.down || (this.playerJumps2 > 0 && this.playerJumps2 < gameOptions.jumps))) {
             if (this.player2.body.touching.down) {
-                this.playerJumps = 0;
+                this.playerJumps2 = 0;
             }
             if (this.tengoPowerup) {
                 gameOptions.jumps = 2,
@@ -501,7 +501,7 @@ class playGame extends Phaser.Scene {
             }
 
             this.player2.setVelocityY(gameOptions.jumpForce * -1);
-            this.playerJumps++;
+            this.playerJumps2++;
             jumping2 = true;
             this.player2.anims.stop();
         }
