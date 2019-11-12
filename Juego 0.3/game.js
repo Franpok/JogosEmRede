@@ -2,25 +2,25 @@ let game;
 
 // global game options
 let gameOptions = {
-    platformStartSpeed: 350,
-    spawnRange: [0, 0],
-    platformSizeRange: [150, 250],
-    playerGravity: 900,
-    jumpForce: 400,
-    playerStartPosition: 200,
-    powerupProbabilidad: 10,
-    obstaculoProbabilidad: 30,
-    powerupProbabilidad2: 10,
-    obstaculoProbabilidad2: 30,
-    jumps: 1, // He creado un power up de doble salto, así que me creo una variable que me permita controlar el número de saltos que puedo hacer
-    duracion : 150, //Una variable duración que me permita controlar el tiempo 
-    vidas1: 3,
-    vidas2: 3
+    platformStartSpeed: 350,            //Velocidad de las plataformas
+    spawnRange: [0, 0],                 //Controla la distancia entre una plataforma y la siguiente
+    platformSizeRange: [150, 250],      //Tamaño de las plataformas (el ancho)
+    playerGravity: 900,                 //Gravedad
+    jumpForce: 400,                     //Velocidad en y del jugador cuando salta
+    playerStartPosition: 200,           //Posición donde comienza el jugador
+    powerupProbabilidad: 10,            //Probabilidad powerUp(Jugador 1)
+    obstaculoProbabilidad: 30,          //Probabilidad de aparición de obstáculos del jugador 1
+    powerupProbabilidad2: 10,           //Probabilidad powerUp(Jugador 2)
+    obstaculoProbabilidad2: 30,         //Probabilidad de aparición de obstáculos del jugador 2
+    jumps: 1,                           // He creado un power up de doble salto, así que me creo una variable que me permita controlar el número de saltos que puedo hacer
+    duracion : 150,                     //Una variable duración que me permita controlar el tiempo 
+    vidas1: 3,                          //Vidas jugador 1
+    vidas2: 3                           //Vidas jugador 2
 }
 
 window.onload = function () {
 
-    // object containing configuration options
+    // OPCIONES DE CONFIGURACIÓN
     let gameConfig = {
         type: Phaser.AUTO,
         width: 1080,
@@ -38,112 +38,114 @@ window.onload = function () {
     resize();
     window.addEventListener("resize", resize, false);
 }
-//var vache =0;
-//playGame scene
+
+/////////// OTRAS VARIABLES DEL JUEGO ////////////////
 var jumping1 = false;
 var jumping2 = false;
 let sonido;
-
-var vidaP1;
-var vidaP2;
 var vidaTextP1;
 var vidaTextP2;
 var tiempo;
 var tiempoText;
+
+
+
 class playGame extends Phaser.Scene {
     constructor() {
         super("PlayGame");
     }
     preload() {
+        //NUESTRA FUNCIÓN PRELOAD, CARGAMOS NUESTROS RECURSOS 
         this.load.image("sky", "resources/sky.png");
         this.load.image("platform", "resources/platform.png");
         this.load.image("player", "resources/player.png");
         this.load.spritesheet('alien', "resources/alien.png", {frameWidth: 56, frameHeight: 100});
         this.load.spritesheet('alien2', "resources/alien2.png", {frameWidth: 56, frameHeight: 100});
-        this.load.image("powerup", "resources/star.png",); //La imagen preliminar del powerup es la estrella del phaser
+        this.load.image("powerup", "resources/star.png",);              
         this.load.image("obstaculo", "resources/pinchos.png",);
-        //this.load.image("playerAgachado", "resources/player_agachado.png",);
         this.load.audio("fondo", ["resources/MusicaJuego.mp3"]);
     }
   
     create() {
-        vidaP1 = 3;
-        vidaP2 = 3;
         tiempo = 0;
         sonido = this.sound.add("fondo");
         sonido.loop = true;
         sonido.mute= true;
         sonido.play();
 
-        // background image
+        // Imagen de fondo
         this.add.image(540, 360, 'sky');
 
-        // group with all active platforms.
+
+////////////////////////////////////////////////////////// CREACIÓN, GESTIÓN Y REUSO DE NUESTROS RECURSOS ////////////////////////////////////////////////////////////////////////////////
+        
+        // CREAMOS UN RECOLECTOR DE TODOS NUESTROS OBJETOS TIPO PLATAFORMAS QUE ESTEN ACTIVOS
         this.platformGroup = this.add.group({
 
-            // once a platform is removed, it's added to the pool
+            // CUANDO LA PLATAFORMA SE HAYA DESTRUIDO ( ES DECIR, SE SALGA DEL CANVAS) LA ENVIAMOS A NUESTRO RECOLECTOR DE OBJETOS YA CREADOS INACTIVOS
             removeCallback: function (platform) {
                 platform.scene.platformPool.add(platform)
             }
         });
 
-        // pool
+        // CREAMOS NUESTRO RECOLECTOR DE OBJETOS TIPO PLATAFORMAS QUE ESTEN INACTIVOS
         this.platformPool = this.add.group({
 
-            // once a platform is removed from the pool, it's added to the active platforms group
+            // SI NECESITAMOS UN OBJETO PLATAFORMA Y YA EXISTE UNO INACTIVO, LO COGEMOS Y LO MOVEMOS AL GRUPO ACTIVO
             removeCallback: function (platform) {
                 platform.scene.platformGroup.add(platform)
             }
         });
         
-        //Similar a como se crea una plataforma, creo mi grupo y su correspondiente piscina 
+        //PARA LOS POWERUP Y OBSTACULOS USAMOS LA MISMA MANERA DE GENERACIÓN (Por tanto no hace falta comentarlos)
+
+        //Grupo activo powerUps
        this.powerupGroup = this.add.group({
  
-            // Cuando coja un power-up, lo añado a la piscina
             removeCallback: function(powerup){
                 powerup.scene.powerupPool.add(powerup)
             }
         });
  
-        // Powerup pool
+        //Grupo inactivo powerUps
         this.powerupPool = this.add.group({
  
-            // Cuando se elimina de la piscina, lo activo en mi grupo
             removeCallback: function(powerup){
                 powerup.scene.powerupGroup.add(powerup)
             }
         });
 
-         // Creo un grupo de obstaculos activos
+         //Grupo activo pinchos
          this.obstaculoGroup = this.add.group({
  
-            // Cuando se elimina un obstaculo, se envia a mi recolector de obstaculos
             removeCallback: function(obstaculo){
                 obstaculo.scene.obstaculoPool.add(obstaculo)
             }
         });
  
-        // Creo un recolector de obstaculos
+        //Grupo inactivo pinchos
         this.obstaculoPool = this.add.group({
  
-            // Cuando se llama a la piscina de obstaculos, se elimina y se mete en el grupo activo
             removeCallback: function(obstaculo){
                 obstaculo.scene.obstaculoGroup.add(obstaculo)
             }
         });
 
-        // number of consecutive jumps made by the player
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Saltos que hace mi jugador consecutivos (Para controlar el doble salto)
         this.playerJumps = 0;
        
         
-        // adding a platform to the game, the arguments are platform width and x position
+        //Añadimos una plataforma al juego (La plataforma inicial) , que tiene una dimensión x e y
         this.addPlatform(game.config.width, game.config.width / 2);
 
-        // adding the player;
+        // CREAMOS AL JUGADOR 1
         this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.64, 'alien', 0);
         this.player.setGravityY(gameOptions.playerGravity);
 
-        // adding player's running animation
+        // AÑADIMOS SU ANIMACIÓN
         this.anims.create({
             key: 'r1',
             frameRate: 12,
@@ -153,11 +155,11 @@ class playGame extends Phaser.Scene {
         
         this.player.anims.play('r1');
 
-        // adding player2;
+        // CREAMOS AL JUGADOR 2
         this.player2 = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.24, 'alien2', 0);
         this.player2.setGravityY(gameOptions.playerGravity);
 
-        // adding player 2's running animation
+        // AÑADIMOS SU ANIMACIÓN
         this.anims.create({
             key: 'r2',
             frameRate: 12,
@@ -167,30 +169,32 @@ class playGame extends Phaser.Scene {
         
         this.player2.anims.play('r2');
 
-        //Mi jugador ha muerto?
-        var dying = false;
-        var dying2 = false;
-
-
-        //Mi jugador tiene power-up, necesito un boolean basicamente
-       var tengoPowerup = false;
-       var tengoPowerup2 = false;
+         //Creamos unas variables para saber si el jugador tiene powerup o esta muerto
+         var dying = false;
+          var dying2 = false;
+         var tengoPowerup = false;
+         var tengoPowerup2 = false;
         
-        // setting collisions between the player and the platform group
-        this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function(){}, null, this);
         
-        this.platformCollider2 = this.physics.add.collider(this.player2, this.platformGroup, function(){}, null, this);
-
-        //COLISION JUGADOR POWERUP 
-        this.physics.add.overlap(this.player, this.powerupGroup, function(player, powerup){
-            this.tengoPowerup == true,//Activo mi boolean para más adelante activar doble salto (En teoria debería ser this.tengoPowerup pero me da error no se porque)
-               
+////////////////////////////////////////////////////////////////////////////////// COLISIÓN DE JUGADOR CON PLATAFORMAS Y OTROS OBJETOS ////////////////////////////////////////////////////        
+        
+            
+            // Añadimos colision entre los jugadores y el grupo activo de plataformas
+            this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function(){}, null, this);
+            this.platformCollider2 = this.physics.add.collider(this.player2, this.platformGroup, function(){}, null, this);
+        
+        
+            //COLISIÓN JUGADOR1 CON UN POWERUP
+            this.physics.add.overlap(this.player, this.powerupGroup, function(player, powerup){
+            this.tengoPowerup == true, //Activamos nuestra variable
+             
+            //Esta función modifica las propiedades de un objeto ya creado, en este caso es la animación que hace que el powerup desaparezca
             this.tweens.add({
                 targets: powerup,
                 y: powerup.y - 100, 
                 alpha: 0,
                 duration: 800,
-                ease: "Cubic.easeOut", //Esto por ahora esta comentado
+                ease: "Cubic.easeOut", 
                 callbackScope: this,
                 onComplete: function(){
                     this.powerupGroup.killAndHide(powerup);
@@ -202,14 +206,14 @@ class playGame extends Phaser.Scene {
 
         //COLISION JUGADOR2 POWERUP
         this.physics.add.overlap(this.player2, this.powerupGroup, function(player2, powerup){
-            this.tengoPowerup == true,//Activo mi boolean para más adelante activar doble salto (En teoria debería ser this.tengoPowerup pero me da error no se porque)
+            this.tengoPowerup == true,
                
             this.tweens.add({
                 targets: powerup,
                 y: powerup.y - 100, 
                 alpha: 0,
                 duration: 800,
-                ease: "Cubic.easeOut", //Esto por ahora esta comentado
+                ease: "Cubic.easeOut", 
                 callbackScope: this,
                 onComplete: function(){
                     this.powerupGroup.killAndHide(powerup);
@@ -219,25 +223,20 @@ class playGame extends Phaser.Scene {
  
         }, null, this);
 
-        // COLISION JUGADOR OBSTACULO
+        
+        // COLISION JUGADOR1 OBSTACULO
         this.physics.add.overlap(this.player, this.obstaculoGroup, function(player, obstaculo){
-            if (gameOptions.vidas1>1){
+            if (gameOptions.vidas1>1){ //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
                 gameOptions.vidas1--;
-                vidaP1--;
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
-                vidaTextP1.setText("Vidas J1: " + vidaP1);
-                //console.log("He perdido una vida");
-               // this.obstaculoPool.add(obstaculo);
-            }else{
-            //console.log("He muerto");
-            //fondo.stop();
-            this.dying = true;
-            //this.player.anims.stop();
-            //this.player.setFrame(2);
-            this.player.visible=false;
+                vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
+                
+            }else{ // Si ya no tiene vidas, cambia de estado a muerto
             
-            this.player.body.setVelocityY(-200);
+            this.dying = true;
+            this.player.visible=false;
+            this.player.body.setVelocityX(-200);
             this.physics.world.removeCollider(this.platformCollider);
             }
         }, null, this);
@@ -247,28 +246,23 @@ class playGame extends Phaser.Scene {
         this.physics.add.overlap(this.player2, this.obstaculoGroup, function(player2, obstaculo){
             if (gameOptions.vidas2>1){
                 gameOptions.vidas2--;
-                vidaP2--;
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
-
-                vidaTextP2.setText("Vidas J2: " + vidaP2);
-                //console.log("He perdido una vida");
-               // this.obstaculoPool.add(obstaculo);
+                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                
             }else{
-            //console.log("He muerto");
-            //fondo.stop();
-            this.dying2 = true;
-            //this.player.anims.stop();
-            //this.player.setFrame(2);
-            this.player.visible=false;
             
-            this.player2.body.setVelocityY(-200);
+            this.dying2 = true; 
+            this.player.visible=false;
+            this.player2.body.setVelocityx(-200);
             this.physics.world.removeCollider(this.platformCollider2);
             }
         }, null, this);
 
 
-        // checking for input
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // NUESTROS INPUTS POR TECLADO (ACTUALMENTE AGACHAR NO TIENE FUNCIONALIDAD)
         this.input.keyboard.on('keydown_W', this.jump, this);
         this.input.keyboard.on('keydown_UP', this.jump2, this);
         this.input.keyboard.on('keydown_DOWN', this.agachar, this);
@@ -277,11 +271,13 @@ class playGame extends Phaser.Scene {
         this.input.keyboard.on('keyup_S', this.sinAgachar, this);
         this.input.keyboard.on('keydown_P', this.pause, this);
         
+        
+        //NUESTROS TEXTOS QUE SE VISUALIZAN DURANTE EL JUEGO
         vidaTextP1 = this.add.text(25, 330, "Vidas J1: 3", {fontFamily: 'Arial', fontSize: "32px", fill: "#fff"});
         vidaTextP2 = this.add.text(25, 20, "Vidas J2: 3", {fontFamily: 'Arial', fontSize: "32PX", fill: "#fff"});
-
         tiempoText = this.add.text(850, 20, "Tiempo: 0",{fontFamily: 'Arial', fontSize: "32px", fill: "#fff"});
 
+        //TIEMPO
         this.time.addEvent({
             delay: 1000,
             callback: this.updateTimer,
@@ -295,25 +291,28 @@ class playGame extends Phaser.Scene {
         tiempoText.setText("Tiempo: " + tiempo);
     }
     
+    //MENU DE PAUSA
     pause(){
             this.scene.launch("salir");
             this.scene.pause(); 
     }
     
  ///////////////////////////////////////////////////////////////////// CREACIÓN DE PLATAFORMAS, OBSTACULOS... ///////////////////////////////////////////////   
-    addPlatform(platformWidth, posX) {
+    
+ 
+ addPlatform(platformWidth, posX) { 
         let platform;
         let platform2;
-        if(this.dying){
+        if(this.dying){ //Si esta muerto no generamos más
 
         }else{
-        if (this.platformPool.getLength()) {
+        if (this.platformPool.getLength()) { // SI HAY ALGUNA PLATAFORMA INACTIVA, LA COGEMOS
             platform = this.platformPool.getFirst();
             platform.x = posX;
             platform.active = true;
             platform.visible = true;
             this.platformPool.remove(platform);   
-        }else {
+        }else { //SI NO HAY PLATAFORMAS INACTIVAS, CREAMOS UNA NUEVA
             platform = this.physics.add.sprite(posX, game.config.height * 0.8, "platform");
             platform.setImmovable(true);
             platform.setVelocityX(gameOptions.platformStartSpeed * -1);
@@ -321,11 +320,10 @@ class playGame extends Phaser.Scene {
         }
 
         platform.displayWidth = platformWidth;
-        //platform2.displayWidth = platformWidth;
+        this.nextPlatformDistance = 0;
+         
         
-            this.nextPlatformDistance = 0;
-            
-        if(Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad){
+        if(Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad){ //AQUI DECIDO SI APARECE UN POWERUP O NO (JUGADOR 1)
             if(this.powerupPool.getLength()){
                 let powerup = this.powerupPool.getFirst();
                 powerup.x = posX;
@@ -366,7 +364,7 @@ class playGame extends Phaser.Scene {
                 }
             }
         }   
-            if(this.dying2){
+            if(this.dying2){ //LO ANTERIOR PERO PARA NUESTRO JUGADOR 2
 
             }else{
             
@@ -384,7 +382,7 @@ class playGame extends Phaser.Scene {
                     platform2.setVelocityX(gameOptions.platformStartSpeed * -1);
                     this.platformGroup.add(platform2);
                 }
-                //platform.displayWidth = platformWidth;
+                
                 platform2.displayWidth = platformWidth;
                 this.nextPlatformDistance = 0;
 
@@ -435,9 +433,11 @@ class playGame extends Phaser.Scene {
         
 }   
 
-    // the player jumps when on the ground, or once in the air as long as there are jumps left and the first jump was on the ground
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // NUESTRA FUNCION DE SALTO PARA EL JUGADOR UNO
     jump() {
-        if ((!this.dying)&&(this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps))) {
+        if ((!this.dying)&&(this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps))) { // SI NO ESTOY MUERTO Y ESTOY TOCANDO EL SUELO o TENGO MAS SALTOS CONSECUTIVOS PUEDO SALTAR
             if (this.player.body.touching.down) {
                 this.playerJumps = 0;
             }
@@ -456,7 +456,7 @@ class playGame extends Phaser.Scene {
         }
     }
 
-    jump2() {
+    jump2() { // PARA EL JUGADOR 2
         if ((!this.dying2)&&(this.player2.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps))) {
             if (this.player2.body.touching.down) {
                 this.playerJumps = 0;
@@ -476,7 +476,7 @@ class playGame extends Phaser.Scene {
         }
     }
 
-    agachar(){
+    agachar(){ // POR IMPLEMENTAR
         if(!this.dying && this.player.body.touching.down){
        /*
         this.anims.create({
@@ -490,7 +490,7 @@ class playGame extends Phaser.Scene {
         }
     }
 
-    sinAgachar(){
+    sinAgachar(){ // POR IMPLEMENTAR
         //this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height*0.74, "player");
         //this.player.setGravityY(gameOptions.playerGravity);
        // this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function(){}, null, this);
@@ -502,12 +502,16 @@ class playGame extends Phaser.Scene {
     });
     this.player.anims.play("up");*/
     }
-    update() {
+    
+    
+    
+    
+    update() { //FUNCION UPDATE
         
             sonido.mute= false;
             
         
-
+        // SI SALTA, PARAMOS LA ANIMACIÓN ( SOLO SIRVE PARA REALISMO VISUAL)
         if(this.player.body.touching.down && jumping1 == true){
             this.player.anims.play('r1');
             jumping1 = false;
@@ -518,7 +522,7 @@ class playGame extends Phaser.Scene {
             jumping2 = false;
         }
 
-        // game over
+        // FUNCION GAME OVER (CUANDO MUERE ALGUNO DE LOS JUGADORES)
         if (this.dying == true ) {
             this.scene.start("PlayGame");
             gameOptions.vidas1 = 3;
@@ -559,7 +563,7 @@ class playGame extends Phaser.Scene {
             }
         }, this);
 
-        // recycling platforms
+        // RECICLO MIS PLATAFORMAS
         let minDistance = game.config.width;
         this.platformGroup.getChildren().forEach(function (platform) {
             let platformDistance = game.config.width - platform.x - platform.displayWidth / 2;
@@ -570,7 +574,7 @@ class playGame extends Phaser.Scene {
             }
         }, this);
 
-        // adding new platforms
+        // CREACION DE NUEVAS PLATAFORMAS ALEATORIAS (EN TAMAÑO)
         if (minDistance > this.nextPlatformDistance) {
             var nextPlatformWidth = Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
             this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
@@ -580,7 +584,7 @@ class playGame extends Phaser.Scene {
     }
 };
 
-function resize() {
+function resize() { //FUNCION RESIZE
     let canvas = document.querySelector("canvas");
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
