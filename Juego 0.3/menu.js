@@ -5,6 +5,11 @@ class menu extends Phaser.Scene {
 
     preload(){
       this.load.audio("sound", ["resources/MusicaMenu.mp3"]);
+      this.load.image("jugar", "resources/jugar.png");
+      this.load.image("jugarP", "resources/jugarPulsado.png");
+      this.load.image("creditos", "resources/creditos.png");
+      this.load.image("creditosP", "resources/creditosPulsado.png");
+      this.load.image("controles", "resources/controles.png")
     }
     create (){
         //const juego = this.add.text(20,20, "Cargando Juego...")
@@ -13,20 +18,22 @@ class menu extends Phaser.Scene {
         sonido.loop = true;
         sonido.play();
     
-        this.clickButton = this.add.text(100, 100, 'Jugar', { fill: '#0f0' })
+        this.clickButton = this.add.image(300, 150, 'jugar' )
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("PlayGame"))
          .on('pointerdown', () =>  sonido.stop())
-         .on('pointerover', () => this.enterButtonHoverState() )
-         .on('pointerout', () => this.enterButtonRestState() );
+         .on('pointerover', () => this.add.image(300, 150, 'jugarP'  ))
+         .on('pointerout', () => this.add.image(300, 150, 'jugar' ) );
          
 
-         this.clickButton2 = this.add.text(300, 100, 'Créditos', { fill: '#0f0' })
+         this.clickButton2 = this.add.image(750, 150, 'creditos' )
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("Creditos"))
          .on('pointerdown', () =>  sonido.stop())
-         .on('pointerover', () => this.enterButtonHoverState2() )
-         .on('pointerout', () => this.enterButtonRestState2() );
+         .on('pointerover', () => this.add.image(750, 150, 'creditosP' ) )
+         .on('pointerout', () => this.add.image(750, 150, 'creditos' ) );
+         var controles =this.add.image(500, 400, 'controles');
+         controles.setScale(.5);
     
        // this.updateClickCountText(clickCount);
       }

@@ -3,9 +3,14 @@ class creditos extends Phaser.Scene {
         super("Creditos");
     }
     
+    preload(){
+      this.load.image("back", "resources/back.png")
+    }
     create(){
     //const juego = this.add.text(500,100, "Juan Manuel Carretero Ávila", {font: "50px Arial", fill: "green"})
-    this.clickButton = this.add.text(100, 100, 'Vuelve al menu, anda', { fill: '#0f0' })
+    var back = this.add.image(200, 200, 'back')
+    back.setScale(0.5);
+    this.clickButton = back
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("menuPrincipal"))
          .on('pointerover', () => this.enterButtonHoverState() )
