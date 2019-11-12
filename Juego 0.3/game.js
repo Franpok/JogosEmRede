@@ -59,6 +59,7 @@ class playGame extends Phaser.Scene {
         this.load.image("sky", "resources/sky.png");
         this.load.image("platform", "resources/platform.png");
         this.load.image("player", "resources/player.png");
+        this.load.image("track", "resources/track.png");
         this.load.spritesheet('alien', "resources/alien.png", {frameWidth: 56, frameHeight: 100});
         this.load.spritesheet('alien2', "resources/alien2.png", {frameWidth: 56, frameHeight: 100});
         this.load.image("powerup", "resources/star.png",);              
@@ -75,13 +76,13 @@ class playGame extends Phaser.Scene {
 
         // Imagen de fondo
         this.add.image(540, 360, 'sky');
-
-
+        this.add.image(540, game.config.height * 0.8, 'track');
+        this.add.image(540, game.config.height * 0.4, 'track')
 ////////////////////////////////////////////////////////// CREACIÓN, GESTIÓN Y REUSO DE NUESTROS RECURSOS ////////////////////////////////////////////////////////////////////////////////
         
         // CREAMOS UN RECOLECTOR DE TODOS NUESTROS OBJETOS TIPO PLATAFORMAS QUE ESTEN ACTIVOS
         this.platformGroup = this.add.group({
-
+            
             // CUANDO LA PLATAFORMA SE HAYA DESTRUIDO ( ES DECIR, SE SALGA DEL CANVAS) LA ENVIAMOS A NUESTRO RECOLECTOR DE OBJETOS YA CREADOS INACTIVOS
             removeCallback: function (platform) {
                 platform.scene.platformPool.add(platform)
@@ -142,7 +143,7 @@ class playGame extends Phaser.Scene {
         this.addPlatform(game.config.width, game.config.width / 2);
 
         // CREAMOS AL JUGADOR 1
-        this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.64, 'alien', 0);
+        this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.71, 'alien', 0);
         this.player.setGravityY(gameOptions.playerGravity);
 
         // AÑADIMOS SU ANIMACIÓN
@@ -156,7 +157,7 @@ class playGame extends Phaser.Scene {
         this.player.anims.play('r1');
 
         // CREAMOS AL JUGADOR 2
-        this.player2 = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.24, 'alien2', 0);
+        this.player2 = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.31, 'alien2', 0);
         this.player2.setGravityY(gameOptions.playerGravity);
 
         // AÑADIMOS SU ANIMACIÓN
@@ -206,8 +207,8 @@ class playGame extends Phaser.Scene {
 
         //COLISION JUGADOR2 POWERUP
         this.physics.add.overlap(this.player2, this.powerupGroup, function(player2, powerup){
-            this.tengoPowerup == true,
-               
+            this.tengoPowerup == true;
+
             this.tweens.add({
                 targets: powerup,
                 y: powerup.y - 100, 
@@ -236,7 +237,7 @@ class playGame extends Phaser.Scene {
             
             this.dying = true;
             this.player.visible=false;
-            this.player.body.setVelocityX(-200);
+            //this.player.body.setVelocityX(-200);
             this.physics.world.removeCollider(this.platformCollider);
             }
         }, null, this);
@@ -254,7 +255,7 @@ class playGame extends Phaser.Scene {
             
             this.dying2 = true; 
             this.player.visible=false;
-            this.player2.body.setVelocityx(-200);
+            //this.player2.body.setVelocityx(-200);
             this.physics.world.removeCollider(this.platformCollider2);
             }
         }, null, this);
@@ -284,6 +285,8 @@ class playGame extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
+    
+    
     }
 
     updateTimer() {
@@ -310,10 +313,11 @@ class playGame extends Phaser.Scene {
             platform = this.platformPool.getFirst();
             platform.x = posX;
             platform.active = true;
-            platform.visible = true;
+            platform.visible = false;
             this.platformPool.remove(platform);   
         }else { //SI NO HAY PLATAFORMAS INACTIVAS, CREAMOS UNA NUEVA
             platform = this.physics.add.sprite(posX, game.config.height * 0.8, "platform");
+            platform.visible = false;
             platform.setImmovable(true);
             platform.setVelocityX(gameOptions.platformStartSpeed * -1);
             this.platformGroup.add(platform);
@@ -372,12 +376,13 @@ class playGame extends Phaser.Scene {
                     platform2 = this.platformPool.getFirst();
                     platform2.x = posX;
                     platform2.active = true;
-                    platform2.visible = true;
+                    platform2.visible = false;
                     this.platformPool.remove(platform2);
             
                 }else{
                     
                     platform2 = this.physics.add.sprite(posX, game.config.height * 0.4, "platform");
+                    platform2.visible = false;
                     platform2.setImmovable(true);
                     platform2.setVelocityX(gameOptions.platformStartSpeed * -1);
                     this.platformGroup.add(platform2);
