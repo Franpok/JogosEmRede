@@ -43,6 +43,8 @@ window.onload = function () {
 var jumping1 = false;
 var jumping2 = false;
 let sonido;
+let dano;
+let salto;
 var vidaTextP1;
 var vidaTextP2;
 var tiempo;
@@ -67,15 +69,23 @@ class playGame extends Phaser.Scene {
         this.load.image("powerup", "resources/star.png");
         this.load.image("obstaculo", "resources/pinchos.png");
         this.load.audio("fondo", ["resources/MusicaJuego.mp3"]);
+        this.load.audio("daño", ["resources/Alien.mp3"]);
+        this.load.audio("jump", ["resources/Jump.mp3"]);
     }
 
     create() {
         tiempo = 0;
         sonido = this.sound.add("fondo");
+        dano = this.sound.add("daño");
+        salto = this.sound.add("jump");
         sonido.loop = true;
+        dano.loop = false;
+        salto.loop = false;
         sonido.mute = true;
         sonido.play();
 
+        
+        
         // Imagen de fondo
         this.add.image(540, 360, 'sky');
         this.add.image(540, game.config.height * 0.8, 'track');
@@ -246,7 +256,7 @@ class playGame extends Phaser.Scene {
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
                 vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
-
+                dano.play();
             } else { // Si ya no tiene vidas, cambia de estado a muerto
 
                 this.dying = true;
@@ -265,7 +275,7 @@ class playGame extends Phaser.Scene {
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
                 vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
-
+                dano.play();
             } else {
 
                 this.dying2 = true;
@@ -473,6 +483,7 @@ class playGame extends Phaser.Scene {
             this.playerJumps++;
             jumping1 = true;
             this.player.anims.stop();
+            salto.play();
         }
     }
 
@@ -493,6 +504,7 @@ class playGame extends Phaser.Scene {
             this.playerJumps++;
             jumping2 = true;
             this.player2.anims.stop();
+            salto.play();
         }
     }
 
