@@ -10,6 +10,7 @@ class menu extends Phaser.Scene {
       this.load.image("creditos", "resources/creditos.png");
       this.load.image("creditosP", "resources/creditosPulsado.png");
       this.load.image("controles", "resources/controles.png")
+      this.load.image("logo", " resources/LOGO.png")
     }
     create (){
         //const juego = this.add.text(20,20, "Cargando Juego...")
@@ -18,22 +19,24 @@ class menu extends Phaser.Scene {
         sonido.loop = true;
         sonido.play();
     
-        this.clickButton = this.add.image(300, 150, 'jugar' )
+        this.clickButton = this.add.image(300, 350, 'jugar' )
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("PlayGame"))
          .on('pointerdown', () =>  sonido.stop())
-         .on('pointerover', () => this.add.image(300, 150, 'jugarP'  ))
-         .on('pointerout', () => this.add.image(300, 150, 'jugar' ) );
+         .on('pointerover', () => this.add.image(300, 350, 'jugarP'  ))
+         .on('pointerout', () => this.add.image(300, 350, 'jugar' ) );
          
 
-         this.clickButton2 = this.add.image(750, 150, 'creditos' )
+         this.clickButton2 = this.add.image(300, 550, 'creditos' )
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("Creditos"))
          .on('pointerdown', () =>  sonido.stop())
-         .on('pointerover', () => this.add.image(750, 150, 'creditosP' ) )
-         .on('pointerout', () => this.add.image(750, 150, 'creditos' ) );
-         var controles =this.add.image(500, 400, 'controles');
-         controles.setScale(.5);
+         .on('pointerover', () => this.add.image(300, 550, 'creditosP' ) )
+         .on('pointerout', () => this.add.image(300, 550, 'creditos' ) );
+         var controles =this.add.image(750,450, 'controles');
+         controles.setScale(.6);
+         var logo  = this.add.image(550,125, 'logo');
+         logo.setScale(.25);
     
        // this.updateClickCountText(clickCount);
       }
