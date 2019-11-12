@@ -23,7 +23,8 @@ class creditos extends Phaser.Scene {
     back.setScale(0.5);
     this.clickButton = back
          .setInteractive()
-         .on('pointerdown', () =>  this.scene.start("menuPrincipal"));
+         .on('pointerdown', () =>  this.scene.start("menuPrincipal"))
+         .on('pointerdown', () =>  sonidoepico.mute=true);
   }
 
 }
