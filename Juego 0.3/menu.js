@@ -11,10 +11,12 @@ class menu extends Phaser.Scene {
       this.load.image("creditosP", "resources/creditosPulsado.png");
       this.load.image("controles", "resources/controles.png")
       this.load.image("logo", " resources/LOGO.png")
+      this.load.image("fondo", "resources/fondoMenu.png")
     }
     create (){
         //const juego = this.add.text(20,20, "Cargando Juego...")
         //this.scene.start("menuMuerte");
+        var fondo = this.add.image(540,360,'fondo');
         let sonido = this.sound.add("sound");
         sonido.loop = true;
         sonido.play();
