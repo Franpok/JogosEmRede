@@ -60,7 +60,7 @@ class playGame extends Phaser.Scene {
         this.load.image("player", "resources/player.png");
         this.load.spritesheet('alien', "resources/alien.png", {frameWidth: 56, frameHeight: 100});
         this.load.spritesheet('alien2', "resources/alien2.png", {frameWidth: 56, frameHeight: 100});
-        this.load.image("powerup", "resources/star.png",); //La imagen preliminar del powerup es la estrella del phaser
+        this.load.image("powerup", "resources/powerUp.png",); //La imagen preliminar del powerup es la estrella del phaser
         this.load.image("obstaculo", "resources/pinchos.png",);
         //this.load.image("playerAgachado", "resources/player_agachado.png",);
         this.load.audio("fondo", ["resources/MusicaJuego.mp3"]);
