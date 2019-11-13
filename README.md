@@ -203,7 +203,7 @@ Se tratará de un nivel local de un jugador, en el que se controla a un personaj
 # 5. Actualizaciones
 
 #### 5.1 v1.0 (Fase 2)
-En esta fase hemos asentado las bases de nuestro juego, "Race 51". Hemos utilizado Phaser3, además, SourceTree para el manejo de versiones.
+En esta fase hemos asentado las bases de nuestro juego, "Race 51". Hemos utilizado Phaser3, además, SourceTree para el manejo de versiones. Hemos testeado el juego para comprobar un bug que se nos remarcó en la presentación y hemos comprobado que no existe. El bug era que si pisabamos 2 trampas que se generaban consecutivas se perdía una vida, no 2. Hemos demostrado que no es así, ya que se pierden las 2 vidas.
 
 ###### 5.1.1 Arte
 Hemos partido de 0 para crear nuestros assets, ya que todos han sido creados por nuestro artista principal. Incluimos personajes, trampas, escenarios, botones, etc.
