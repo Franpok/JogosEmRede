@@ -36,6 +36,8 @@
 #### 4.5 Juego
 #### 4.6 Puntuaciones
 #### 4.7 Tutorial
+## 5. Actualizaciones
+#### 5.1 v1.0 (Fase 2)
 
 # 1. Introducción
 Este es el documento de diseño de Race 51. El videojuego para PC que cumple todos los requisitos pedidos en la asignatura Juegos en Red. Este documento tiene como objetivo principal detallar y explicar los elementos de Race 51.
@@ -93,8 +95,6 @@ La condición de victoria es bastante simple. El último participante que acabe 
 
 #### 2.4 Personajes
 Todos los personajes cuentan con los mismo stats base, para que empezar con uno u otro sea justo. Para variar la jugabilidad, cada uno contará con un “power-up” distintivo.
-
-
 
 ###### 2.4.1 Alienígena
 Ser de otro planeta con el que experimentaban dentro del Área 51 y su único entretenimiento era ver anime. Físicamente es un ser humanoide bípedo y verde con una bandana de Naruto en la frente. Su modo de correr se asemeja a la que se usa en dicha serie (que es su favorita).
@@ -192,3 +192,14 @@ En esta pantalla se mostrarán cuatro rectángulos en los que se mostrará la pu
   <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/tutorial.png">
 </p>
 Se tratará de un nivel local de un jugador, en el que se controla a un personaje por defecto, y se muestran por pantalla 3 señales que indican los controles (*Saltar* con *w* o la flecha hacia arriba; *Agacharse* con *s* o la flecha hacia abajo; y *Power-Up* con la tecla Shift).
+
+# 5. Actualizaciones
+
+#### 5.1 v1.0 (Fase 2)
+En la realización de esta fase, hemos hecho:
+- Hemos creado nuestros propios assets para el juego (personajes, trampas, escenarios, botones...).
+- La música y los efectos sonoros son royalty-free y los hemos obtenido de: https://freesound.org.
+- El principal esqueleto de nuestro juego lo hemos obtenido de: https://www.emanueleferonato.com
+- El juego crea una serie de plataformas de manera aleatoria y se mueven hacia el personaje, creando la ilusión de que el personaje es realmente el que se está moviendo.
+- Por motivos estéticos, las plataformas son invisibles, pero gracias al fondo se puede ver como va el personaje.
+- Encima de las plataformas hemos creado trampas, que se generan de forma aleatoria. Esta característica debe ser retocada
