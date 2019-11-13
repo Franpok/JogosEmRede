@@ -74,10 +74,7 @@ El objetivo principal es desarrollar un juego en el que cualquiera pueda conecta
 
 #### 1.8 Juegos en los que nos inspiramos
 Nuestra principal inspiración es el juego de Google Chrome cuando no tenemos conexión a Internet.
-<p align="left">
-  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/ejemplo1.png">
-  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/ejemplo2.png">
-</p>
+
 
 # 2. Mecánicas
 En esta sección de nuestro GDD vamos a tratar uno de los temas fundamentales en la creación de este juego: las mecánicas. Explicaremos:
@@ -97,7 +94,7 @@ La condición de victoria es bastante simple. El último participante que acabe 
 #### 2.4 Personajes
 Todos los personajes cuentan con los mismo stats base, para que empezar con uno u otro sea justo. Para variar la jugabilidad, cada uno contará con un “power-up” distintivo.
 
-<img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/6c94b600-e3d2-4ba7-88a3-468057a0e27f.jpg">
+
 
 ###### 2.4.1 Alienígena
 Ser de otro planeta con el que experimentaban dentro del Área 51 y su único entretenimiento era ver anime. Físicamente es un ser humanoide bípedo y verde con una bandana de Naruto en la frente. Su modo de correr se asemeja a la que se usa en dicha serie (que es su favorita).
