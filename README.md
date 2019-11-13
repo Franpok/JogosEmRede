@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/EG1gAXtWsAExeFq.jpg">
+  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/RACE%2051%20v1.0/resources/LOGO.png">
 </p>
 <p align="center">
   <img width="460" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Logo Grupo B.png">
