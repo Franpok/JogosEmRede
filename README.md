@@ -1,8 +1,8 @@
 <p align="center">
-  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/EG1gAXtWsAExeFq.jpg">
+  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/RACE%2051%20v1.0/resources/LOGO.png">
 </p>
 <p align="center">
-  <img width="460" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/LOGO.png">
+  <img width="460" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Logo Grupo B.png">
 </p>
 
 # Índice
@@ -36,6 +36,8 @@
 #### 4.5 Juego
 #### 4.6 Puntuaciones
 #### 4.7 Tutorial
+## 5. Actualizaciones
+#### 5.1 v1.0 (Fase 2)
 
 # 1. Introducción
 Este es el documento de diseño de Race 51. El videojuego para PC que cumple todos los requisitos pedidos en la asignatura Juegos en Red. Este documento tiene como objetivo principal detallar y explicar los elementos de Race 51.
@@ -74,10 +76,7 @@ El objetivo principal es desarrollar un juego en el que cualquiera pueda conecta
 
 #### 1.8 Juegos en los que nos inspiramos
 Nuestra principal inspiración es el juego de Google Chrome cuando no tenemos conexión a Internet.
-<p align="left">
-  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/ejemplo1.png">
-  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/ejemplo2.png">
-</p>
+
 
 # 2. Mecánicas
 En esta sección de nuestro GDD vamos a tratar uno de los temas fundamentales en la creación de este juego: las mecánicas. Explicaremos:
@@ -96,8 +95,6 @@ La condición de victoria es bastante simple. El último participante que acabe 
 
 #### 2.4 Personajes
 Todos los personajes cuentan con los mismo stats base, para que empezar con uno u otro sea justo. Para variar la jugabilidad, cada uno contará con un “power-up” distintivo.
-
-<img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/6c94b600-e3d2-4ba7-88a3-468057a0e27f.jpg">
 
 ###### 2.4.1 Alienígena
 Ser de otro planeta con el que experimentaban dentro del Área 51 y su único entretenimiento era ver anime. Físicamente es un ser humanoide bípedo y verde con una bandana de Naruto en la frente. Su modo de correr se asemeja a la que se usa en dicha serie (que es su favorita).
@@ -137,8 +134,8 @@ La inspiración para la estética del juego es el área 51, de manera que utiliz
 
 Para el estilo artístico, nos inspiramos en juegos como Untitled Goose Game y Super Paper Mario, que comparten aspectos similares a los que queremos incorporar.
 <p align="left">
-  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/Ejemplo%20Untitled%20Goose%20Game.jpg">
-  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/Ejemplo%20Paper%20Mario.jpg">
+  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Ejemplo%20Untitled%20Goose%20Game.jpg">
+  <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Ejemplo%20Paper%20Mario.jpg">
 </p>
 La interfaz se compondrá exclusivamente por iconos con aspecto de señales, intentando emular las señales de peligro y de prohibición de entrada del área 51.
 
@@ -148,18 +145,18 @@ En esta sección se detallarán las pantallas que componen Race 51, las transici
 #### 4.1 Diagrama de flujo
 El siguiente diagrama de estados muestra las pantallas presentes a lo largo de Race 51 así como las transiciones entre ellas. Más adelante nos centraremos en cada una individualmente.
 <p align="left">
-  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/diagrama%20flujo%20op2.png">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/diagrama%20flujo%20op2.png">
 </p>
 
 #### 4.2 Pantalla de inicio
 <p align="left">
-  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/inicio.png">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/inicio.png">
 </p>
 La pantalla de inicio es sencilla y se compone únicamente del logo del juego y un botón *Empezar*, sobre un fondo que será el mismo para todos los menús. Hacer click en el botón *Empezar* enviará al usuario directamente al menú principal.
 
 #### 4.3 Menú principal
 <p align="left">
-  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/menu%20principal.png">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/menu%20principal.png">
 </p>
 Lista y descripción de los componentes:
 - **Botón *Jugar*:** envía al usuario a la pantalla de selección de personajes.
@@ -169,14 +166,14 @@ Esta pantalla tendrá el  mismo fondo que la pantalla de inicio y será como una
 
 #### 4.4 Selección de personajes
 <p align="left">
-  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/seleccion%20pj%201.png">
-  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/seleccion%20pj%202.png">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/seleccion%20pj%201.png">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/seleccion%20pj%202.png">
 </p>
 En esta pantalla se presentarán 4 botones para que cada uno de los jugadores conectados seleccione uno de los cuatro personajes jugables. Una vez el usuario haya seleccionado su personaje, aparecerá en pantalla un botón “Listo” para confirmar la selección. Se enviará a todos los personajes a la pantalla de juego  una vez todos hayan pulsado dicho botón.
 
 #### 4.5 Juego
 <p align="left">
-  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/juego.png">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/juego.png">
 </p>
 Lista y descripción de los componentes:
 - 4 tracks sobre los cuales los personajes se moverán.
@@ -186,12 +183,34 @@ Lista y descripción de los componentes:
 
 #### 4.6 Puntuaciones
 <p align="left">
-  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/puntuaciones.png">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/puntuaciones.png">
 </p>
 En esta pantalla se mostrarán cuatro rectángulos en los que se mostrará la puntuación de cada uno de los personajes y, según ésta, cómo han quedado respecto al resto de jugadores. También se incluirá un botón *Salir* o *Volver*, que al pulsarse devolverá al jugador al menú principal, así como un botón *Jugar de nuevo* que devolverá a la pantalla de selección de personajes.
 
 #### 4.7 Tutorial
 <p align="left">
-  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/tutorial.png">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/tutorial.png">
 </p>
 Se tratará de un nivel local de un jugador, en el que se controla a un personaje por defecto, y se muestran por pantalla 3 señales que indican los controles (*Saltar* con *w* o la flecha hacia arriba; *Agacharse* con *s* o la flecha hacia abajo; y *Power-Up* con la tecla Shift).
+
+# 5. Actualizaciones
+
+#### 5.1 v1.0 (Fase 2)
+En esta fase hemos asentado las bases de nuestro juego, "Race 51". Hemos utilizado Phaser3, además, SourceTree para el manejo de versiones.
+ ###### 5.1.1 Arte
+  Hemos partido de 0 para crear nuestros assets, ya que todos han sido creados por nuestro artista principal. Incluimos personajes, trampas, escenarios, botones, etc.
+ ###### 5.1.2 Música
+  La música y los efectos sonoros son "royalty-free", los cuales han sido obtenidos de la página we: https://freesound.org
+ ###### 5.1.3 Programación y gameplay
+ El principal esqueleto de nuestro juego lo hemos obtenido de: https://www.emanueleferonato.com.
+ El juego crea una serie de plataformas que se van reciclando una vez salen de escena y se mueven hacia el personaje, creando la ilusión de movimiento del personaje cuando, en realidad, quienes se mueven son las plataformas.
+ Encima de las plataformas hemos creado trampas, que se generan de forma totalmente aleatoria. Esta característica debe ser retocada ya que la aleatoriedad a veces hace que no haya plataformas en un gran espacio de tiempo o haya 2 seguidas imposibles de saltar.
+ También, disponemos de un power-up que nos aumentará la vida en 1 al tocarlo.
+ ###### 5.1.4 Interfaz
+  La pantalla de inicio contará con un botón para jugar e ir directamente al juego, un botón para ver los créditos del proyecto y una imagen que nos explicará los controles del juego.
+  El juego tiene un menú de pausa el cual nos invita a volver a la pantalla principal del juego o seguir jugando, la elección está en el jugador. 
+  También, dependiendo de quien gane, nos llevará a una pantalla donde te indica el ganador del juego, con un botón para volver al menú principal.
+ 
+ # 6. Aspectos en el tintero
+ #### 6.1 Fase 2 (Race51 v1.0)
+  
