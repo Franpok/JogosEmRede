@@ -257,23 +257,21 @@ A continuación, hemos incluido capturas de pantalla del juego, para poder aprec
 Durante la presentación de clase, surgieron una serie de detalles a mejorar proporcionados por los profesores y que intentaremos solucionar para antes de la entrega de la siguiente fase. Además, nosotros también queremos introducir nuevos elementos a nuestro juego. En los siguientes apartados enumeraremos estos:
 
 ###### 6.1.2 A mejorar de las críticas
-- Cambiar las mayúsculas de los botones.
-- Cambiar el idioma de todos los textos a español.
-- Cambiar cómo se muestran las vidas.
+- Cambiar las mayúsculas de los botones por mayúsculas y minúsculas.
+- Cambiar el idioma de todos los textos a español para que el idioma sea consistente.
+- Cambiar cómo se muestran las vidas, de texto a sprites.
 - SFX para las muertes y los powerups.
-- Faltas de ortografía.
+- Faltas de ortografía corregidas (sí del pause).
 - Escena propia para los controles.
-- Cambiar el color rojo de los textos.
-- Hacer el juego más complejo.
-- Solucionar bug música y dobles pinchos.
+- Cambiar el color rojo de los textos a uno menos agresivo.
+- Hacer el juego más complejo en mecánicas.
+- Solucionar bug de música y dobles pinchos.
 
 ###### 6.1.3 A mejorar propio
 - SFX propio.
-- Easter Egg con todos.
-- Parar música Easter Egg.
 - Añadir más sprites.
 - Selección de personaje.
-- Tutorial.
+- Tutorial Room.
 - Mejorar spawn trampas.
 - Más powerups.
 - Mejorar el sonido de la pausa.
