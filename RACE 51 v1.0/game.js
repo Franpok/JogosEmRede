@@ -66,7 +66,7 @@ class playGame extends Phaser.Scene {
         this.load.image("track", "resources/track.png");
         this.load.spritesheet('alien', "resources/alien.png", { frameWidth: 56, frameHeight: 100 });
         this.load.spritesheet('alien2', "resources/alien2.png", { frameWidth: 56, frameHeight: 100 });
-        this.load.image("powerup", "resources/star.png");
+        this.load.image("powerup", "resources/powerUp.png");
         this.load.image("obstaculo", "resources/pinchos.png");
         this.load.audio("fondo", ["resources/MusicaJuego.mp3"]);
         this.load.audio("daño", ["resources/Alien.mp3"]);
