@@ -38,6 +38,13 @@
 #### 4.7 Tutorial
 ## 5. Actualizaciones
 #### 5.1 v1.0 (Fase 2)
+###### 5.1.1 Arte
+###### 5.1.2 Música
+###### 5.1.3 Programación y gameplay
+###### 5.1.4 Interfaz
+###### 5.1.5 Capturas de pantalla
+## 6. Aspectos en el tintero
+#### 6.1 Fase 2 (Race 51 v1.0)
 
 # 1. Introducción
 Este es el documento de diseño de Race 51. El videojuego para PC que cumple todos los requisitos pedidos en la asignatura Juegos en Red. Este documento tiene como objetivo principal detallar y explicar los elementos de Race 51.
@@ -197,20 +204,76 @@ Se tratará de un nivel local de un jugador, en el que se controla a un personaj
 
 #### 5.1 v1.0 (Fase 2)
 En esta fase hemos asentado las bases de nuestro juego, "Race 51". Hemos utilizado Phaser3, además, SourceTree para el manejo de versiones.
- ###### 5.1.1 Arte
-  Hemos partido de 0 para crear nuestros assets, ya que todos han sido creados por nuestro artista principal. Incluimos personajes, trampas, escenarios, botones, etc.
- ###### 5.1.2 Música
-  La música y los efectos sonoros son "royalty-free", los cuales han sido obtenidos de la página we: https://freesound.org
- ###### 5.1.3 Programación y gameplay
- El principal esqueleto de nuestro juego lo hemos obtenido de: https://www.emanueleferonato.com.
- El juego crea una serie de plataformas que se van reciclando una vez salen de escena y se mueven hacia el personaje, creando la ilusión de movimiento del personaje cuando, en realidad, quienes se mueven son las plataformas.
- Encima de las plataformas hemos creado trampas, que se generan de forma totalmente aleatoria. Esta característica debe ser retocada ya que la aleatoriedad a veces hace que no haya plataformas en un gran espacio de tiempo o haya 2 seguidas imposibles de saltar.
- También, disponemos de un power-up que nos aumentará la vida en 1 al tocarlo.
- ###### 5.1.4 Interfaz
-  La pantalla de inicio contará con un botón para jugar e ir directamente al juego, un botón para ver los créditos del proyecto y una imagen que nos explicará los controles del juego.
-  El juego tiene un menú de pausa el cual nos invita a volver a la pantalla principal del juego o seguir jugando, la elección está en el jugador. 
-  También, dependiendo de quien gane, nos llevará a una pantalla donde te indica el ganador del juego, con un botón para volver al menú principal.
- 
- # 6. Aspectos en el tintero
- #### 6.1 Fase 2 (Race51 v1.0)
-  
+
+###### 5.1.1 Arte
+Hemos partido de 0 para crear nuestros assets, ya que todos han sido creados por nuestro artista principal. Incluimos personajes, trampas, escenarios, botones, etc.
+
+###### 5.1.2 Música
+La música y los efectos sonoros son "royalty-free", los cuales han sido obtenidos de la página we: https://freesound.org
+
+###### 5.1.3 Programación y gameplay
+El principal esqueleto de nuestro juego lo hemos obtenido de: https://www.emanueleferonato.com.
+El juego crea una serie de plataformas que se van reciclando una vez salen de escena y se mueven hacia el personaje, creando la ilusión de movimiento del personaje cuando, en realidad, quienes se mueven son las plataformas.
+Encima de las plataformas hemos creado trampas, que se generan de forma totalmente aleatoria. Esta característica debe ser retocada ya que la aleatoriedad a veces hace que no haya plataformas en un gran espacio de tiempo o haya 2 seguidas imposibles de saltar.
+También, disponemos de un power-up que nos aumentará la vida en 1 al tocarlo.
+
+###### 5.1.4 Interfaz
+La pantalla de inicio contará con un botón para jugar e ir directamente al juego, un botón para ver los créditos del proyecto y una imagen que nos explicará los controles del juego.
+El juego tiene un menú de pausa el cual nos invita a volver a la pantalla principal del juego o seguir jugando, la elección está en el jugador. 
+También, dependiendo de quien gane, nos llevará a una pantalla donde te indica el ganador del juego, con un botón para volver al menú principal.
+
+###### 5.1.5 Capturas de pantalla
+A continuación, hemos incluido capturas de pantalla del juego, para poder apreciar el progreso entre fases:
+
+**Menú principal**
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/pantallaInicio.png">
+</p>
+
+**Juego**
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/pantallaJuego.png">
+</p>
+
+**Menú de pausa**
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/pantallaPausa.png">
+</p>
+
+**Gana J1 o J2**
+<p align="center">
+  <img width="400" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/pantallaJ1Gana.png">
+  <img width="400" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/pantallaJ2Gana.png">
+</p>
+
+**Créditos**
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/pantallaCreditos.png">
+</p>
+
+# 6. Aspectos en el tintero
+
+#### 6.1 Fase 2 (Race51 v1.0)
+Durante la presentación de clase, surgieron una serie de detalles a mejorar proporcionados por los profesores y que intentaremos solucionar para antes de la entrega de la siguiente fase. Además, nosotros también queremos introducir nuevos elementos a nuestro juego. En los siguientes apartados enumeraremos estos:
+
+###### 6.1.2 A mejorar de las críticas
+- Cambiar las mayúsculas de los botones.
+- Cambiar el idioma de todos los textos a español.
+- Cambiar cómo se muestran las vidas.
+- SFX para las muertes y los powerups.
+- Faltas de ortografía.
+- Escena propia para los controles.
+- Cambiar el color rojo de los textos.
+- Hacer el juego más complejo.
+- Solucionar bug música y dobles pinchos.
+
+###### 6.1.3 A mejorar propio
+- SFX propio.
+- Easter Egg con todos.
+- Parar música Easter Egg.
+- Añadir más sprites.
+- Selección de personaje.
+- Tutorial.
+- Mejorar spawn trampas.
+- Más powerups.
+- Mejorar el sonido de la pausa.
