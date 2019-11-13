@@ -275,3 +275,4 @@ Durante la presentación de clase, surgieron una serie de detalles a mejorar pro
 - Mejorar spawn trampas.
 - Más powerups.
 - Mejorar el sonido de la pausa.
+- Error menú de pausa y vidas
