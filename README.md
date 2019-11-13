@@ -2,7 +2,7 @@
   <img width="300" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/EG1gAXtWsAExeFq.jpg">
 </p>
 <p align="center">
-  <img width="460" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES/LOGO.png">
+  <img width="460" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/LOGO.png">
 </p>
 
 # Índice
