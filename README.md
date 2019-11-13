@@ -196,10 +196,21 @@ Se tratará de un nivel local de un jugador, en el que se controla a un personaj
 # 5. Actualizaciones
 
 #### 5.1 v1.0 (Fase 2)
-En la realización de esta fase, hemos hecho:
-- Hemos creado nuestros propios assets para el juego (personajes, trampas, escenarios, botones...).
-- La música y los efectos sonoros son royalty-free y los hemos obtenido de: https://freesound.org.
-- El principal esqueleto de nuestro juego lo hemos obtenido de: https://www.emanueleferonato.com
-- El juego crea una serie de plataformas de manera aleatoria y se mueven hacia el personaje, creando la ilusión de que el personaje es realmente el que se está moviendo.
-- Por motivos estéticos, las plataformas son invisibles, pero gracias al fondo se puede ver como va el personaje.
-- Encima de las plataformas hemos creado trampas, que se generan de forma aleatoria. Esta característica debe ser retocada
+En esta fase hemos asentado las bases de nuestro juego, "Race 51". Hemos utilizado Phaser3, además, SourceTree para el manejo de versiones.
+ ###### 5.1.1 Arte
+  Hemos partido de 0 para crear nuestros assets, ya que todos han sido creados por nuestro artista principal. Incluimos personajes, trampas, escenarios, botones, etc.
+ ###### 5.1.2 Música
+  La música y los efectos sonoros son "royalty-free", los cuales han sido obtenidos de la página we: https://freesound.org
+ ###### 5.1.3 Programación y gameplay
+ El principal esqueleto de nuestro juego lo hemos obtenido de: https://www.emanueleferonato.com.
+ El juego crea una serie de plataformas que se van reciclando una vez salen de escena y se mueven hacia el personaje, creando la ilusión de movimiento del personaje cuando, en realidad, quienes se mueven son las plataformas.
+ Encima de las plataformas hemos creado trampas, que se generan de forma totalmente aleatoria. Esta característica debe ser retocada ya que la aleatoriedad a veces hace que no haya plataformas en un gran espacio de tiempo o haya 2 seguidas imposibles de saltar.
+ También, disponemos de un power-up que nos aumentará la vida en 1 al tocarlo.
+ ###### 5.1.4 Interfaz
+  La pantalla de inicio contará con un botón para jugar e ir directamente al juego, un botón para ver los créditos del proyecto y una imagen que nos explicará los controles del juego.
+  El juego tiene un menú de pausa el cual nos invita a volver a la pantalla principal del juego o seguir jugando, la elección está en el jugador. 
+  También, dependiendo de quien gane, nos llevará a una pantalla donde te indica el ganador del juego, con un botón para volver al menú principal.
+ 
+ # 6. Aspectos en el tintero
+ #### 6.1 Fase 2 (Race51 v1.0)
+  
