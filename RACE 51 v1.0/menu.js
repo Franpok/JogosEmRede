@@ -7,9 +7,10 @@ class menu extends Phaser.Scene {
       this.load.audio("sound", ["resources/MusicaMenu.mp3"]);
       this.load.image("jugar", "resources/jugar.png");
       this.load.image("jugarP", "resources/jugarPulsado.png");
+      this.load.image("controles", "resources/bcontroles.png");
+      this.load.image("controlesP", "resources/bcontrolesPulsado.png");
       this.load.image("creditos", "resources/creditos.png");
       this.load.image("creditosP", "resources/creditosPulsado.png");
-      this.load.image("controles", "resources/controles.png")
       this.load.image("logo", " resources/LOGO.png")
       this.load.image("fondo", "resources/fondoMenu.png")
     }
@@ -21,24 +22,30 @@ class menu extends Phaser.Scene {
         sonido.loop = true;
         sonido.play();
     
-        this.clickButton = this.add.image(300, 350, 'jugar' )
+        this.clickButton = this.add.image(550, 475, 'jugar' )
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("PlayGame"))
          .on('pointerdown', () =>  sonido.stop())
-         .on('pointerover', () => this.add.image(300, 350, 'jugarP'  ))
-         .on('pointerout', () => this.add.image(300, 350, 'jugar' ) );
-         
+         .on('pointerover', () => this.add.image(550, 475, 'jugarP'  ).setScale(0.5))
+         .on('pointerout', () => this.add.image(550, 475, 'jugar' ).setScale(0.5) );
+         this.clickButton.setScale(0.5);
 
-         this.clickButton2 = this.add.image(300, 550, 'creditos' )
+         this.clickButton2 = this.add.image(550, 550, 'creditos' )
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("Creditos"))
          .on('pointerdown', () =>  sonido.stop())
-         .on('pointerover', () => this.add.image(300, 550, 'creditosP' ) )
-         .on('pointerout', () => this.add.image(300, 550, 'creditos' ) );
-         var controles =this.add.image(750,450, 'controles');
-         controles.setScale(.6);
-         var logo  = this.add.image(550,125, 'logo');
-         logo.setScale(.25);
+         .on('pointerover', () => this.add.image(550, 550, 'creditosP' ).setScale(0.5) )
+         .on('pointerout', () => this.add.image(550, 550, 'creditos' ).setScale(0.5) );
+         this.clickButton2.setScale(0.5);
+         this.clickButton3 = this.add.image(550, 625, 'controles' )
+         .setInteractive()
+         .on('pointerdown', () =>  this.scene.start("Controles"))
+         .on('pointerdown', () =>  sonido.stop())
+         .on('pointerover', () => this.add.image(550, 625, 'controlesP' ).setScale(0.5) )
+         .on('pointerout', () => this.add.image(550, 625, 'controles' ).setScale(0.5) );
+         this.clickButton3.setScale(0.5);
+         var logo  = this.add.image(550,225, 'logo');
+         logo.setScale(.4);
     
        // this.updateClickCountText(clickCount);
       }

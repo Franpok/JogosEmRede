@@ -9,7 +9,7 @@ class muerto extends Phaser.Scene {
     }
     create(){
         var fondo = this.add.image(540,360,'fondo');
-   var resultado = this.add.image(540,360, "estasmuertachacha2")
+   var resultado = this.add.image(540,260, "estasmuertachacha2")
     
     var back = this.add.image(180, 600, 'back')
     back.setScale(0.5);
