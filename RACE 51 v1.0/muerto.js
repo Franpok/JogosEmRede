@@ -5,7 +5,7 @@ class muerto extends Phaser.Scene {
     preload(){
         this.load.image("back", "resources/back.png")
         this.load.image("fondo", "resources/fondoMenu.png")
-        this.load.image("estasmuertachacha2", "resources/j2gana.png")
+        this.load.image("estasmuertachacha2", "resources/j2ganaALT.png")
     }
     create(){
         var fondo = this.add.image(540,360,'fondo');

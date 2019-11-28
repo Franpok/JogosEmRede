@@ -4,7 +4,7 @@ class controles extends Phaser.Scene {
     }
     
     preload(){
-      this.load.image("controls", "resources/controles.png")
+      this.load.image("controls", "resources/controlesALT.png")
       this.load.image("fondo", "resources/fondoMenu.png")
       this.load.image("back", "resources/back.png");
     }
