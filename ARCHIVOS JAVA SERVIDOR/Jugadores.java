@@ -33,7 +33,7 @@ public class Jugadores {
 		return hora;
 	}
 
-	public void setHora(LocalDateTime hora) {
+	public void setHora(Boolean hora) {
 		this.hora = LocalDateTime.now();
 		this.hora.toString();
 	}
@@ -42,7 +42,7 @@ public class Jugadores {
 		return ultConexion;
 	}
 
-	public void setultConexion(LocalDateTime ultConexion) {
+	public void setultConexion(Boolean ultConexion) {
 		this.ultConexion = LocalDateTime.now();
 		this.ultConexion.toString();
 	}
