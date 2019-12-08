@@ -18,44 +18,56 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.*;
 @RestController
 @RequestMapping("/jugadores")
 public class JugadoresController {
 
-	Map<Long, Jugadores> items = new ConcurrentHashMap<>(); 
+	/*@Autowired
+	private Jugadores player;*/
+	Map<Long, Jugadores> jugadores = new ConcurrentHashMap<>(); 
 	AtomicLong nextId = new AtomicLong(0);
-	int [] myNumero  = new int [10];
-	int size = 0;
 	
 	@GetMapping
-	public int items() {
-		int miNumero = 0;
-		for (int i = 0; i<size; i++ ) {
-			return miNumero = myNumero[i];
-		}
-		return miNumero;
+	public Collection<Jugadores> misJugadores() {
+		System.out.println (jugadores.values());
+		return jugadores.values();
+		//("{id: "+ jugadores.getNombre()+ " nombre: "+ jugadores.getId()+ " hora: "+ jugadores.values()getHora());
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public int nuevoJugador(@RequestBody int item) {
-
-		myNumero[size] = item;
-		size ++;
+	/*public Jugador crearJugador(@RequestBody String nombre) {		
+		Jugador jugador = new Jugador(ids.incrementAndGet(), nombre);
+		jugadores.put( jugador.getId() , jugador );
+		System.err.println("postmapping");
 		
+		return jugador;
+	}*/
+	
+	
+	
+	public Jugadores nuevoJugador(@RequestBody Jugadores jugador) {
+
+		long id = nextId.incrementAndGet();
+		LocalTime hora= LocalTime.now();
+		jugador.setId(id);
+		//jugador.setHora(hora);
+		
+		jugadores.put(id, jugador);
 		
 
-		return item;
+		return jugador;
 	}
-
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<Jugadores> actulizaItem(@PathVariable long id, @RequestBody Jugadores itemActualizado) {
 
-		Jugadores savedItem = items.get(itemActualizado.getId());
+		Jugadores savedItem = jugadores.get(itemActualizado.getId());
 
 		if (savedItem != null) {
 
-			items.put(id, itemActualizado);
+			jugadores.put(id, itemActualizado);
 
 			return new ResponseEntity<>(itemActualizado, HttpStatus.OK);
 		} else {
@@ -66,7 +78,7 @@ public class JugadoresController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Jugadores> getItem(@PathVariable long id) {
 
-		Jugadores savedItem = items.get(id);
+		Jugadores savedItem = jugadores.get(id);
 
 		if (savedItem != null) {
 			return new ResponseEntity<>(savedItem, HttpStatus.OK);
@@ -78,10 +90,10 @@ public class JugadoresController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Jugadores> borraItem(@PathVariable long id) {
 
-		Jugadores savedItem = items.get(id);
+		Jugadores savedItem = jugadores.get(id);
 
 		if (savedItem != null) {
-			items.remove(savedItem.getId());
+			jugadores.remove(savedItem.getId());
 			return new ResponseEntity<>(savedItem, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

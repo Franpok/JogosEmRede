@@ -25,7 +25,7 @@ window.onload = function () {
         type: Phaser.AUTO,
         width: 1080,
         height: 720,
-        scene: [menu, creditos, muerto, playGame, salir, muerto2, controles],
+        scene: [primera, menu, creditos, muerto, playGame, salir, muerto2, controles],
         backgroundColor: 0x444444,
 
         // physics settings

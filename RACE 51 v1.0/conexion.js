@@ -1,41 +1,50 @@
-function jugadoresConectados(/*callback*/) {
+function Pet_jugadoresConectados() {
     $.ajax({
         url: 'http://localhost:8080/jugadores'
     }).done(function (jugadores) {
-        console.log('Numero: ' + JSON.stringify(jugadores));
-        //callback(jugadores);
+        for (var i = 0; i < jugadores.length; i++) {
+            mostrarJugadores(jugadores[i]);
+        }
+        return i;
+    }).fail(function(){
+        console.log("Lamentablemente, tenemos que informarle de que no se ha podido hacer su increible petición GET, por lo que revise su conexión o pregunte al dueño del server si está encendido JAJA xD")
+        return 0;
     })
 }
 
 //Create item in server
-function añadirJugador(item /*callback*/) {
+function Pet_añadirJugador(jugador /*callback*/) {
+    
+    console.log(jugador.nombre)
     $.ajax({
         method: "POST",
         url: 'http://localhost:8080/jugadores',
-        data: JSON.stringify(item),
+        data: JSON.stringify(jugador),
         processData: false,
         headers: {
             "Content-Type": "application/json"
         }
     }).done(function (jugadores) {
-        console.log("Número creado: " + JSON.stringify(jugadores));
+        console.log("Jugador creado: " + JSON.stringify(jugadores));
         //callback(item);
+    }).fail(function(){
+        console.log("Lamentablemente, tenemos que informarle de que no se ha podido llevar a cabo su increible petición POST, por lo que revise su conexión o pregunte al dueño del server si está encendido JAJA xD")
+
     })
 }
 
-$(document).ready(function () {
+function mostrarJugadores(jugadores) {
 
-    jugadoresConectados(function (items) {
-        //When items are loaded from server
-        console.log("HE entrado XD")
-    });
     
-    var item = 69;
-        
-    var hola = true;
+    console.log ("id: " + jugadores.id +" nombre: "+ jugadores.nombre + " hora: " + jugadores.hora+ " ultimaConexion :"+ jugadores.ultConexion);
+   
+     
+}
 
-    añadirJugador(item, function (itemWithId) {
-        //When item with id is returned from server
-       // showItem(itemWithId);
-    });
-})
+
+$(document).ready(function () {
+        
+	
+	
+        
+}) 
