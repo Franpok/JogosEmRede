@@ -251,6 +251,22 @@ A continuación, hemos incluido capturas de pantalla del juego, para poder aprec
   <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/pantallaCreditos.png">
 </p>
 
+
+#### 5.2 v1.0 (Fase 3)
+En esta fase hemos implementado una ApiRest básica que permite no solo crear una conexión en local cliente servidor sino que aparte tenemos 4 peticiones (Get,Post,Put y Delete) que usamos principalmente para manejar los jugadores conectados simultáneamente en el servidor. Así podemos ver cuantos jugadores hay conectados en todo momento. Aparte hemos corregido ciertos fallos mencionados en nuestra anterior fase.
+
+###### 5.2.1 Arte
+Hemos unificado todo el texto a español, cambiamos aquellas palabras y botones que estaban en mayúsculas por minúsculas, corregidas las faltas de ortografía, cambiar el color de algunos textos(que se encontraban en rojo y era muy agresivo para el jugador) y añadido nuevos assets como nuevos botones, texto e imágenes.
+
+###### 5.2.2 Música
+Hemos corregido el fallo de música que se producía al activar el menu pausa y elegir la opción de regresar al menú.
+
+###### 5.2.3 Programación y gameplay
+En cuanto a cosas del juego no hemos tocado nada ya que en esta fase no se requería modificar el juego y tampoco hemos tenido tiempo para añadir funcionalidades nuevas o contenido extra. Sin embargo, hemos añadido nuevas escenas para la gestión de conexión de jugadores y obviamente un nuevo js que gestiona por parte del cliente todas las peticiones ajax al servidor. En spring tool suite, hemos desarrollado la clase y su correspondiente controlador para gestionar las peticiones del cliente y devolverle información relacionada con la conexión de los jugadores.
+
+###### 5.2.4 Interfaz
+Para la interfaz hemos hecho una nueva escena que mientras se conecta el jugador insertando su nombre le da una ambientación de hacker infiltrándose en un sitio confidencial. Aparte hemos añadido en el menú un botón pequeñito para desconectarse.
+
 # 6. Aspectos en el tintero
 
 #### 6.1 Fase 2 (Race51 v1.0)
