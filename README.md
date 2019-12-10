@@ -43,6 +43,11 @@
 ###### 5.1.3 Programación y gameplay
 ###### 5.1.4 Interfaz
 ###### 5.1.5 Capturas de pantalla
+###### 5.2.1 Arte
+###### 5.2.2 Música
+###### 5.2.3 Programación y gameplay
+###### 5.2.4 Interfaz
+###### 5.2.5 Capturas de pantalla
 ## 6. Aspectos en el tintero
 #### 6.1 Fase 2 (Race 51 v1.0)
 
@@ -266,6 +271,8 @@ En cuanto a cosas del juego no hemos tocado nada ya que en esta fase no se reque
 
 ###### 5.2.4 Interfaz
 Para la interfaz hemos hecho una nueva escena que mientras se conecta el jugador insertando su nombre le da una ambientación de hacker infiltrándose en un sitio confidencial. Aparte hemos añadido en el menú un botón pequeñito para desconectarse.
+
+###### 5.2.5 Capturas de pantalla
 
 # 6. Aspectos en el tintero
 
