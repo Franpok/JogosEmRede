@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Built-By: Usuario
+Build-Jdk: 11.0.2
+Implementation-Title: rest_ejer1_con_ui
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: es.urjc.code.juegosenred
+Implementation-Vendor: Pivotal Software, Inc.
+Implementation-URL: http://projects.spring.io/spring-boot/items-backend-
+ and-frontend/
+Created-By: Maven Integration for Eclipse
+
