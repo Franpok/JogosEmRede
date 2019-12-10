@@ -11,6 +11,8 @@ class menu extends Phaser.Scene {
       this.load.image("controlesP", "resources/bcontrolesPulsado.png");
       this.load.image("creditos", "resources/creditos.png");
       this.load.image("creditosP", "resources/creditosPulsado.png");
+      this.load.image("desconectar", "resources/desconectar.png");
+      this.load.image("desconectarP", "resources/desconectarPulsado.png");
       this.load.image("logo", " resources/LOGO.png")
       this.load.image("fondo", "resources/fondoMenu.png")
     }
@@ -46,6 +48,13 @@ class menu extends Phaser.Scene {
          this.clickButton3.setScale(0.5);
          var logo  = this.add.image(550,225, 'logo');
          logo.setScale(.4);
+         this.clickButtonD = this.add.image(900, 675, 'desconectar' )
+         .setInteractive()
+         .on('pointerdown', () =>  this.scene.start("conexion"))
+         .on('pointerdown', () =>  sonido.stop())
+         .on('pointerover', () => this.add.image(900, 675, 'desconectarP'  ).setScale(0.3))
+         .on('pointerout', () => this.add.image(900, 675, 'desconectar' ).setScale(0.3) );
+         this.clickButtonD.setScale(0.3);
     
        // this.updateClickCountText(clickCount);
       }
