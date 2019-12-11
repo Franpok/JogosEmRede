@@ -15,7 +15,10 @@ function Pet_jugadoresConectados() {
 
 // Create item in server
 function Pet_añadirJugador(jugador /* callback */) {
-	console.log(jugador.nombre)
+	jugador.id = 0;
+	jugador.nombre = '';
+	jugador.hora = '';
+	jugador.ultConexion = '';
 	$.ajax({
 		method : "POST",
 		url : '/jugadores',
