@@ -273,6 +273,21 @@ En cuanto a cosas del juego no hemos tocado nada ya que en esta fase no se reque
 Para la interfaz hemos hecho una nueva escena que mientras se conecta el jugador insertando su nombre le da una ambientación de hacker infiltrándose en un sitio confidencial. Aparte hemos añadido en el menú un botón pequeñito para desconectarse.
 
 ###### 5.2.5 Capturas de pantalla
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/menuPrac3.jpeg">
+</p>
+
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/conexionPrac3.jpeg">
+</p>
+
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/controlesPrac3.jpeg">
+</p>
+
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/pausaPrac3.jpeg">
+</p>
 
 # 6. Aspectos en el tintero
 
