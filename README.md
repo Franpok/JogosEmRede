@@ -278,14 +278,17 @@ Para la interfaz hemos hecho una nueva escena que mientras se conecta el jugador
 <p align="center">
   <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/conexionPrac3.jpeg">
 </p>
+
 **Menú actualizado con desconexión**
 <p align="center">
   <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/menuPrac3.jpeg">
 </p>
+
 **Controles actualizados**
 <p align="center">
   <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/controlesPrac3.jpeg">
 </p>
+
 **Menú de pausa actualizado**
 <p align="center">
   <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/pausaPrac3.jpeg">
