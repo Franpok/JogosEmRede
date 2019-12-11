@@ -1,6 +1,6 @@
 function Pet_jugadoresConectados() {
 	$.ajax({
-		url : 'http://localhost:8080/jugadores'
+		url : '/jugadores'
 	}).done(function(jugadores) {
 		for (var i = 0; i < jugadores.length; i++) {
 			mostrarJugadores(jugadores[i]);
@@ -18,7 +18,7 @@ function Pet_añadirJugador(jugador /* callback */) {
 	console.log(jugador.nombre)
 	$.ajax({
 		method : "POST",
-		url : 'http://localhost:8080/jugadores',
+		url : '/jugadores',
 		data : JSON.stringify(jugador),
 		processData : false,
 		headers : {
