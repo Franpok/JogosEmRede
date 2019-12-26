@@ -27,12 +27,12 @@ class primera extends Phaser.Scene {
          this.player.setGravityY(0);
  
          this.anims.create({
-          key: 'r1',
+          key: 'carga',
           frameRate: 8,
           frames: this.anims.generateFrameNumbers('animacion', { start: 0, end: 7 }),
           repeat: -1
       });
-      this.player.anims.play('r1');
+      this.player.anims.play('carga');
      
 
        // this.updateClickCountText(clickCount);

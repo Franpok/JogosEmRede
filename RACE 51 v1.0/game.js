@@ -45,6 +45,8 @@ var jumping2 = false;
 let sonido;
 let dano;
 let salto;
+let powerUP_sound;
+let death_sound;
 var vidaTextP1;
 var vidaTextP2;
 var tiempo;
@@ -71,6 +73,8 @@ class playGame extends Phaser.Scene {
         this.load.audio("fondo", ["resources/MusicaJuego.mp3"]);
         this.load.audio("daño", ["resources/Alien.mp3"]);
         this.load.audio("jump", ["resources/Jump.mp3"]);
+        this.load.audio("powerUp", ["resources/Sonido_PowerUp.wav"]);
+        this.load.audio("deathSound", ["resources/Death.wav"]);
     }
 
     create() {
@@ -78,6 +82,8 @@ class playGame extends Phaser.Scene {
         sonido = this.sound.add("fondo");
         dano = this.sound.add("daño");
         salto = this.sound.add("jump");
+        powerUP_sound = this.sound.add("powerUp");
+        death_sound = this.sound.add("deathSound");
         sonido.loop = true;
         dano.loop = false;
         salto.loop = false;
@@ -220,6 +226,7 @@ class playGame extends Phaser.Scene {
                     vidaAnt1 = gameOptions.vidas1;
                 }
             });
+            powerUP_sound.play();
         }, null, this);
 
         //COLISION JUGADOR2 POWERUP
@@ -244,10 +251,20 @@ class playGame extends Phaser.Scene {
                     vidaAnt2 = gameOptions.vidas2;
                 }
             });
-
+            powerUP_sound.play();
         }, null, this);
 
+        function morirse(player){
+            
+        }
 
+        /*var timer = this.time.delayedCall({
+            delay: 500,                // ms
+            callback: morirse(this.player),
+            //args: [],
+            callbackScope: thisArg,
+            
+        }); */
         // COLISION JUGADOR1 OBSTACULO
         this.physics.add.overlap(this.player, this.obstaculoGroup, function (player, obstaculo) {
             if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
@@ -258,15 +275,18 @@ class playGame extends Phaser.Scene {
                 vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
                 dano.play();
             } else { // Si ya no tiene vidas, cambia de estado a muerto
-
-                this.dying = true;
-                this.player.visible = false;
-                //this.player.body.setVelocityX(-200);
-                this.physics.world.removeCollider(this.platformCollider);
+                gameOptions.vidas1=0;
+                vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
+                    this.dying = true;
+                    this.player.visible = false;
+                    death_sound.play();
+                    this.player.body.setVelocityX(-200);
+                    this.physics.world.removeCollider(this.platformCollider);
+                
             }
         }, null, this);
 
-
+        
         // COLISION JUGADOR2 OBSTACULO
         this.physics.add.overlap(this.player2, this.obstaculoGroup, function (player2, obstaculo) {
             if (gameOptions.vidas2 > 1) {
@@ -277,11 +297,14 @@ class playGame extends Phaser.Scene {
                 vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
                 dano.play();
             } else {
-
+                gameOptions.vidas2=0;
+                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
                 this.dying2 = true;
-                this.player.visible = false;
-                //this.player2.body.setVelocityx(-200);
-                this.physics.world.removeCollider(this.platformCollider2);
+                this.player2.visible = false;
+                death_sound.play();
+                this.player2.body.setVelocityX(-200);
+                    this.physics.world.removeCollider(this.platformCollider2);
+               
             }
         }, null, this);
 
@@ -556,29 +579,38 @@ class playGame extends Phaser.Scene {
 
         // FUNCION GAME OVER (CUANDO MUERE ALGUNO DE LOS JUGADORES)
         if (this.dying == true) {
-            this.scene.start("PlayGame");
-            gameOptions.vidas1 = 3;
-            gameOptions.vidas2 = 3;
-            vidaAnt1 = 3;
-            vidaAnt2 = 3;
-            this.dying = false;
-            this.dying2 = false;
-            sonido.mute = true;
-            console.log(gameOptions.vidas);
-            this.scene.start("menuMuerte");
-
+            
+            setTimeout(() => {
+                this.scene.start("PlayGame");
+                gameOptions.vidas1 = 3;
+                gameOptions.vidas2 = 3;
+                vidaAnt1 = 3;
+                vidaAnt2 = 3;
+                this.dying = false;
+                this.dying2 = false;
+                sonido.mute = true;
+                console.log(gameOptions.vidas1);
+            //}, 4000); 
+            //setTimeout(() => {
+                this.scene.start("menuMuerte");
+            },3000);  
         }
         if (this.dying2 == true) {
-            this.scene.start("PlayGame");
-            gameOptions.vidas1 = 3;
-            gameOptions.vidas2 = 3;
-            vidaAnt1 = 3;
-            vidaAnt2 = 3;
-            this.dying = false;
-            this.dying2 = false;
-            sonido.mute = true;
-            console.log(gameOptions.vidas);
-            this.scene.start("menuMuerte2");
+            
+            setTimeout(() => {
+                this.scene.start("PlayGame");
+                gameOptions.vidas1 = 3;
+                gameOptions.vidas2 = 3;
+                vidaAnt1 = 3;
+                vidaAnt2 = 3;
+                this.dying = false;
+                this.dying2 = false;
+                sonido.mute = true;
+                console.log(gameOptions.vidas2);
+            //}, 4000); 
+            //setTimeout(() => {
+                this.scene.start("menuMuerte2");
+            },3000);   
         }
         this.player.x = gameOptions.playerStartPosition;
         this.player2.x = gameOptions.playerStartPosition;
