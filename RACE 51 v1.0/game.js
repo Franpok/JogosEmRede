@@ -47,12 +47,15 @@ let dano;
 let salto;
 let powerUP_sound;
 let death_sound;
+let pause_sound;
 var vidaTextP1;
 var vidaTextP2;
 var tiempo;
 var tiempoText;
 var vidaAnt1 = 3;
 var vidaAnt2 = 3;
+var timedEvent;
+var porfavorquelamusicasueneunavez;
 
 
 
@@ -75,21 +78,28 @@ class playGame extends Phaser.Scene {
         this.load.audio("jump", ["resources/Jump.mp3"]);
         this.load.audio("powerUp", ["resources/Sonido_PowerUp.wav"]);
         this.load.audio("deathSound", ["resources/Death.wav"]);
+        this.load.audio("sonidoPausa", ["resources/SonidoPausa.wav"]);
+        this.load.image("back", "resources/back.png")
+        this.load.image("estasmuertachacha", "resources/j1ganaALT.png")
+       
     }
-
+    
     create() {
+        
+        porfavorquelamusicasueneunavez=0;
         tiempo = 0;
         sonido = this.sound.add("fondo");
         dano = this.sound.add("daño");
         salto = this.sound.add("jump");
         powerUP_sound = this.sound.add("powerUp");
         death_sound = this.sound.add("deathSound");
+        pause_sound = this.sound.add("sonidoPausa");
         sonido.loop = true;
         dano.loop = false;
         salto.loop = false;
         sonido.mute = true;
         sonido.play();
-
+        
         
         
         // Imagen de fondo
@@ -344,7 +354,10 @@ class playGame extends Phaser.Scene {
 
     //MENU DE PAUSA
     pause() {
+        pause_sound.play();
+        isPaused=true;
         this.scene.launch("salir");
+        sonido.mute=true;
         this.scene.pause();
     }
 
@@ -562,8 +575,12 @@ class playGame extends Phaser.Scene {
 
 
     update() { //FUNCION UPDATE
-
-        sonido.mute = false;
+        console.log("isPaused "+isPaused);
+        if((porfavorquelamusicasueneunavez<=0)&&(isPaused==false)){
+            sonido.mute = false;
+        }
+        
+        
 
 
         // SI SALTA, PARAMOS LA ANIMACIÓN ( SOLO SIRVE PARA REALISMO VISUAL)
@@ -578,39 +595,37 @@ class playGame extends Phaser.Scene {
         }
 
         // FUNCION GAME OVER (CUANDO MUERE ALGUNO DE LOS JUGADORES)
-        if (this.dying == true) {
+        function reiniciarJ1(){
+            porfavorquelamusicasueneunavez++;
+            gameOptions.vidas1 = 3;
+            gameOptions.vidas2 = 3;
+            vidaAnt1 = 3;
+            vidaAnt2 = 3;
+            this.dying = false;
+            this.dying2 = false;
+            sonido.mute = true;
+            console.log(gameOptions.vidas1);
+            this.scene.start("menuMuerte");
             
-            setTimeout(() => {
-                this.scene.start("PlayGame");
-                gameOptions.vidas1 = 3;
-                gameOptions.vidas2 = 3;
-                vidaAnt1 = 3;
-                vidaAnt2 = 3;
-                this.dying = false;
-                this.dying2 = false;
-                sonido.mute = true;
-                console.log(gameOptions.vidas1);
-            //}, 4000); 
-            //setTimeout(() => {
-                this.scene.start("menuMuerte");
-            },3000);  
+        }
+        function reiniciarJ2(){
+            porfavorquelamusicasueneunavez++;
+            gameOptions.vidas1 = 3;
+            gameOptions.vidas2 = 3;
+            vidaAnt1 = 3;
+            vidaAnt2 = 3;
+            this.dying = false;
+            this.dying2 = false;
+            sonido.mute = true;
+            console.log(gameOptions.vidas2);
+            this.scene.start("menuMuerte2");
+            
+        }
+        if (this.dying == true) {
+            timedEvent = this.time.delayedCall(3000, reiniciarJ1, [], this);           
         }
         if (this.dying2 == true) {
-            
-            setTimeout(() => {
-                this.scene.start("PlayGame");
-                gameOptions.vidas1 = 3;
-                gameOptions.vidas2 = 3;
-                vidaAnt1 = 3;
-                vidaAnt2 = 3;
-                this.dying = false;
-                this.dying2 = false;
-                sonido.mute = true;
-                console.log(gameOptions.vidas2);
-            //}, 4000); 
-            //setTimeout(() => {
-                this.scene.start("menuMuerte2");
-            },3000);   
+            timedEvent = this.time.delayedCall(3000, reiniciarJ2, [], this);
         }
         this.player.x = gameOptions.playerStartPosition;
         this.player2.x = gameOptions.playerStartPosition;

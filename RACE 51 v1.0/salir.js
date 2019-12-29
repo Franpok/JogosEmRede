@@ -1,7 +1,9 @@
 class salir extends Phaser.Scene {//Menú de pausa/salir del juego
     constructor() {
         super("salir");
+       
     }
+    
 preload(){
     this.load.image("si", "resources/si.png");
     this.load.image("no", "resources/no.png");
@@ -9,9 +11,12 @@ preload(){
     this.load.image("noP", "resources/noPulsadoALT.png");
     this.load.image("menu", "resources/SALIRALT.png")
     this.load.image("pausa","resources/pausaALT.png")
+    
 }
+
 create (){
     var pausa = this.add.image(100, 100, 'pausa')
+    var paused;
     pausa.setScale(.5);
     this.add.image(540,360,'menu');
     this.clickButton = this.add.image(415, 435, 'si')
@@ -29,6 +34,7 @@ create (){
      .on('pointerdown', () =>  this.scene.resume("PlayGame"))
      .on('pointerover', () => this.add.image(665, 435, 'noP'))
         .on('pointerout', () => this.add.image(665, 435, 'no' ));
-     
+      isPaused=false;
+        
   }
 };
