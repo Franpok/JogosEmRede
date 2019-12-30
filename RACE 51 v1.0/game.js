@@ -264,17 +264,6 @@ class playGame extends Phaser.Scene {
             powerUP_sound.play();
         }, null, this);
 
-        function morirse(player){
-            
-        }
-
-        /*var timer = this.time.delayedCall({
-            delay: 500,                // ms
-            callback: morirse(this.player),
-            //args: [],
-            callbackScope: thisArg,
-            
-        }); */
         // COLISION JUGADOR1 OBSTACULO
         this.physics.add.overlap(this.player, this.obstaculoGroup, function (player, obstaculo) {
             if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
@@ -489,8 +478,7 @@ class playGame extends Phaser.Scene {
                     let obstaculo = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), game.config.height * 0.35, "obstaculo");
                     obstaculo.setImmovable(true);
                     obstaculo.setVelocityX(platform2.body.velocity.x);
-                    obstaculo.setSize(8, 2, true)
-                    //fire.anims.play("burn");
+                    obstaculo.setSize(8, 2, true);
                     obstaculo.setDepth(2);
                     this.obstaculoGroup.add(obstaculo);
                 }
@@ -498,7 +486,50 @@ class playGame extends Phaser.Scene {
         }
 
     }
-
+    /*addObstaculo(posX){
+        if(this.dying){
+            if (Phaser.Math.Between(1, 50) <= gameOptions.obstaculoProbabilidad2) {
+                if (this.obstaculoPool.getLength()) {
+                    let obstaculo = this.obstaculoPool.getFirst();
+                    obstaculo.x = pos;
+                    obstaculo.y = game.config.height * 0.8;
+                    obstaculo.alpha = 1;
+                    obstaculo.active = true;
+                    obstaculo.visible = true;
+                    this.obstaculoPool.remove(obstaculo);
+                }
+                else {
+                    let obstaculo = this.physics.add.sprite(posX, game.config.height * 0.35, "obstaculo");
+                    obstaculo.setImmovable(true);
+                    obstaculo.setVelocityX(gameOptions.platformStartSpeed * -1);
+                    obstaculo.setSize(8, 2, true);
+                    obstaculo.setDepth(2);
+                    this.obstaculoGroup.add(obstaculo);
+                }
+            }
+        }
+        if(this.dying2){
+            if (Phaser.Math.Between(1, 50) <= gameOptions.obstaculoProbabilidad2) {
+                if (this.obstaculoPool.getLength()) {
+                    let obstaculo = this.obstaculoPool.getFirst();
+                    obstaculo.x = pos;
+                    obstaculo.y = game.config.height * 0.35;
+                    obstaculo.alpha = 1;
+                    obstaculo.active = true;
+                    obstaculo.visible = true;
+                    this.obstaculoPool.remove(obstaculo);
+                }
+                else {
+                    let obstaculo = this.physics.add.sprite(posX, game.config.height * 0.35, "obstaculo");
+                    obstaculo.setImmovable(true);
+                    obstaculo.setVelocityX(gameOptions.platformStartSpeed * -1);
+                    obstaculo.setSize(8, 2, true);
+                    obstaculo.setDepth(2);
+                    this.obstaculoGroup.add(obstaculo);
+                }
+            }
+        }
+    }*/
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // NUESTRA FUNCION DE SALTO PARA EL JUGADOR UNO
@@ -509,7 +540,7 @@ class playGame extends Phaser.Scene {
             }
             /*if (this.tengoPowerup) { // PowerUp Doble Salto (NO IMPLEMENTADO)
                 gameOptions.jumps = 2,
-                    gameOptions.duracion = 150
+                gameOptions.duracion = 150
             }
             if (gameOptions.duracion == 0) {
                 this.tengoPowerup == false
@@ -530,7 +561,7 @@ class playGame extends Phaser.Scene {
             }
             /*if (this.tengoPowerup) {
                 gameOptions.jumps = 2,
-                    gameOptions.duracion = 10
+                gameOptions.duracion = 10
             }
             if (gameOptions.duracion == 0) {
                 this.tengoPowerup == false
@@ -575,13 +606,9 @@ class playGame extends Phaser.Scene {
 
 
     update() { //FUNCION UPDATE
-        console.log("isPaused "+isPaused);
         if((porfavorquelamusicasueneunavez<=0)&&(isPaused==false)){
             sonido.mute = false;
         }
-        
-        
-
 
         // SI SALTA, PARAMOS LA ANIMACIÓN ( SOLO SIRVE PARA REALISMO VISUAL)
         if (this.player.body.touching.down && jumping1 == true) {
@@ -656,7 +683,7 @@ class playGame extends Phaser.Scene {
                 this.platformGroup.remove(platform);
             }
         }, this);
-
+        //this.addObstaculo(100);
         // CREACION DE NUEVAS PLATAFORMAS ALEATORIAS (EN TAMAÑO)
         if (minDistance > this.nextPlatformDistance) {
             var nextPlatformWidth = Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
@@ -673,12 +700,6 @@ function resize() { //FUNCION RESIZE
     let windowHeight = window.innerHeight;
     let windowRatio = windowWidth / windowHeight;
     let gameRatio = game.config.width / game.config.height;
-    /*if (windowRatio < gameRatio) {
-        canvas.style.width = windowWidth + "px";
-        canvas.style.height = (windowHeight / gameRatio) + "px";
-    }
-    else {*/
     canvas.style.width = (windowHeight * gameRatio) + "px";
     canvas.style.height = windowHeight + "px";
-    /*}*/
 }
