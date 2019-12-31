@@ -8,12 +8,12 @@ let gameOptions = {
     playerGravity: 900,                 //Gravedad
     jumpForce: 400,                     //Velocidad en y del jugador cuando salta
     playerStartPosition: 200,           //Posición donde comienza el jugador
-    powerupProbabilidad: 3.5,            //Probabilidad powerUp(Jugador 1)
+    powerupProbabilidad: 8,            //Probabilidad powerUp(Jugador 1)
     obstaculoProbabilidad: 30,          //Probabilidad de aparición de obstáculos del jugador 1
-    powerupProbabilidad2: 3.5,           //Probabilidad powerUp(Jugador 2)
+    powerupProbabilidad2: 8,           //Probabilidad powerUp(Jugador 2)
     obstaculoProbabilidad2: 30,         //Probabilidad de aparición de obstáculos del jugador 2
     jumps: 1,                           // He creado un power up de doble salto, así que me creo una variable que me permita controlar el número de saltos que puedo hacer
-    duracion: 150,                     //Una variable duración que me permita controlar el tiempo 
+                  //Una variable duración que me permita controlar el tiempo 
     vidas1: 3,                          //Vidas jugador 1
     vidas2: 3                           //Vidas jugador 2
 }
@@ -56,8 +56,11 @@ var vidaAnt1 = 3;
 var vidaAnt2 = 3;
 var timedEvent;
 var porfavorquelamusicasueneunavez;
-
-
+var decidirPowerUp;
+var saltos1;
+var saltos2;
+var duracion1;
+var duracion2;
 
 class playGame extends Phaser.Scene {
     constructor() {
@@ -85,7 +88,10 @@ class playGame extends Phaser.Scene {
     }
     
     create() {
-        
+        duracion1=0;
+        duracion2=0;
+        saltos1 = 1;
+        saltos2 = 1;
         porfavorquelamusicasueneunavez=0;
         tiempo = 0;
         sonido = this.sound.add("fondo");
@@ -212,15 +218,23 @@ class playGame extends Phaser.Scene {
         this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function () { }, null, this);
         this.platformCollider2 = this.physics.add.collider(this.player2, this.platformGroup, function () { }, null, this);
 
-
+        
         //COLISIÓN JUGADOR1 CON UN POWERUP
         this.physics.add.overlap(this.player, this.powerupGroup, function (player, powerup) {
             this.tengoPowerup == true; //Activamos nuestra variable
-
-            if (vidaAnt1 === gameOptions.vidas1) { // Si las vidas anteriores son iguales a las actuales, se añade una más a las actuales
-                gameOptions.vidas1++;
-                vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
+            
+            switch(decidirPowerUp){
+                case 0:
+                    if (vidaAnt1 === gameOptions.vidas1) { // Si las vidas anteriores son iguales a las actuales, se añade una más a las actuales
+                        gameOptions.vidas1++;
+                        vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
+                    }; 
+                break;
+                    case 1:
+                        duracion1 = 5;
+                        saltos1 = 2;
             }
+            
 
             //Esta función modifica las propiedades de un objeto ya creado, en este caso es la animación que hace que el powerup desaparezca
             this.tweens.add({
@@ -242,10 +256,16 @@ class playGame extends Phaser.Scene {
         //COLISION JUGADOR2 POWERUP
         this.physics.add.overlap(this.player2, this.powerupGroup, function (player2, powerup) {
             this.tengoPowerup == true;
-
-            if (vidaAnt2 === gameOptions.vidas2) {
-                gameOptions.vidas2++;
-                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+            switch(decidirPowerUp){
+                case 0:
+                    if (vidaAnt2 === gameOptions.vidas2) {
+                        gameOptions.vidas2++;
+                        vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                    };
+                break;
+                case 1:
+                    duracion2 = 5;
+                    saltos2 = 2;
             }
 
             this.tweens.add({
@@ -339,6 +359,9 @@ class playGame extends Phaser.Scene {
     updateTimer() {
         tiempo++;
         tiempoText.setText("Tiempo: " + tiempo);
+        duracion1--;
+        duracion2--;
+        decidirPowerUp = Phaser.Math.Between(0,1);
     }
 
     //MENU DE PAUSA
@@ -534,18 +557,10 @@ class playGame extends Phaser.Scene {
 
     // NUESTRA FUNCION DE SALTO PARA EL JUGADOR UNO
     jump() {
-        if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps))) { // SI NO ESTOY MUERTO Y ESTOY TOCANDO EL SUELO o TENGO MAS SALTOS CONSECUTIVOS PUEDO SALTAR
+        if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < saltos1))) { // SI NO ESTOY MUERTO Y ESTOY TOCANDO EL SUELO o TENGO MAS SALTOS CONSECUTIVOS PUEDO SALTAR
             if (this.player.body.touching.down) {
                 this.playerJumps = 0;
             }
-            /*if (this.tengoPowerup) { // PowerUp Doble Salto (NO IMPLEMENTADO)
-                gameOptions.jumps = 2,
-                gameOptions.duracion = 150
-            }
-            if (gameOptions.duracion == 0) {
-                this.tengoPowerup == false
-            }*/
-
             this.player.setVelocityY(gameOptions.jumpForce * -1);
             this.playerJumps++;
             jumping1 = true;
@@ -555,18 +570,10 @@ class playGame extends Phaser.Scene {
     }
 
     jump2() { // PARA EL JUGADOR 2
-        if ((!this.dying2) && (this.player2.body.touching.down || (this.playerJumps > 0 && this.playerJumps < gameOptions.jumps))) {
+        if ((!this.dying2) && (this.player2.body.touching.down || (this.playerJumps > 0 && this.playerJumps < saltos2))) {
             if (this.player2.body.touching.down) {
                 this.playerJumps = 0;
             }
-            /*if (this.tengoPowerup) {
-                gameOptions.jumps = 2,
-                gameOptions.duracion = 10
-            }
-            if (gameOptions.duracion == 0) {
-                this.tengoPowerup == false
-            }*/
-
             this.player2.setVelocityY(gameOptions.jumpForce * -1);
             this.playerJumps++;
             jumping2 = true;
@@ -606,10 +613,17 @@ class playGame extends Phaser.Scene {
 
 
     update() { //FUNCION UPDATE
+
+        if(duracion1<=0){
+            saltos1=1;
+        }
+        if(duracion2<=0){
+            saltos2=1;
+        }
         if((porfavorquelamusicasueneunavez<=0)&&(isPaused==false)){
             sonido.mute = false;
         }
-
+        
         // SI SALTA, PARAMOS LA ANIMACIÓN ( SOLO SIRVE PARA REALISMO VISUAL)
         if (this.player.body.touching.down && jumping1 == true) {
             this.player.anims.play('r1');
@@ -631,7 +645,6 @@ class playGame extends Phaser.Scene {
             this.dying = false;
             this.dying2 = false;
             sonido.mute = true;
-            console.log(gameOptions.vidas1);
             this.scene.start("menuMuerte");
             
         }
@@ -644,7 +657,6 @@ class playGame extends Phaser.Scene {
             this.dying = false;
             this.dying2 = false;
             sonido.mute = true;
-            console.log(gameOptions.vidas2);
             this.scene.start("menuMuerte2");
             
         }
