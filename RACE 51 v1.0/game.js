@@ -25,7 +25,7 @@ window.onload = function () {
         type: Phaser.AUTO,
         width: 1080,
         height: 720,
-        scene: [primera, menu, creditos, muerto, playGame, salir, muerto2, controles],
+        scene: [primera, menu, creditos, muerto, playGame, salir, muerto2, controles, skins],
         backgroundColor: 0x444444,
 
         // physics settings
@@ -74,6 +74,7 @@ class playGame extends Phaser.Scene {
         this.load.image("track", "resources/track.png");
         this.load.spritesheet('alien', "resources/alien.png", { frameWidth: 56, frameHeight: 100 });
         this.load.spritesheet('alien2', "resources/alien2.png", { frameWidth: 56, frameHeight: 100 });
+        this.load.spritesheet('alienDamaged', "resources/alienDano.png", { frameWidth: 111, frameHeight: 100 });
         this.load.image("powerup", "resources/powerUp.png");
         this.load.image("obstaculo", "resources/pinchos.png");
         this.load.audio("fondo", ["resources/MusicaJuego.mp3"]);
@@ -165,7 +166,23 @@ class playGame extends Phaser.Scene {
                 obstaculo.scene.obstaculoGroup.add(obstaculo)
             }
         });
+    /*
+        //Grupo activo drones
+        this.dronGroup = this.add.group({
 
+            removeCallback: function (dron) {
+                dron.scene.dronPool.add(dron)
+            }
+        });
+
+        //Grupo inactivo drones
+        this.dronPool = this.add.group({
+
+            removeCallback: function (dron) {
+                dron.scene.dronGroup.add(dron)
+            }
+        });
+*/
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -182,27 +199,42 @@ class playGame extends Phaser.Scene {
 
         // AÑADIMOS SU ANIMACIÓN
         this.anims.create({
-            key: 'r1',
+            key: skinsArray[0],
             frameRate: 12,
             frames: this.anims.generateFrameNumbers('alien', { start: 0, end: 7 }),
             repeat: -1
         });
 
-        this.player.anims.play('r1');
+        this.anims.create({
+            key: skinsArray[1],
+            frameRate: 12,
+            frames: this.anims.generateFrameNumbers('alien2', { start: 0, end: 7 }),
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'alien1Dano',
+            frameRate: 12,
+            frames: this.anims.generateFrameNumbers('alienDamaged', { start: 0, end: 7 }),
+            repeat: -1
+        });
 
+        switch (skinChosen){
+            case 0:
+                this.player.anims.play(skinsArray[0]);
+                break;
+            case 1:
+                this.player.anims.play(skinsArray[1]);
+                break;
+        }
+        
         // CREAMOS AL JUGADOR 2
         this.player2 = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.31, 'alien2', 0);
         this.player2.setGravityY(gameOptions.playerGravity);
 
         // AÑADIMOS SU ANIMACIÓN
-        this.anims.create({
-            key: 'r2',
-            frameRate: 12,
-            frames: this.anims.generateFrameNumbers('alien2', { start: 0, end: 7 }),
-            repeat: -1
-        });
+        
 
-        this.player2.anims.play('r2');
+        this.player2.anims.play(skinsArray[1]);
 
         //Creamos unas variables para saber si el jugador tiene powerup o esta muerto
         var dying = false;
@@ -289,6 +321,7 @@ class playGame extends Phaser.Scene {
             if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
                 gameOptions.vidas1--;
                 vidaAnt1--;
+                //this.player.anims.play('alien1Dano');
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
                 vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
@@ -304,6 +337,26 @@ class playGame extends Phaser.Scene {
                 
             }
         }, null, this);
+        // COLISION JUGADOR1 DRON
+       /* this.physics.add.overlap(this.player, this.dronGroup, function (player, dron) {
+            if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el dron y le descontamos una vida al jugador
+                gameOptions.vidas1--;
+                vidaAnt1--;
+                this.dronGroup.killAndHide(dron);
+                this.dronGroup.remove(dron);
+                vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
+                dano.play();
+            } else { // Si ya no tiene vidas, cambia de estado a muerto
+                gameOptions.vidas1=0;
+                vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
+                    this.dying = true;
+                    this.player.visible = false;
+                    death_sound.play();
+                    this.player.body.setVelocityX(-200);
+                    this.physics.world.removeCollider(this.platformCollider);
+                
+            }
+        }, null, this);*/
 
         
         // COLISION JUGADOR2 OBSTACULO
@@ -326,6 +379,28 @@ class playGame extends Phaser.Scene {
                
             }
         }, null, this);
+
+        // COLISION JUGADOR2 DRON
+        /*
+        this.physics.add.overlap(this.player2, this.dronGroup, function (player2, dron) {
+            if (gameOptions.vidas2 > 1) {
+                gameOptions.vidas2--;
+                vidaAnt2--;
+                this.obstaculoGroup.killAndHide(dron);
+                this.obstaculoGroup.remove(dron);
+                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                dano.play();
+            } else {
+                gameOptions.vidas2=0;
+                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                this.dying2 = true;
+                this.player2.visible = false;
+                death_sound.play();
+                this.player2.body.setVelocityX(-200);
+                    this.physics.world.removeCollider(this.platformCollider2);
+               
+            }
+        }, null, this);*/
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -435,11 +510,29 @@ class playGame extends Phaser.Scene {
                     obstaculo.setImmovable(true);
                     obstaculo.setVelocityX(platform.body.velocity.x);
                     obstaculo.setSize(8, 2, true);
-                    //fire.anims.play("burn");
                     obstaculo.setDepth(2);
                     this.obstaculoGroup.add(obstaculo);
                 }
-            }
+            }/*
+            if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad) {
+                if (this.dronPool.getLength()) {
+                    let dron = this.dronPool.getFirst();
+                    dron.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
+                    dron.y = game.config.height * 0.65;
+                    dron.alpha = 1;
+                    dron.active = true;
+                    dron.visible = true;
+                    this.obstaculoPool.remove(dron);
+                }
+                else {
+                    let dron = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), game.config.height * 0.65, "obstaculo");
+                    dron.setImmovable(true);
+                    dron.setVelocityX(platform.body.velocity.x);
+                    dron.setSize(8, 2, true);
+                    dron.setDepth(2);
+                    this.dronGroup.add(dron);
+                }
+            }*/
         }
         if (this.dying2) { //LO ANTERIOR PERO PARA NUESTRO JUGADOR 2
 
@@ -505,54 +598,30 @@ class playGame extends Phaser.Scene {
                     obstaculo.setDepth(2);
                     this.obstaculoGroup.add(obstaculo);
                 }
-            }
+            }/*
+            if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad2) {
+                if (this.dronPool.getLength()) {
+                    let dron = this.dronPool.getFirst();
+                    dron.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
+                    dron.y = game.config.height * 0.25;
+                    dron.alpha = 1;
+                    dron.active = true;
+                    dron.visible = true;
+                    this.dronPool.remove(dron);
+                }
+                else {
+                    let dron = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), game.config.height * 0.25, "obstaculo");
+                    dron.setImmovable(true);
+                    dron.setVelocityX(platform2.body.velocity.x);
+                    dron.setSize(8, 2, true);
+                    dron.setDepth(2);
+                    this.dronGroup.add(dron);
+                }
+            }*/
         }
 
     }
-    /*addObstaculo(posX){
-        if(this.dying){
-            if (Phaser.Math.Between(1, 50) <= gameOptions.obstaculoProbabilidad2) {
-                if (this.obstaculoPool.getLength()) {
-                    let obstaculo = this.obstaculoPool.getFirst();
-                    obstaculo.x = pos;
-                    obstaculo.y = game.config.height * 0.8;
-                    obstaculo.alpha = 1;
-                    obstaculo.active = true;
-                    obstaculo.visible = true;
-                    this.obstaculoPool.remove(obstaculo);
-                }
-                else {
-                    let obstaculo = this.physics.add.sprite(posX, game.config.height * 0.35, "obstaculo");
-                    obstaculo.setImmovable(true);
-                    obstaculo.setVelocityX(gameOptions.platformStartSpeed * -1);
-                    obstaculo.setSize(8, 2, true);
-                    obstaculo.setDepth(2);
-                    this.obstaculoGroup.add(obstaculo);
-                }
-            }
-        }
-        if(this.dying2){
-            if (Phaser.Math.Between(1, 50) <= gameOptions.obstaculoProbabilidad2) {
-                if (this.obstaculoPool.getLength()) {
-                    let obstaculo = this.obstaculoPool.getFirst();
-                    obstaculo.x = pos;
-                    obstaculo.y = game.config.height * 0.35;
-                    obstaculo.alpha = 1;
-                    obstaculo.active = true;
-                    obstaculo.visible = true;
-                    this.obstaculoPool.remove(obstaculo);
-                }
-                else {
-                    let obstaculo = this.physics.add.sprite(posX, game.config.height * 0.35, "obstaculo");
-                    obstaculo.setImmovable(true);
-                    obstaculo.setVelocityX(gameOptions.platformStartSpeed * -1);
-                    obstaculo.setSize(8, 2, true);
-                    obstaculo.setDepth(2);
-                    this.obstaculoGroup.add(obstaculo);
-                }
-            }
-        }
-    }*/
+    
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // NUESTRA FUNCION DE SALTO PARA EL JUGADOR UNO
@@ -702,8 +771,9 @@ class playGame extends Phaser.Scene {
             this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
         }
 
-
+        console.log(skinsArray[skinChosen]);
     }
+    
 };
 
 function resize() { //FUNCION RESIZE
