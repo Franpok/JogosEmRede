@@ -61,6 +61,8 @@ var saltos1;
 var saltos2;
 var duracion1;
 var duracion2;
+var layoutVidas1;
+var layoutVidas2;
 
 class playGame extends Phaser.Scene {
     constructor() {
@@ -71,6 +73,7 @@ class playGame extends Phaser.Scene {
         this.load.image("sky", "resources/sky.png");
         this.load.image("platform", "resources/platform.png");
         this.load.image("player", "resources/player.png");
+        this.load.image("layout", "resources/layout1.png");
         this.load.image("track", "resources/track.png");
         this.load.spritesheet('alien', "resources/alien.png", { frameWidth: 56, frameHeight: 100 });
         this.load.spritesheet('alien2', "resources/alien2.png", { frameWidth: 56, frameHeight: 100 });
@@ -416,9 +419,14 @@ class playGame extends Phaser.Scene {
 
 
         //NUESTROS TEXTOS QUE SE VISUALIZAN DURANTE EL JUEGO
+        this.add.image(105,350,'layout').setScale(0.27,0.5);
+        this.add.image(105,40,'layout').setScale(0.27,0.5);
+        this.add.image(920,40,'layout').setScale(0.3,0.5);
         vidaTextP1 = this.add.text(25, 330, "Vidas J1: " + gameOptions.vidas1, { fontFamily: 'Arial', fontSize: "32px", fill: "#fff" });
         vidaTextP2 = this.add.text(25, 20, "Vidas J2: " + gameOptions.vidas2, { fontFamily: 'Arial', fontSize: "32PX", fill: "#fff" });
         tiempoText = this.add.text(850, 20, "Tiempo: 0", { fontFamily: 'Arial', fontSize: "32px", fill: "#fff" });
+        
+
 
         //TIEMPO
         this.time.addEvent({
