@@ -1,8 +1,7 @@
 package juegosenred.practica4;
 
-import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -10,61 +9,37 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Handler extends TextWebSocketHandler {
-	private ObjectMapper mapper;
-	private ConcurrentHashMap <WebSocketSession, Jugador> jugadores = new ConcurrentHashMap<WebSocketSession, jugador>();
-	private AtomicInteger ids = new AtomicInteger();
-	private int N_PLAYERS = 8;
+	public static ObjectMapper mapper = new ObjectMapper();
+	public static Map<Long, WebSocketSession> sessions = new ConcurrentHashMap<Long, WebSocketSession>();
 	
-	public Handler() {
-		mapper = new ObjectMapper();
-	}
-	
-	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		
-	}
-	
-	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		try {
-			JsonNode node = mapper.readTree(message.getPayload());
-			ObjectNode msg = mapper.createObjectNode();
-			switch(node.get("message").asText()) {
-			case("HELLO_WORLD"):
-				System.err.println(node.get("text").asText());
-				msg.put("message", "HELLO_WORLD");
-				session.sendMessage(new TextMessage(msg.toString()));
-				break;
-			case("NEW_PLAYER"):
-				if (jugadores.size() < N_PLAYERS) {
-					String skin = node.get("skin").asText();
-					int id = ids.incrementAndGet();
-					
-					Jugador j = new Jugador(id, skin, session);
-					jugadores.put(session, j);
-					
-					msg.put("message", "UPDATE_ID");
-					msg.put("id", id);
-					
-					j.sendMessage(msg.toString());
-				} else {}
-				break;
-			case("CLOSE"):
-				jugadores.remove(session);
-				break;
-			default:
-				break;
-			}
-		} catch (Exception e) {
-			System.err.println("Exception processing message" + message.getPayload());
-			e.printStackTrace(System.err);
-		}
-	}
-	
-	synchronized void sendMessage(String msg) throws IOException {
-		session.sendMessage(new TextMessage(msg));
-	}
+		/*
+		 * Cuando un jugador mande su estatus al otro jugador, este se enviará como un objeto JSON llamado message que incluirá:
+		 * - Si el jugador salta.
+		 * - Si el jugador ha recibido daño.
+		 * - Las trampas del jugador.
+		 * - Los powerups del jugador.
+		 * - Las vidas.
+		 */
+		
+		String msg = message.getPayload();
+		System.out.println("Message received: " + msg);
+		
+		// Se obtienen los ids de los jugadores
+		JsonNode node = mapper.readTree(message.getPayload());
+		Long P1 = node.get("P1").asLong();
+		Long P2 = node.get("P2").asLong();
+		
+		// Se comprueba si hay que añadir la sesión al mapa de sesiones
+		WebSocketSession srcSession = sessions.get(P1);
+		if (srcSession != null) 
+			sessions.put(P1, session);
+		
+		// Si existe la sesión de destino, se le envía el mensaje
+		WebSocketSession dstSession = sessions.get(P2);
+		if (dstSession != null)
+			dstSession.sendMessage(new TextMessage(msg));
+	}	
 }
