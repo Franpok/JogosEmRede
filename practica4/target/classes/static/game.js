@@ -63,6 +63,16 @@ var duracion1;
 var duracion2;
 var layoutVidas1;
 var layoutVidas2;
+var indicadorD;
+var indicadorD2;
+var indicadorV;
+var indicadorV2;
+var imagenD;
+var imagenD2;
+var imagenDobleSalto;
+var imagenDobleSalto2;
+var imagenV;
+var imagenV2;
 
 class playGame extends Phaser.Scene {
     constructor() {
@@ -88,6 +98,9 @@ class playGame extends Phaser.Scene {
         this.load.audio("sonidoPausa", ["resources/SonidoPausa.wav"]);
         this.load.image("back", "resources/back.png")
         this.load.image("estasmuertachacha", "resources/j1ganaALT.png")
+        this.load.image("indicadorDamage", "resources/indicadorDamage.png")
+        this.load.image("indicadorDobleSalto", "resources/indicadorDobleSalto.png")
+        this.load.image("indicadorVida", "resources/indicadorVida.png")
        
     }
     
@@ -96,6 +109,7 @@ class playGame extends Phaser.Scene {
         duracion2=0;
         saltos1 = 1;
         saltos2 = 1;
+        indicadorD =0;
         porfavorquelamusicasueneunavez=0;
         tiempo = 0;
         sonido = this.sound.add("fondo");
@@ -104,6 +118,12 @@ class playGame extends Phaser.Scene {
         powerUP_sound = this.sound.add("powerUp");
         death_sound = this.sound.add("deathSound");
         pause_sound = this.sound.add("sonidoPausa");
+        imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorDamage');
+        imagenD2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage');
+        imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.55, 'indicadorDobleSalto');
+        imagenDobleSalto2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.15, 'indicadorDobleSalto');
+        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');
+        imagenV2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida');
         sonido.loop = true;
         dano.loop = false;
         salto.loop = false;
@@ -263,11 +283,18 @@ class playGame extends Phaser.Scene {
                     if (vidaAnt1 === gameOptions.vidas1) { // Si las vidas anteriores son iguales a las actuales, se añade una más a las actuales
                         gameOptions.vidas1++;
                         vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
+                        indicadorV=3;
+                        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');   
                     }; 
                 break;
-                    case 1:
+
+                case 1:
+                    if(duracion1<0){
                         duracion1 = 5;
                         saltos1 = 2;
+                        imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.55, 'indicadorDobleSalto');
+                    }; 
+                break; 
             }
             
 
@@ -296,11 +323,19 @@ class playGame extends Phaser.Scene {
                     if (vidaAnt2 === gameOptions.vidas2) {
                         gameOptions.vidas2++;
                         vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                        indicadorV2=3;
+                        imagenV2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida');   
                     };
                 break;
+
                 case 1:
-                    duracion2 = 5;
+                    if(duracion2<0){
+                        duracion2 = 5;
                     saltos2 = 2;
+                    imagenDobleSalto2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.15, 'indicadorDobleSalto');
+                    };
+                    
+                break;   
             }
 
             this.tweens.add({
@@ -324,7 +359,8 @@ class playGame extends Phaser.Scene {
             if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
                 gameOptions.vidas1--;
                 vidaAnt1--;
-                //this.player.anims.play('alien1Dano');
+                indicadorD=3;
+                imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorDamage');               
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
                 vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
@@ -367,6 +403,8 @@ class playGame extends Phaser.Scene {
             if (gameOptions.vidas2 > 1) {
                 gameOptions.vidas2--;
                 vidaAnt2--;
+                indicadorD2=3;
+                imagenD2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage');
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
                 vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
@@ -444,6 +482,10 @@ class playGame extends Phaser.Scene {
         tiempoText.setText("Tiempo: " + tiempo);
         duracion1--;
         duracion2--;
+        indicadorD--;
+        indicadorD2--;
+        indicadorV--;
+        indicadorV2--;
         decidirPowerUp = Phaser.Math.Between(0,1);
     }
 
@@ -691,10 +733,25 @@ class playGame extends Phaser.Scene {
 
     update() { //FUNCION UPDATE
 
+        
+        if(indicadorD<=0){
+            imagenD.visible=false;
+        } 
+        if(indicadorD2<=0){
+            imagenD2.visible=false;
+        } 
+        if(indicadorV<=0){
+            imagenV.visible=false;
+        } 
+        if(indicadorV2<=0){
+            imagenV2.visible=false;
+        } 
         if(duracion1<=0){
+            imagenDobleSalto.visible=false;
             saltos1=1;
         }
         if(duracion2<=0){
+            imagenDobleSalto2.visible=false;
             saltos2=1;
         }
         if((porfavorquelamusicasueneunavez<=0)&&(isPaused==false)){
