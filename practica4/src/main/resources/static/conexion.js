@@ -4,6 +4,10 @@ socket.onopen = function() {
 	console.log("Conexión establecida");
 }
 
+
+//AÑADIR LAS FUNCIONES NECESARIAS PARA LAS DISTINTAS COSAS QUE HAGAN FALTA
+
+
 function Actualizar(){ //Mi función que envía los datos que necesito al server
 	let message ={
 		message: "Actualizar", //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
@@ -17,6 +21,16 @@ function Actualizar(){ //Mi función que envía los datos que necesito al server
 		PINCHO: J1_PinchoGenerado
 	}
 	socket.send(JSON.stringify(message)); //Por hacer
+	socket.onmessage = function (event) {
+		var aux = JSON.parse(event.data); //ESTO CONVIERTE CUALQUIER ELEMENTO DE LA FUNCION A JSON PARA PODER ENVIARLO DE UN LADO A OTRO
+		
+		if(aux."Aqui va el put que has puesto en servidor") //EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
+			
+			//AQUI ACTUALIZARIA LO QUE QUIERO CAMBIAR(LAS VARIABLES)
+			
+			
+			
+	}
 }
 
 function comprobar(){ //Mi función que recibe los datos que necesito del jugador 2
@@ -33,3 +47,4 @@ function comprobar(){ //Mi función que recibe los datos que necesito del jugado
 	}
 	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
 }
+
