@@ -94,8 +94,9 @@ Nuestra principal inspiración es el juego de Google Chrome cuando no tenemos co
 En esta sección de nuestro GDD vamos a tratar uno de los temas fundamentales en la creación de este juego: las mecánicas. Explicaremos:
 
 #### 2.1 Jugabilidad
-- **Niveles:** el juego consistirá de un solo nivel que los jugadores irán avanzando de izquierda a derecha hasta el infinito. El terreno será un páramo desierto para dar el ambiente de que nos encontramos a las afueras del Área 51.
-- **Intensidad:** la dificultad del juego será exponencial, empezando con pocos obstáculos que serán fácil de esquivar, los cuales irán aumentando con el tiempo.
+Nuestro juego consiste de un solo nivel generado infinitamente. En él, nuestros jugadores tendrán que ir esquivando los obstáculos que irán apareciendo en su camino. Básicamente, lo que se llama un "Endless Runner". Ganará el jugador que quede en pie más tiempo.
+Además de correr por la pista, los personajes podrán saltar para esquivar las trampas que surjan en el camino de forma aleatoria. Para ayudarles, aparecerán power-ups con vidas extra o un doble salto para agilizar la movilidad del jugador.
+Elegimos una jugabilidad sencilla pero a su vez adictiva cuando juegas contra otra persona, ya que la mayoría de "minijuegos" en red se basan en este dogma: mecánicas sencillas pero atrayentes.
 
 #### 2.2 Flujo de juego
 Lo primero que se encuentra el jugador al iniciar el juego es la pantalla de inicio. Aquí, podemos elegir hacer un tutorial que nos explique las mecánicas básicas del juego. Este consiste en un pequeño track no infinito, al contrario que el resto del juego, con el personaje del alien. Al terminar este tutorial, podremos acceder a la selección de personajes del juego en sí, o volver al menú principal. En la pantalla de selección de personajes podremos elegir a uno de los cuatro personajes jugables de los que dispone nuestro juego: alien, blob, robosaurio y sirena.
