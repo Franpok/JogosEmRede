@@ -8,28 +8,56 @@ socket.onopen = function() {
 //AÑADIR LAS FUNCIONES NECESARIAS PARA LAS DISTINTAS COSAS QUE HAGAN FALTA
 
 
-function Actualizar(){ //Mi función que envía los datos que necesito al server
-	let message ={
-		message: "Actualizar", //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
-		ID: J1_id
-		SKIN: J1_skin,
-		SALTO: J1_saltando,
-		VIDA+1: J1_Vida+1,
-		DAÑO: J1_DañoRecibido,
-		MUERTO: J1_Muerto,
-		POWERUP: J1_Powerup,
-		PINCHO: J1_PinchoGenerado
-	}
+function crearPartida(){ //Mi función que envía los datos que necesito al server
+	let message = {
+		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
+		idJugador: J1_id
+	}	
 	socket.send(JSON.stringify(message)); //Por hacer
+	
 	socket.onmessage = function (event) {
-		var aux = JSON.parse(event.data); //ESTO CONVIERTE CUALQUIER ELEMENTO DE LA FUNCION A JSON PARA PODER ENVIARLO DE UN LADO A OTRO
-		
-		if(aux."Aqui va el put que has puesto en servidor") //EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
-			
-			//AQUI ACTUALIZARIA LO QUE QUIERO CAMBIAR(LAS VARIABLES)
-			
-			
-			
+		var aux = JSON.parse(event.data); //ESTO CONVIERTE CUALQUIER ELEMENTO DE LA FUNCION A JSON PARA PODER ENVIARLO DE UN LADO A OTRO	
+		ID_Partida = aux.idPartida; //EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
+		console.log(aux.prueba)	
+	}
+}
+
+function borrarPartida() {
+	let message = {
+			idFuncion: 1,
+			idPartida: ID_Partida,
+			idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
+	
+	socket.onmessage = function (event) {
+		var aux = JSON.parse(event.data);
+		console.log(aux.mensajeBorrado + aux.idPartida);
+	}
+}
+
+function actualizaJugador() {
+	let message = {
+			idFuncion: 2,
+			idJugador: J1_id,
+			idPartida: ID_Partida,
+			jugadorSaltando: J1_saltando,
+			jugadorDaño: J1_DañoRecibido,
+			jugadorSubirVida: J1_Vida,
+			jugadorMuerto: J1_Muerto,
+			jugadorPowerUp: J1_Powerup,
+			pinchoGenerado: J1_Pinchogenerado
+	}
+	socket.send(JSON.stringify(message));
+	
+	socket.onmessage = function (event) {
+		var aux = JSON.parse(event.data);
+		J2_DañoRecibido = aux.jugadorDaño;
+		J2_Powerup = aux.jugadorPowerUp;
+		J2_Pinchogenerado = aux.pinchoGenerado;
+		J2_Muerto = aux.jugadorMuerto;
+		J2_saltando = aux.jugadorSaltando;
+		J2_Vida = aux.jugadorSubirVida;
 	}
 }
 

@@ -26,7 +26,7 @@ class menu extends Phaser.Scene {
     
         this.clickButton = this.add.image(550, 475, 'jugar' )
          .setInteractive()
-         .on('pointerdown', () =>  this.scene.start("selectorSkins"))
+         .on('pointerdown', () =>  this.scene.start("selectorSkins")) //Ahora va al selector de skins en vez de al juego directamente
          .on('pointerdown', () =>  sonido.stop())
          .on('pointerover', () => this.add.image(550, 475, 'jugarP'  ).setScale(0.5))
          .on('pointerout', () => this.add.image(550, 475, 'jugar' ).setScale(0.5) );

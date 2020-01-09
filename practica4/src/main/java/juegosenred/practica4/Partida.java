@@ -16,6 +16,13 @@ public class Partida { //Tiene que tener un ID, los 2 jugadores, boolean para sa
 		this.vacio = false; //Partida esta vacia o llena
 	}
 	 
+	 Partida(int id) {
+		 this.ID = id;
+		 this.J1 = null;
+		 this.J2 = null;
+		 this.vacio = true;
+	 }
+	 
 	 Partida(int id, Jugador j1) {
 			this.ID = id;
 			this.J1 = j1;
@@ -40,7 +47,7 @@ public class Partida { //Tiene que tener un ID, los 2 jugadores, boolean para sa
 		 return this.J2;
 	 }
 	 
-	 public Jugador getJugador(int id) { // Este get es para identificar a los jugadores cuando se estan metiendo en las partidas
+	/* public Jugador getJugador(int id) { // Este get es para identificar a los jugadores cuando se estan metiendo en las partidas
 		 if(this.J1!=null) { //Hay que rellenar esto segun se plante las ids de los jugadores
 		
 			 return
@@ -50,7 +57,7 @@ public class Partida { //Tiene que tener un ID, los 2 jugadores, boolean para sa
 		 }
 		 	return
 		 
-	 }
+	 }*/
 	 
 	 public void setJugador1(Jugador j) {
 		 this.J1 = j;
