@@ -130,7 +130,7 @@ class skins extends Phaser.Scene {
 
         this.clickButton = this.add.image(550, 650, 'jugar' )
          .setInteractive()
-         .on('pointerdown', () =>  this.scene.start("PlayGame"))
+         .on('pointerdown', () =>  this.scene.start("conexion"))
          .on('pointerdown', () =>  sonido.stop())
          .on('pointerover', () => this.add.image(550, 650, 'jugarP'  ).setScale(0.5))
          .on('pointerout', () => this.add.image(550, 650, 'jugar' ).setScale(0.5) );

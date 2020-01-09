@@ -75,5 +75,20 @@ function crearJugador(){ //Mi función que recibe los datos que necesito del jug
 		console.log(aux.mensaje);
 	}
 	
+	
+}
+
+function comprobar() {
+	let message = {
+			idFuncion: 4,
+			idPartida: ID_Partida
+	}
+	socket.send(JSON.stringify(message));
+	
+	socket.onmessage = function (event) {
+		var aux = JSON.parse(event.data);
+		J2_skin = aux.idSkin;
+		J2_id = aux.idJugador;
+	}
 }
 

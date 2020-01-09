@@ -24,7 +24,7 @@ window.onload = function () {
         type: Phaser.AUTO,
         width: 1080,
         height: 720,
-        scene: [primera, menu, creditos, muerto, playGame, salir, muerto2, controles, skins],
+        scene: [menu, creditos, muerto, playGame, salir, muerto2, controles, skins, primera],
         backgroundColor: 0x444444,
 
         // physics settings
@@ -98,8 +98,7 @@ class playGame extends Phaser.Scene {
         this.load.image("estasmuertachacha", "resources/j1ganaALT.png")
         this.load.image("indicadorDamage", "resources/indicadorDamage.png")
         this.load.image("indicadorDobleSalto", "resources/indicadorDobleSalto.png")
-        this.load.image("indicadorVida", "resources/indicadorVida.png")
-       
+        this.load.image("indicadorVida", "resources/indicadorVida.png")  
     }
     
     create() {
@@ -267,9 +266,21 @@ class playGame extends Phaser.Scene {
 
         // AÑADIMOS SU ANIMACIÓN
         
-
-        this.player2.anims.play(skinsArray[1]);
-
+        switch (J2_id) {
+        case 0:
+            this.player2.anims.play(skinsArray[0]);
+            break;
+        case 1:
+            this.player2.anims.play(skinsArray[1]);
+            break;
+        case 2:
+            this.player2.anims.play(skinsArray[2]);
+            break;
+        case 3:
+            this.player2.anims.play(skinsArray[3]);
+            break;
+        }
+        
         //Creamos unas variables para saber si el jugador tiene powerup o esta muerto
         var dying = false;
         var dying2 = false;

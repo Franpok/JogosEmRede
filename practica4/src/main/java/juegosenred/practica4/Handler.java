@@ -239,18 +239,19 @@ public class Handler extends TextWebSocketHandler {
 			
 			session.sendMessage(new TextMessage(msg.toString()));
 			
-			
-			
 			break;
 			
-		case(4): //SI HA MUERTO ALGUN JUGADOR
-			
-			//RECIBO EL ID DE LA PARTIDA DONDE HA SUCEDIDO Y EL ID DEL JUGADOR
-			
-			//LE ASIGNO AL JUGADOR QUE ESTA MUERTO por ejemplo (Jugador J1 = partida.get(IDPARTIDA).getJugador(ID).setMuerte(MUERTE) Tener las variables de jugador, no del json
-		
-			// Enviar
-			
+		case(4):
+			Partida y = partidas.get(node.get("idPartida").asInt());
+			if (y.getJ2() != null) {
+				Jugador jugadorNuevo = y.getJ2();
+				int jnId = jugadorNuevo.getId();
+				int jnSkin =jugadorNuevo.getSkin();
+				
+				msg.put("idJugador", jnId);
+				msg.put("idSkin", jnSkin);
+				session.sendMessage(new TextMessage(msg.toString()));
+			}
 			break;
 		
 		case(5): //Perder una vida (QUIZAS ESTO VA DIRECTAMENTE EN ACTUALIZAR 

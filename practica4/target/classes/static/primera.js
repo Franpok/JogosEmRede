@@ -2,6 +2,8 @@ class primera extends Phaser.Scene {
     constructor() {
         super("conexion");
     }
+    
+    var crearPartida = false;
 
     preload(){
       this.load.audio("sound", ["resources/MusicaMenu.mp3"]);
@@ -12,17 +14,9 @@ class primera extends Phaser.Scene {
     }
     create (){
         this.add.image(550, 475,'conectando')
-        this.clickButton = this.add.image(550, 400, 'conectar' )
-         .setInteractive()
-         .on('pointerdown', () =>  this.scene.start("menuPrincipal"))
-         .on('pointerdown', () => jugador.nombre = $('#value-input').val())
-         .on('pointerdown', () => console.log(jugador.nick))
-         .on('pointerdown', () => Pet_añadirJugador(jugador))
-         .on('pointerover', () => this.add.image(550, 400, 'conectarP'  ).setScale(0.5))
-         .on('pointerover', () => jugador.id = Pet_jugadoresConectados())
-         .on('pointerout', () => this.add.image(550, 400, 'conectar' ).setScale(0.5) );
-         this.clickButton.setScale(0.5);
-
+        
+        
+        
          this.player = this.physics.add.sprite(550,525, 'animacion', 0);
          this.player.setGravityY(0);
  
@@ -33,13 +27,10 @@ class primera extends Phaser.Scene {
           repeat: -1
       });
       this.player.anims.play('carga');
-     
-
        // this.updateClickCountText(clickCount);
       }
     //update(){
       
-    
       enterButtonHoverState() {
         this.clickButton.setStyle({ fill: '#ff0'});
       }
@@ -55,19 +46,16 @@ class primera extends Phaser.Scene {
       enterButtonRestState2() {
         this.clickButton2.setStyle({ fill: '#0f0' });
       }
-    
-    
-   // }
-
-
-
-
-
-
-
-
-
-
-
-
-}
+      
+      update () {
+    	  if (crearPartida == false){
+    		  crearPartida();
+    		  crearPartida = true;
+    	  }
+    	  
+    	  comprobar();
+    	  
+    	  if ((J1_id == -1) || (J2_id == -1)) {
+    		  this.scene.start("PlayGame");
+    	  }
+} 
