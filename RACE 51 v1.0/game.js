@@ -13,7 +13,6 @@ let gameOptions = {
     powerupProbabilidad2: 8,           //Probabilidad powerUp(Jugador 2)
     obstaculoProbabilidad2: 30,         //Probabilidad de aparición de obstáculos del jugador 2
     jumps: 1,                           // He creado un power up de doble salto, así que me creo una variable que me permita controlar el número de saltos que puedo hacer
-                  //Una variable duración que me permita controlar el tiempo 
     vidas1: 3,                          //Vidas jugador 1
     vidas2: 3                           //Vidas jugador 2
 }
@@ -55,24 +54,22 @@ var tiempoText;
 var vidaAnt1 = 3;
 var vidaAnt2 = 3;
 var timedEvent;
-var porfavorquelamusicasueneunavez;
-var decidirPowerUp;
-var saltos1;
-var saltos2;
-var duracion1;
-var duracion2;
-var layoutVidas1;
-var layoutVidas2;
-var indicadorD;
-var indicadorD2;
-var indicadorV;
-var indicadorV2;
-var imagenD;
-var imagenD2;
-var imagenDobleSalto;
-var imagenDobleSalto2;
-var imagenV;
-var imagenV2;
+var porfavorquelamusicasueneunavez; //variable auxiliar para verificar que la musica acabe cuando el juego acabe
+var decidirPowerUp; //variable para decidir qué poewr-up se va a recibir
+var saltos1; //numero de saltos maximos que puede hacer el jugador 1
+var saltos2;//numero de saltos maximos que puede hacer el jugador 2
+var duracion1; //duración del doble salto del jugador 1
+var duracion2;//duración del doble salto del jugador 2
+var indicadorD; //variable que detecta si se ha colisionado con obstaculo del jugador 1
+var indicadorD2;//variable que detecta si se ha colisionado con obstaculo del jugador 2
+var indicadorV; //variable que detecta si se acaba de sumar una vida al jugador 1
+var indicadorV2;//variable que detecta si se acaba de sumar una vida al jugador 2
+var imagenD; //imagen que se le va a asignar al jugador 1 al colisionar con un obstaculo
+var imagenD2;//imagen que se le va a asignar al jugador 2 al colisionar con un obstaculo
+var imagenDobleSalto;//imagen que se le va a asignar al jugador 1 al tener doble salto
+var imagenDobleSalto2;//imagen que se le va a asignar al jugador 2 al tener doble salto
+var imagenV;//imagen que se le va a asignar al jugador 1 al recibir una vida extra
+var imagenV2;//imagen que se le va a asignar al jugador 2 al recibir una vida extra
 
 class playGame extends Phaser.Scene {
     constructor() {
@@ -87,7 +84,7 @@ class playGame extends Phaser.Scene {
         this.load.image("track", "resources/track.png");
         this.load.spritesheet('alien', "resources/alien.png", { frameWidth: 56, frameHeight: 100 });
         this.load.spritesheet('alien2', "resources/alien2.png", { frameWidth: 56, frameHeight: 100 });
-        this.load.spritesheet('alienDamaged', "resources/alienDano.png", { frameWidth: 111, frameHeight: 100 });
+        this.load.spritesheet('alien3', "resources/alien3.png", { frameWidth: 56, frameHeight: 100 });
         this.load.image("powerup", "resources/powerUp.png");
         this.load.image("obstaculo", "resources/pinchos.png");
         this.load.audio("fondo", ["resources/MusicaJuego.mp3"]);
@@ -221,25 +218,26 @@ class playGame extends Phaser.Scene {
         this.player.setGravityY(gameOptions.playerGravity);
 
         // AÑADIMOS SU ANIMACIÓN
-        this.anims.create({
+        this.anims.create({ //Skin 1
             key: skinsArray[0],
             frameRate: 12,
             frames: this.anims.generateFrameNumbers('alien', { start: 0, end: 7 }),
             repeat: -1
         });
 
-        this.anims.create({
+        this.anims.create({ //Skin 2
             key: skinsArray[1],
             frameRate: 12,
             frames: this.anims.generateFrameNumbers('alien2', { start: 0, end: 7 }),
             repeat: -1
         });
-        this.anims.create({
-            key: 'alien1Dano',
+        this.anims.create({ //Skin 3
+            key: skinsArray[2],
             frameRate: 12,
-            frames: this.anims.generateFrameNumbers('alienDamaged', { start: 0, end: 7 }),
+            frames: this.anims.generateFrameNumbers('alien3', { start: 0, end: 7 }),
             repeat: -1
         });
+       
 
         switch (skinChosen){
             case 0:
@@ -247,6 +245,9 @@ class playGame extends Phaser.Scene {
                 break;
             case 1:
                 this.player.anims.play(skinsArray[1]);
+                break;
+            case 2:
+                this.player.anims.play(skinsArray[2]);
                 break;
         }
         
@@ -283,16 +284,16 @@ class playGame extends Phaser.Scene {
                     if (vidaAnt1 === gameOptions.vidas1) { // Si las vidas anteriores son iguales a las actuales, se añade una más a las actuales
                         gameOptions.vidas1++;
                         vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
-                        indicadorV=3;
-                        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');   
+                        indicadorV=3; //duración del aviso
+                        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');// se añade el aviso
                     }; 
                 break;
 
                 case 1:
                     if(duracion1<0){
-                        duracion1 = 5;
-                        saltos1 = 2;
-                        imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.55, 'indicadorDobleSalto');
+                        duracion1 = 5; //duracion del doble salto
+                        saltos1 = 2; //ahora tenemos como maximo 2 saltos
+                        imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.55, 'indicadorDobleSalto');//se añade el aviso
                     }; 
                 break; 
             }
@@ -323,16 +324,16 @@ class playGame extends Phaser.Scene {
                     if (vidaAnt2 === gameOptions.vidas2) {
                         gameOptions.vidas2++;
                         vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
-                        indicadorV2=3;
-                        imagenV2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida');   
+                        indicadorV2=3;//duracion del aviso
+                        imagenV2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida'); //aviso  
                     };
                 break;
 
                 case 1:
                     if(duracion2<0){
-                        duracion2 = 5;
-                    saltos2 = 2;
-                    imagenDobleSalto2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.15, 'indicadorDobleSalto');
+                        duracion2 = 5;//duración del doble salto
+                        saltos2 = 2;//ahora tenemos como maximo 2 saltos, en vez de 1
+                        imagenDobleSalto2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.15, 'indicadorDobleSalto');//aviso
                     };
                     
                 break;   
@@ -359,12 +360,12 @@ class playGame extends Phaser.Scene {
             if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
                 gameOptions.vidas1--;
                 vidaAnt1--;
-                indicadorD=3;
-                imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorDamage');               
+                indicadorD=3; //duracion del aviso
+                imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorDamage');//aviso            
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
                 vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
-                dano.play();
+                dano.play(); //sonido de daño
             } else { // Si ya no tiene vidas, cambia de estado a muerto
                 gameOptions.vidas1=0;
                 vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
@@ -403,12 +404,12 @@ class playGame extends Phaser.Scene {
             if (gameOptions.vidas2 > 1) {
                 gameOptions.vidas2--;
                 vidaAnt2--;
-                indicadorD2=3;
-                imagenD2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage');
+                indicadorD2=3; //tiempo de aviso
+                imagenD2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage'); //aviso
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
                 vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
-                dano.play();
+                dano.play(); //sonido de recibir daño suena
             } else {
                 gameOptions.vidas2=0;
                 vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
@@ -457,9 +458,9 @@ class playGame extends Phaser.Scene {
 
 
         //NUESTROS TEXTOS QUE SE VISUALIZAN DURANTE EL JUEGO
-        this.add.image(105,350,'layout').setScale(0.27,0.5);
-        this.add.image(105,40,'layout').setScale(0.27,0.5);
-        this.add.image(920,40,'layout').setScale(0.3,0.5);
+        this.add.image(105,350,'layout').setScale(0.27,0.5); //fondo para las vidas del jugador 1
+        this.add.image(105,40,'layout').setScale(0.27,0.5);//fondo para las vidas del jugador 2
+        this.add.image(920,40,'layout').setScale(0.3,0.5);//fondo para el tiempo
         vidaTextP1 = this.add.text(25, 330, "Vidas J1: " + gameOptions.vidas1, { fontFamily: 'Arial', fontSize: "32px", fill: "#fff" });
         vidaTextP2 = this.add.text(25, 20, "Vidas J2: " + gameOptions.vidas2, { fontFamily: 'Arial', fontSize: "32PX", fill: "#fff" });
         tiempoText = this.add.text(850, 20, "Tiempo: 0", { fontFamily: 'Arial', fontSize: "32px", fill: "#fff" });
@@ -733,7 +734,7 @@ class playGame extends Phaser.Scene {
 
     update() { //FUNCION UPDATE
 
-        
+        //CONDICIONALES PARA LOS AVISOS Y POWERUPS
         if(indicadorD<=0){
             imagenD.visible=false;
         } 
@@ -829,14 +830,14 @@ class playGame extends Phaser.Scene {
                 this.platformGroup.remove(platform);
             }
         }, this);
-        //this.addObstaculo(100);
+      
         // CREACION DE NUEVAS PLATAFORMAS ALEATORIAS (EN TAMAÑO)
         if (minDistance > this.nextPlatformDistance) {
             var nextPlatformWidth = Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
             this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
         }
 
-        console.log(skinsArray[skinChosen]);
+        
     }
     
 };

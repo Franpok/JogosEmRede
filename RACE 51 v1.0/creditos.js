@@ -25,6 +25,7 @@ class creditos extends Phaser.Scene {
       .on('pointerdown', () =>  fancyyou.play());
       
       
+      
       var fondo = this.add.image(540,360,'fondo');
       var credits = this.add.image(540,360,'credits');
     var back = this.add.image(200, 600, 'back')
