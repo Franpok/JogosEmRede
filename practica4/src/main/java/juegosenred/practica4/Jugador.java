@@ -15,6 +15,7 @@ public class Jugador {
 	private int VIDAS;
 	//Crear variables si hiciera falta , NOMBRE??
 	
+	
 	 Jugador(int id,  WebSocketSession session) { //Pasar como parámetros las variables que hagan falta y no puedan inicializarse a 0 o null o false
 		this.ID = id;
 		this.SKIN = 0;

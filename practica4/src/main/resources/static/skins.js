@@ -94,7 +94,9 @@ class skins extends Phaser.Scene {
          .on('pointerout', () =>this.add.image(200,500,'nombre1').setScale(.5))
          .on('pointerover', () => this.aspecto.anims.play('skin1corriendo')) //Al pasar por encima el ratón, la animación empieza
          .on('pointerout', () => this.aspecto.anims.stop('skin1corriendo')) //Al sacar el cursor, para
-         .on('pointerdown', () => skinChosen= 0); //Si haces click, se elige
+         .on('pointerdown', () => skinChosen= 0) //Si haces click, se elige
+         .on('pointerdown', () => J1_skin= 0) //Si haces click, se elige
+         .on('pointerdown', () => crearJugador()); //Si haces click, se elige
 
          this.clickButtonSkin2 = fondoskins2
          .setInteractive()
@@ -102,7 +104,9 @@ class skins extends Phaser.Scene {
          .on('pointerover', () =>this.add.image(400,500,'nombre2P').setScale(.5))
          .on('pointerout', () =>this.add.image(400,500,'nombre2').setScale(.5))
          .on('pointerout', () => this.aspecto2.anims.stop('skin2corriendo'))
-         .on('pointerdown', () => skinChosen= 1);
+         .on('pointerdown', () => skinChosen= 1)
+         .on('pointerdown', () => J1_skin= 1) //Si haces click, se elige
+         .on('pointerdown', () => crearJugador()); //Si haces click, se elige
 
          this.clickButtonSkin3 = fondoskins3
          .setInteractive()
@@ -110,14 +114,19 @@ class skins extends Phaser.Scene {
          .on('pointerover', () =>this.add.image(600,500,'nombre3P').setScale(.5))
          .on('pointerout', () =>this.add.image(600,500,'nombre3').setScale(.5))
          .on('pointerout', () => this.aspecto3.anims.stop('skin3corriendo'))
-         .on('pointerdown', () => skinChosen= 2);
+         .on('pointerdown', () => skinChosen= 2)
+         .on('pointerdown', () => J1_skin= 2) //Si haces click, se elige
+         .on('pointerdown', () => crearJugador()); //Si haces click, se elige
+         
          this.clickButtonSkin4 = fondoskins4
          .setInteractive()
          .on('pointerover', () => this.aspecto4.anims.play('skin4corriendo'))
          .on('pointerover', () =>this.add.image(800,500,'nombre4P').setScale(.5))
          .on('pointerout', () =>this.add.image(800,500,'nombre4').setScale(.5))
          .on('pointerout', () => this.aspecto4.anims.stop('skin4corriendo'))
-         .on('pointerdown', () => skinChosen= 3);
+         .on('pointerdown', () => skinChosen= 3)
+         .on('pointerdown', () => J1_skin= 3) //Si haces click, se elige
+         .on('pointerdown', () => crearJugador()); //Si haces click, se elige
 
         this.clickButton = this.add.image(550, 650, 'jugar' )
          .setInteractive()

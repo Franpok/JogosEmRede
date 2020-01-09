@@ -14,13 +14,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class Handler extends TextWebSocketHandler {
 	public static ObjectMapper mapper = new ObjectMapper(); //MI mapper
-	public static Map<Jugador, WebSocketSession> jugadores = new ConcurrentHashMap<Jugador, WebSocketSession>(); //Mi colección de jugadores (Aunque no estamos pasando JUGADOR? Mirar)
+	public static Map<Integer, Jugador> jugadores = new ConcurrentHashMap<Integer, Jugador>(); //Mi colección de jugadores (Aunque no estamos pasando JUGADOR? Mirar)
 	public static Map<Integer, Partida> partidas = new ConcurrentHashMap <Integer,Partida>(); //Mi colección de partidas
 	//public AtomicInteger idJugador = new AtomicInteger();
 	//public AtomicInteger idPartida = new AtomicInteger();
 	int idPartida, idJugador;
 	final int N_JUGADORES = 8;
 	final int N_PARTIDAS = 4;
+	int JUGADORESACTUALES =0;
 	//Si fuera necesario añadir ints maximos de partidas y sesiones
 	
 	
@@ -161,6 +162,7 @@ public class Handler extends TextWebSocketHandler {
 				partidas.put(idBorrado, partidaBorrada);
 			}
 			int idJugadorBorrado = node.get("idJugador").asInt();
+			
 			msg.put("idPartida", idBorrado);	
 			msg.put("mensajeBorrado", texto);
 			session.sendMessage(new TextMessage(msg.toString()));	
@@ -218,16 +220,27 @@ public class Handler extends TextWebSocketHandler {
 			}
 			break;
 		
-		case(3): //COMPROBAR SI HAY PARTIDAS PA UNIRSE
-			//RECIBO  EL ID DE PARTIDA Y EL ID DEL JUGADOR 1
+		case(3): //Crear jugador(con skin)
+			if (JUGADORESACTUALES < N_JUGADORES) {
+				Jugador j = new Jugador (JUGADORESACTUALES,session);
+				JUGADORESACTUALES++;
+				int skin = node.get("idskin").asInt();
+				j.setSkin(skin);
+				j.setSession(session);
+				jugadores.put(JUGADORESACTUALES, j);
+				String textito = "Jugador creado correctamente";
+				msg.put("mensaje", textito);
+				msg.put("idJugador", j.getId());
+				
+				JUGADORESACTUALES++;
+				}
+			System.err.println(node.get("mensaje").asText());
 			
-			//CREAMOS OTRO JUGADOR QUE COGE SU ID Y LA DE PARTIDA 
 			
-			//COMPROBAMOS SI NUESTRO ID DE PARTIDA SU ESTADO ES TRUE(ES DECIR COMPROBAMOS SI PODEMOS ENTRAR YA QUE EXISTE HUECO)
+			session.sendMessage(new TextMessage(msg.toString()));
 			
-			//SI ES TRUE, LO AÑADIMOS A ESA PARTIDA
 			
-			//SI NO, devuelve un mensaje que dice que la partida en cuestión que ha llegado con ese id esta llena
+			
 			break;
 			
 		case(4): //SI HA MUERTO ALGUN JUGADOR

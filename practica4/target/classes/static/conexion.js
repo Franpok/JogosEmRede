@@ -61,18 +61,19 @@ function actualizaJugador() {
 	}
 }
 
-function comprobar(){ //Mi función que recibe los datos que necesito del jugador 2
+function crearJugador(){ //Mi función que recibe los datos que necesito del jugador 2
 	let message ={
-		message: "Comprobar", //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
-		ID: J2_id
-		SKIN: J2_skin,
-		SALTO: J2_saltando,
-		VIDA+1: J2_Vida+1,
-		DAÑO: J2_DañoRecibido,
-		MUERTO: J2_Muerto,
-		POWERUP: J2_Powerup,
-		PINCHO: J2_PinchoGenerado
+			idFuncion: 3,
+			idskin: J1_skin,
+			mensaje: hola
 	}
 	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+	
+	socket.onmessage = function (event) {
+		var aux = JSON.parse(event.data);
+		J1_id = aux.idJugador;
+		console.log(aux.mensaje);
+	}
+	
 }
 

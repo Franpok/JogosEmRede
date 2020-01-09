@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: rest_ejer1_con_ui
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Juanma
+Built-By: Juan Manuel
 Implementation-Vendor-Id: es.urjc.code.juegosenred
-Build-Jdk: 1.8.0_151
+Build-Jdk: 1.8.0_171
 Implementation-URL: http://projects.spring.io/spring-boot/items-backen
  d-and-frontend/
 Created-By: Maven Integration for Eclipse
