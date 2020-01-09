@@ -85,6 +85,7 @@ class playGame extends Phaser.Scene {
         this.load.spritesheet('alien', "resources/alien.png", { frameWidth: 56, frameHeight: 100 });
         this.load.spritesheet('alien2', "resources/alien2.png", { frameWidth: 56, frameHeight: 100 });
         this.load.spritesheet('alien3', "resources/alien3.png", { frameWidth: 56, frameHeight: 100 });
+        this.load.spritesheet('alien4', "resources/alien4.png", { frameWidth: 56, frameHeight: 100 });
         this.load.image("powerup", "resources/powerUp.png");
         this.load.image("obstaculo", "resources/pinchos.png");
         this.load.audio("fondo", ["resources/MusicaJuego.mp3"]);
@@ -237,6 +238,12 @@ class playGame extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('alien3', { start: 0, end: 7 }),
             repeat: -1
         });
+        this.anims.create({ //Skin 4
+            key: skinsArray[3],
+            frameRate: 12,
+            frames: this.anims.generateFrameNumbers('alien4', { start: 0, end: 7 }),
+            repeat: -1
+        });
        
 
         switch (skinChosen){
@@ -248,6 +255,9 @@ class playGame extends Phaser.Scene {
                 break;
             case 2:
                 this.player.anims.play(skinsArray[2]);
+                break;
+            case 3:
+                this.player.anims.play(skinsArray[3]);
                 break;
         }
         
