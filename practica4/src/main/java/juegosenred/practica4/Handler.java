@@ -21,54 +21,13 @@ public class Handler extends TextWebSocketHandler {
 	int idPartida, idJugador;
 	final int N_JUGADORES = 8;
 	final int N_PARTIDAS = 4;
-	int JUGADORESACTUALES =0;
+	int JUGADORESACTUALES = 0;
+	int PARTIDASACTUALES = 0;
 	//Si fuera necesario añadir ints maximos de partidas y sesiones
 	
 	
 	
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		/*
-		 * Cuando un jugador mande su estatus al otro jugador, este se enviará como un objeto JSON llamado message que incluirá:
-		 * - Si el jugador salta.
-		 * - Si el jugador ha recibido daño.
-		 * - Las trampas del jugador.
-		 * - Los powerups del jugador.
-		 * - Las vidas.
-		 */
-		
-		/*CASOS DEL SWITCH NECESARIOS
-		
-		-CREAR UNA NUEVA PARTiDA
-		-ACTUALIZAR JUGADOR
-		-MUERTE JUGADOR
-		-CERRAR PARTIDA
-		
-		
-		//SI HICIERA FALTA MAS CASOS, HACERLOS CUANDO SURJAN
-		
-		
-		*/
-		
-		
-		//METODO DE CARMEN (POR DANI)
-		/*String msg = message.getPayload();
-		System.out.println("Message received: " + msg);
-		
-		// Se obtienen los ids de los jugadores
-		JsonNode node = mapper.readTree(message.getPayload());
-		Long P1 = node.get("P1").asLong();
-		Long P2 = node.get("P2").asLong();
-		
-		// Se comprueba si hay que añadir la sesión al mapa de sesiones
-		WebSocketSession srcSession = sessions.get(P1);
-		if (srcSession != null) 
-			sessions.put(P1, session);
-		
-		// Si existe la sesión de destino, se le envía el mensaje
-		WebSocketSession dstSession = sessions.get(P2);
-		if (dstSession != null)
-			dstSession.sendMessage(new TextMessage(msg));*/
-		
 		JsonNode node = mapper.readTree(message.getPayload()); //Mi nodo que explora
 		ObjectNode msg = mapper.createObjectNode(); //Mi explorador de mensajes
 		
@@ -76,7 +35,13 @@ public class Handler extends TextWebSocketHandler {
 		
 		case(0): //Creamos la partida
 			// Comprobamos si existen partidas
-			if (partidas == null) { // Si no hay partidas
+			Jugador nuevoJugador = new Jugador (node.get("idJugador").asInt(), session);
+			if (partidas == null) {
+				Partida nuevaPartida = new Partida(PARTIDASACTUALES, nuevoJugador);
+				partidas.put(PARTIDASACTUALES, nuevaPartida);
+				PARTIDASACTUALES++;
+			}
+			/*if (partidas == null) { // Si no hay partidas
 				Partida nuevaPartida1 = new Partida(1);
 				partidas.put(0, nuevaPartida1);
 				Partida nuevaPartida2 = new Partida(2);
@@ -148,7 +113,7 @@ public class Handler extends TextWebSocketHandler {
 			
 			msg.put("idPartida", idp);
 			msg.put("stringPrueba", prueba);
-			session.sendMessage(new TextMessage(msg.toString()));	
+			session.sendMessage(new TextMessage(msg.toString()));*/	
 			break;
 			
 		case(1): // Cerrar partida

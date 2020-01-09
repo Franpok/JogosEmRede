@@ -11,14 +11,16 @@ socket.onopen = function() {
 function crearPartida(){ //Mi función que envía los datos que necesito al server
 	let message = {
 		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
-		idJugador: J1_id
+		idJugador: J1_id,
+		idSkin: J1_skin
 	}	
 	socket.send(JSON.stringify(message)); //Por hacer
 	
 	socket.onmessage = function (event) {
 		var aux = JSON.parse(event.data); //ESTO CONVIERTE CUALQUIER ELEMENTO DE LA FUNCION A JSON PARA PODER ENVIARLO DE UN LADO A OTRO	
 		ID_Partida = aux.idPartida; //EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
-		console.log(aux.prueba)	
+		console.log(aux.prueba);
+		console.log(ID_Partida);
 	}
 }
 

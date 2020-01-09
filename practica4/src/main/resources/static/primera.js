@@ -3,8 +3,6 @@ class primera extends Phaser.Scene {
         super("conexion");
     }
     
-    var crearPartida = false;
-
     preload(){
       this.load.audio("sound", ["resources/MusicaMenu.mp3"]);
       this.load.image("conectar", "resources/conectar.png");
@@ -48,14 +46,15 @@ class primera extends Phaser.Scene {
       }
       
       update () {
-    	  if (crearPartida == false){
+    	  if (crearPartidaBool == false){
     		  crearPartida();
-    		  crearPartida = true;
+    		  crearPartidaBool = true;
     	  }
     	  
     	  comprobar();
     	  
-    	  if ((J1_id == -1) || (J2_id == -1)) {
+    	  if (J2_id != -1) {
     		  this.scene.start("PlayGame");
     	  }
 } 
+}
