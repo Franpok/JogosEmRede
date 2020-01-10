@@ -43,11 +43,18 @@
 ###### 5.1.3 Programación y gameplay
 ###### 5.1.4 Interfaz
 ###### 5.1.5 Capturas de pantalla
+#### 5.2 v1.0 (Fase 3)
 ###### 5.2.1 Arte
 ###### 5.2.2 Música
 ###### 5.2.3 Programación y gameplay
 ###### 5.2.4 Interfaz
 ###### 5.2.5 Capturas de pantalla
+#### 5.3 v1.0 (Fase 4)
+###### 5.3.1 Arte
+###### 5.3.2 Programación y gameplay
+###### 5.3.3 Interfaz
+###### 5.3.4 Capturas de pantalla
+#### 5.4 v1.0 (Fase 5)
 ## 6. Aspectos en el tintero
 #### 6.1 Fase 2 (Race 51 v1.0)
 
@@ -158,7 +165,7 @@ En esta sección se detallarán las pantallas que componen Race 51, las transici
 #### 4.1 Diagrama de flujo
 El siguiente diagrama de estados muestra las pantallas presentes a lo largo de Race 51 así como las transiciones entre ellas. Más adelante nos centraremos en cada una individualmente.
 <p align="left">
-  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/diagrama%20flujo%20op2.png">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/diagramaflujo.png">
 </p>
 
 #### 4.2 Pantalla de inicio
@@ -298,16 +305,16 @@ Para la interfaz hemos hecho una nueva escena que mientras se conecta el jugador
 #### 5.3 v1.0 (Fase 4)
 Durante esta fase hemos implementado WebSockets para proporcionalidad la jugabilidad en red entre dos jugadores a nuestro juego. Aparte, hemos decidido realizar todo con WebSockets por lo que eliminamos el contenido de ApiRest de nuestro juego para gestionar todo el servidor mediante Websockets. Para ello hemos creado mapas de Partidas y Jugadores donde permitimos hasta un máximo de 4 partidas simultáneas u ocho jugadores conectados al mismo tiempo. En el servidor, procesamos las partidas y jugadores y al finalizar una partida la borramos con sus correspondientes jugadores para hacer hueco a nuevos usuarios.
 
-###### 5.2.1 Arte
+###### 5.3.1 Arte
 Hemos cambiado la pantalla de carga de ApiRest para usarla como sala de Espera para el jugador mientras que el servidor busca otro usuario si lo hay para emparejarlo.
 
-###### 5.2.3 Programación y gameplay
+###### 5.3.3 Programación y gameplay
 En cuanto a cosas del juego no hemos tocado nada de jugabilidad pero si hemos adaptado para que la versión en local se transformase en una versión preparada para websockets. Donde se encuentra la programación es en la construcción de WebSockets y sus correspondientes funciones en cliente y la construcción del servidor para soportar conexiones de jugadores.
 
-###### 5.2.4 Interfaz
+###### 5.3.4 Interfaz
 No se ha modificado en esta fase ya que lo hemos dejado para la fase V.
 
-###### 5.2.4 Capturas de pantalla mezclado con la Fase V
+###### 5.3.4 Capturas de pantalla mezclado con la Fase V
 Algunas de las capturas de pantalla son:
 
 
