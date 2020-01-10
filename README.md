@@ -338,17 +338,25 @@ En esta parte recae la mayor parte de la carga de trabajo de esta fase, en arreg
 - Mejoras extra: hemos mejorado también aspectos señalados de la fase 1. Así, hemos actualizado la descripción de la jugabilidad y el diagrama de flujo (4.1)
 - Mejoras no implementadas / a futuro: Ha habido algunos cambios que queríamos implementar que hemos tenido que dejar en el tintero por falta de tiempo o conocimiento. Dentro de estos se encuentra la función de agacharse, que trae consigo un nuevo obstáculo, el dron. Tampoco hemos podido implementar todos los personajes del primer concept del juego (aunque para compensar hemos creado varios aspectos del alienígena) 
 - Capturas de las mejoras:
+
 **Explicación de la finalidad del juego**
 <p align="center">
   <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Fase5_01.png">
 </p>
+
 **Selector de aspecto**
 <p align="center">
   <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Fase5_02.png">
 </p>
+
 **Nueva UI y efectos**
 <p align="center">
   <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Fase5_03.png">
+</p>
+
+**Ahora espera después de morir un jugador**
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Fase5_05.png">
 </p>
 
 
