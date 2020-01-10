@@ -61,5 +61,6 @@ class primera extends Phaser.Scene {
     		
     		  this.scene.start("PlayGame");
     	  }
+    	  
 } 
 }

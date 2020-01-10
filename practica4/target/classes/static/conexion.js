@@ -96,6 +96,7 @@ function comprobar() {
 	socket.onmessage = function (event) {
 		var aux = JSON.parse(event.data);
 		J2_skin = aux.idSkin;
+		console.log(aux.idSkin);
 		J2_id = aux.idJugador;
 	}
 }
