@@ -295,6 +295,22 @@ Para la interfaz hemos hecho una nueva escena que mientras se conecta el jugador
   <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/pausaPrac3.jpeg">
 </p>
 
+#### 5.3 v1.0 (Fase 4)
+Durante esta fase hemos implementado WebSockets para proporcionalidad la jugabilidad en red entre dos jugadores a nuestro juego. Aparte, hemos decidido realizar todo con WebSockets por lo que eliminamos el contenido de ApiRest de nuestro juego para gestionar todo el servidor mediante Websockets. Para ello hemos creado mapas de Partidas y Jugadores donde permitimos hasta un máximo de 4 partidas simultáneas u ocho jugadores conectados al mismo tiempo. En el servidor, procesamos las partidas y jugadores y al finalizar una partida la borramos con sus correspondientes jugadores para hacer hueco a nuevos usuarios.
+
+###### 5.2.1 Arte
+Hemos cambiado la pantalla de carga de ApiRest para usarla como sala de Espera para el jugador mientras que el servidor busca otro usuario si lo hay para emparejarlo.
+
+###### 5.2.3 Programación y gameplay
+En cuanto a cosas del juego no hemos tocado nada de jugabilidad pero si hemos adaptado para que la versión en local se transformase en una versión preparada para websockets. Donde se encuentra la programación es en la construcción de WebSockets y sus correspondientes funciones en cliente y la construcción del servidor para soportar conexiones de jugadores.
+
+###### 5.2.4 Interfaz
+No se ha modificado en esta fase ya que lo hemos dejado para la fase V.
+
+###### 5.2.4 Capturas de pantalla mezclado con la Fase V
+Algunas de las capturas de pantalla son:
+
+
 # 6. Aspectos en el tintero
 
 #### 6.1 Fase 2 (Race51 v1.0)
