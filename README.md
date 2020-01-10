@@ -55,6 +55,9 @@
 ###### 5.3.3 Interfaz
 ###### 5.3.4 Capturas de pantalla
 #### 5.4 v1.0 (Fase 5)
+###### 5.4.1 Beta Testing
+###### 5.4.2 Mejoras Finales
+###### 5.4.3 Subida a plataformas online
 ## 6. Aspectos en el tintero
 #### 6.1 Fase 2 (Race 51 v1.0)
 
@@ -330,7 +333,24 @@ Hemos detectado varios tipos de errores: visuales, de gameplay y respecto a la m
 ###### 5.4.2 Mejoras Finales
 En esta parte recae la mayor parte de la carga de trabajo de esta fase, en arreglar (o intentarlo al menos) todos los fallos encontrados durante el Beta Testing.
 - Errores de música: Gracias a una variable booleana auxiliar hemos conseguido hacer que la música funcione a la perfección, parando cuando debe parar y continuando cuando le toca únicamente. También hemos añadido efectos de sonido a la muerte del alienígena, cuando se hace daño chocándose con los obstáculos y cuando obtiene un power-up.
-- Errores visuales:
+- Errores visuales: Todos los errores de idioma, mayúsculas y colores han sido arreglados. Ahora usamos colores como el azul o el amarillo, menos agresivos, combinamos mayúsculas y minúsculas y todo nuestro texto está en español. También disponemos de una UI mejorada del juego (sigue siendo simple) haciendo que se puedan distinguir y leer las vidas de los jugadores y el tiempo. Además hemos añadido unos indicadores encima del alien que se activan cuando: obtiene una vida, pierde una vida y cuando tiene la capacidad de hacer doble salto. Ahora, si te diriges al menú de controles también se dará información sobre la finalidad del juego y las nuevas mejoras visuales. Para terminar, ahora disponemos de 3 aspectos de personaje más y una sala donde podrás escoger el aspecto que quieras.
+- Errores de gameplay: Hemos cambiado el final del juego, haciendo que ahora espere unos 3 segundos después de que muera el primer jugador, pudiendo así ver perfectamente quién ha perdido y quién ha ganado. Hemos arreglado los errores con colisiones con algunos obstáculos en los que parecía que se perdía 1 vida en vez de 2 al colisionar con 2 obstáculos juntos. Con respecto a la jugabilidad, hemos implementado un nuevo power-up que no llegamos a implementar con anterioridad, el doble salto. Ahora tendrás un 50% de posibilidad de conseguir doble salto y otro 50% de obtener una vida extra.
+- Mejoras extra: hemos mejorado también aspectos señalados de la fase 1. Así, hemos actualizado la descripción de la jugabilidad y el diagrama de flujo (4.1)
+- Mejoras no implementadas / a futuro: Ha habido algunos cambios que queríamos implementar que hemos tenido que dejar en el tintero por falta de tiempo o conocimiento. Dentro de estos se encuentra la función de agacharse, que trae consigo un nuevo obstáculo, el dron. Tampoco hemos podido implementar todos los personajes del primer concept del juego (aunque para compensar hemos creado varios aspectos del alienígena) 
+- Capturas de las mejoras:
+**Explicación de la finalidad del juego**
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Fase5_01.png">
+</p>
+**Selector de aspecto**
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Fase5_02.png">
+</p>
+**Nueva UI y efectos**
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Fase5_03.png">
+</p>
+
 
 ###### 5.4.3 Subida a plataformas online
 Hemos subido el juego a 4 plataformas de videojuegos online diferentes (una por cada integrante del grupo), siendo estas:
@@ -342,7 +362,7 @@ Hemos subido el juego a 4 plataformas de videojuegos online diferentes (una por 
 
 **Juego en Itch.io**
 <p align="center">
-  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Fase5_03.png">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Fase5_04.png">
 </p>
 
 # 6. Aspectos en el tintero
