@@ -17,6 +17,7 @@ class muerto extends Phaser.Scene {
     this.clickButton = back
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("menuPrincipal"))
+         .on('pointerdown', () =>  borrarPartida())
          
   }
     

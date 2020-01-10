@@ -302,8 +302,13 @@ class playGame extends Phaser.Scene {
             
             switch(decidirPowerUp){
                 case 0:
+                	J1_CogerPowerup = true;
+                	J1_Powerup = 0;
+                	actualizaJugador();
                     if (vidaAnt1 === gameOptions.vidas1) { // Si las vidas anteriores son iguales a las actuales, se añade una más a las actuales
                         gameOptions.vidas1++;
+                        J1_Vida++;
+                        actualizaJugador()
                         vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
                         indicadorV=3; //duración del aviso
                         imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');// se añade el aviso
@@ -311,6 +316,9 @@ class playGame extends Phaser.Scene {
                 break;
 
                 case 1:
+                	J1_CogerPowerup = true;
+                	J1_Powerup = 1;
+                	actualizaJugador();
                     if(duracion1<0){
                         duracion1 = 5; //duracion del doble salto
                         saltos1 = 2; //ahora tenemos como maximo 2 saltos
@@ -338,13 +346,14 @@ class playGame extends Phaser.Scene {
         }, null, this);
 
         //COLISION JUGADOR2 POWERUP
+        if(J2_CogerPowerup){
         this.physics.add.overlap(this.player2, this.powerupGroup, function (player2, powerup) {
             this.tengoPowerup == true;
-            switch(decidirPowerUp){
+            switch(J2_PowerUp){
                 case 0:
-                    if (vidaAnt2 === gameOptions.vidas2) {
+                    if (vidaAnt2 === J2_Vida) {
                         gameOptions.vidas2++;
-                        vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                        vidaTextP2.setText("Vidas J2: " + J2_Vida);
                         indicadorV2=3;//duracion del aviso
                         imagenV2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida'); //aviso  
                     };
@@ -376,10 +385,14 @@ class playGame extends Phaser.Scene {
             powerUP_sound.play();
         }, null, this);
 
+        }
         // COLISION JUGADOR1 OBSTACULO
         this.physics.add.overlap(this.player, this.obstaculoGroup, function (player, obstaculo) {
             if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
-                gameOptions.vidas1--;
+                J1_DañoRecibido = true;
+            	J1_Vida--;
+                actualizaJugador();
+            	gameOptions.vidas1--;
                 vidaAnt1--;
                 indicadorD=3; //duracion del aviso
                 imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorDamage');//aviso            
@@ -391,6 +404,8 @@ class playGame extends Phaser.Scene {
                 gameOptions.vidas1=0;
                 vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
                     this.dying = true;
+                    J1_Muerto = true;
+                    actualizaJugador();
                     this.player.visible = false;
                     death_sound.play();
                     this.player.body.setVelocityX(-200);
@@ -421,19 +436,20 @@ class playGame extends Phaser.Scene {
 
         
         // COLISION JUGADOR2 OBSTACULO
+        if(J2_DañoRecibido){ //WEB
         this.physics.add.overlap(this.player2, this.obstaculoGroup, function (player2, obstaculo) {
-            if (gameOptions.vidas2 > 1) {
+            if (J2_Vida > 1) { //WEB
                 gameOptions.vidas2--;
                 vidaAnt2--;
                 indicadorD2=3; //tiempo de aviso
                 imagenD2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage'); //aviso
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
-                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                vidaTextP2.setText("Vidas J2: " + J2_Vida); //WEB
                 dano.play(); //sonido de recibir daño suena
             } else {
-                gameOptions.vidas2=0;
-                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                J2_Vida=0;
+                vidaTextP2.setText("Vidas J2: " + J2_Vida); //WEB
                 this.dying2 = true;
                 this.player2.visible = false;
                 death_sound.play();
@@ -442,7 +458,7 @@ class playGame extends Phaser.Scene {
                
             }
         }, null, this);
-
+        }
         // COLISION JUGADOR2 DRON
         /*
         this.physics.add.overlap(this.player2, this.dronGroup, function (player2, dron) {
@@ -470,12 +486,15 @@ class playGame extends Phaser.Scene {
 
         // NUESTROS INPUTS POR TECLADO (ACTUALMENTE AGACHAR NO TIENE FUNCIONALIDAD)
         this.input.keyboard.on('keydown_W', this.jump, this);
-        this.input.keyboard.on('keydown_UP', this.jump2, this);
+        //this.input.keyboard.on('keydown_UP', this.jump2, this);
+        if(J2_saltando){ //WEB
+        	this.jump2
+        }
         this.input.keyboard.on('keydown_DOWN', this.agachar, this);
         this.input.keyboard.on('keydown_S', this.agachar, this);
         this.input.keyboard.on('keyup_DOWN', this.sinAgachar, this);
         this.input.keyboard.on('keyup_S', this.sinAgachar, this);
-        this.input.keyboard.on('keydown_P', this.pause, this);
+        //this.input.keyboard.on('keydown_P', this.pause, this);
 
 
         //NUESTROS TEXTOS QUE SE VISUALIZAN DURANTE EL JUEGO
@@ -483,7 +502,7 @@ class playGame extends Phaser.Scene {
         this.add.image(105,40,'layout').setScale(0.27,0.5);//fondo para las vidas del jugador 2
         this.add.image(920,40,'layout').setScale(0.3,0.5);//fondo para el tiempo
         vidaTextP1 = this.add.text(25, 330, "Vidas J1: " + gameOptions.vidas1, { fontFamily: 'Arial', fontSize: "32px", fill: "#fff" });
-        vidaTextP2 = this.add.text(25, 20, "Vidas J2: " + gameOptions.vidas2, { fontFamily: 'Arial', fontSize: "32PX", fill: "#fff" });
+        vidaTextP2 = this.add.text(25, 20, "Vidas J2: " + J2_Vida, { fontFamily: 'Arial', fontSize: "32PX", fill: "#fff" });
         tiempoText = this.add.text(850, 20, "Tiempo: 0", { fontFamily: 'Arial', fontSize: "32px", fill: "#fff" });
         
 
@@ -509,6 +528,19 @@ class playGame extends Phaser.Scene {
         indicadorV--;
         indicadorV2--;
         decidirPowerUp = Phaser.Math.Between(0,1);
+        
+         J1_saltando = false;
+         J1_CogerPowerup = false;
+         J1_DañoRecibido = false;
+         J1_PinchoGenerado = false;
+         J1_PowerupGenerado = false;
+         
+         J2_PowerupGenerado = false;
+         J2_saltando = false;
+         J2_CogerPowerup = false;
+         J2_DañoRecibido = false;
+         J2_PinchoGenerado = false;
+         actualizaJugador();
     }
 
     //MENU DE PAUSA
@@ -548,7 +580,9 @@ class playGame extends Phaser.Scene {
 
 
             if (Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad) { //AQUI DECIDO SI APARECE UN POWERUP O NO (JUGADOR 1)
-                if (this.powerupPool.getLength()) {
+            	J1_PowerupGenerado =true;
+            	actualizaJugador();
+            	if (this.powerupPool.getLength()) {
                     let powerup = this.powerupPool.getFirst();
                     powerup.x = posX;
                     powerup.y = game.config.height * 0.7;
@@ -568,6 +602,8 @@ class playGame extends Phaser.Scene {
 
             // AQUI DECIDO SI VOY A SPAWNEAR UN OBSTACULO O NO EN UNA PLATAFORMA DEL JUGADOR 1
             if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad) {
+            	J1_PinchoGenerado = true;
+            	actualizaJugador();
                 if (this.obstaculoPool.getLength()) {
                     let obstaculo = this.obstaculoPool.getFirst();
                     obstaculo.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
@@ -606,7 +642,7 @@ class playGame extends Phaser.Scene {
                 }
             }*/
         }
-        if (this.dying2) { //LO ANTERIOR PERO PARA NUESTRO JUGADOR 2
+        if (J2_Muerto) { //LO ANTERIOR PERO PARA NUESTRO JUGADOR 2
 
         } else {
 
@@ -630,7 +666,7 @@ class playGame extends Phaser.Scene {
             this.nextPlatformDistance = 0;
 
             // AQUI DECIDO SI VOY A SPAWNEAR UN POWER UP O NO EN UNA PLATAFORMA DEL JUGADOR 2
-            if (Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad2) {
+            if (J2_PowerupGenerado) {
                 if (this.powerupPool.getLength()) {
                     let powerup = this.powerupPool.getFirst();
                     powerup.x = posX;
@@ -652,7 +688,7 @@ class playGame extends Phaser.Scene {
 
 
             // AQUI DECIDO SI VOY A SPAWNEAR UN OBSTACULO O NO EN UNA PLATAFORMA DEL JUGADOR 2
-            if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad2) {
+            if (J2_PinchoGenerado) {
                 if (this.obstaculoPool.getLength()) {
                     let obstaculo = this.obstaculoPool.getFirst();
                     obstaculo.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
@@ -698,6 +734,8 @@ class playGame extends Phaser.Scene {
 
     // NUESTRA FUNCION DE SALTO PARA EL JUGADOR UNO
     jump() {
+    	J1_saltando = true;
+    	actualizaJugador();
         if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < saltos1))) { // SI NO ESTOY MUERTO Y ESTOY TOCANDO EL SUELO o TENGO MAS SALTOS CONSECUTIVOS PUEDO SALTAR
             if (this.player.body.touching.down) {
                 this.playerJumps = 0;
@@ -711,7 +749,7 @@ class playGame extends Phaser.Scene {
     }
 
     jump2() { // PARA EL JUGADOR 2
-        if ((!this.dying2) && (this.player2.body.touching.down || (this.playerJumps > 0 && this.playerJumps < saltos2))) {
+        if ((!J2_Muerto) && (this.player2.body.touching.down || (this.playerJumps > 0 && this.playerJumps < saltos2))) {
             if (this.player2.body.touching.down) {
                 this.playerJumps = 0;
             }
@@ -801,6 +839,22 @@ class playGame extends Phaser.Scene {
             this.dying = false;
             this.dying2 = false;
             sonido.mute = true;
+            var J1_saltando = false;
+            var J1_CogerPowerup = false;
+            var J1_Vida = 3;
+            var J1_DañoRecibido = false;
+            var J1_Muerto = false;
+            var J1_Powerup = 0;
+            var J1_PowerupGenerado = false;
+            var J1_PinchoGenerado = false;
+            var J2_saltando = false;
+            var J2_CogerPowerup = false;
+            var J2_PowerupGenerado = false;
+            var J2_Vida = 3;
+            var J2_DañoRecibido = false;
+            var J2_Muerto = false;
+            var J2_Powerup = 0;
+            var J2_PinchoGenerado = false;
             this.scene.start("menuMuerte");
             
         }
@@ -813,13 +867,31 @@ class playGame extends Phaser.Scene {
             this.dying = false;
             this.dying2 = false;
             sonido.mute = true;
+            var J1_saltando = false;
+            var J1_CogerPowerup = false;
+            var J1_Vida = 3;
+            var J1_DañoRecibido = false;
+            var J1_Muerto = false;
+            var J1_Powerup = 0;
+            var J1_PowerupGenerado = false;
+            var J1_PinchoGenerado = false;
+            var J2_saltando = false;
+            var J2_CogerPowerup = false;
+            var J2_PowerupGenerado = false;
+            var J2_Vida = 3;
+            var J2_DañoRecibido = false;
+            var J2_Muerto = false;
+            var J2_Powerup = 0;
+            var J2_PinchoGenerado = false;
             this.scene.start("menuMuerte2");
             
         }
         if (this.dying == true) {
+        	J1_Muerto = true;
+        	actualizaJugador();
             timedEvent = this.time.delayedCall(3000, reiniciarJ1, [], this);           
         }
-        if (this.dying2 == true) {
+        if (J2_Muerto == true) {
             timedEvent = this.time.delayedCall(3000, reiniciarJ2, [], this);
         }
         this.player.x = gameOptions.playerStartPosition;

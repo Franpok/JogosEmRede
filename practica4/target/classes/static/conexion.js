@@ -12,14 +12,15 @@ function crearPartida(){ //Mi función que envía los datos que necesito al serv
 	let message = {
 		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
 		idJugador: J1_id,
-		idSkin: J1_skin
+		idSkin: J1_skin,
+		ayuda: "Partida llegue"
 	}	
 	socket.send(JSON.stringify(message)); //Por hacer
 	
 	socket.onmessage = function (event) {
 		var aux = JSON.parse(event.data); //ESTO CONVIERTE CUALQUIER ELEMENTO DE LA FUNCION A JSON PARA PODER ENVIARLO DE UN LADO A OTRO	
 		ID_Partida = aux.idPartida; //EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
-		console.log(aux.prueba);
+		console.log(aux.stringPrueba);
 		console.log(ID_Partida);
 	}
 }
@@ -45,10 +46,12 @@ function actualizaJugador() {
 			idPartida: ID_Partida,
 			jugadorSaltando: J1_saltando,
 			jugadorDaño: J1_DañoRecibido,
-			jugadorSubirVida: J1_Vida,
+			jugadorVida: J1_Vida,
 			jugadorMuerto: J1_Muerto,
 			jugadorPowerUp: J1_Powerup,
-			pinchoGenerado: J1_Pinchogenerado
+			jugadorPinchoGenerado: J1_PinchoGenerado,
+			jugadorPowerupGenerado: J1_PowerupGenerado,
+			jugadorCogerPowerup: J1_CogerPowerup
 	}
 	socket.send(JSON.stringify(message));
 	
@@ -56,10 +59,12 @@ function actualizaJugador() {
 		var aux = JSON.parse(event.data);
 		J2_DañoRecibido = aux.jugadorDaño;
 		J2_Powerup = aux.jugadorPowerUp;
-		J2_Pinchogenerado = aux.pinchoGenerado;
+		J2_PinchoGenerado = aux.pinchoGenerado;
 		J2_Muerto = aux.jugadorMuerto;
 		J2_saltando = aux.jugadorSaltando;
 		J2_Vida = aux.jugadorSubirVida;
+		J2_PowerupGenerado = aux.jugadorPowerupGenerado;
+		J2_CogerPowerup = aux.jugadorCogerPowerup;
 	}
 }
 
@@ -75,6 +80,7 @@ function crearJugador(){ //Mi función que recibe los datos que necesito del jug
 		var aux = JSON.parse(event.data);
 		J1_id = aux.idJugador;
 		console.log(aux.mensaje);
+		console.log(aux.idJugador);
 	}
 	
 	

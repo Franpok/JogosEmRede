@@ -23,110 +23,162 @@ public class Handler extends TextWebSocketHandler {
 	final int N_PARTIDAS = 4;
 	int JUGADORESACTUALES = 0;
 	int PARTIDASACTUALES = 0;
-	//Si fuera necesario añadir ints maximos de partidas y sesiones
+	boolean primeravez = true;
+	boolean[] EstadoPartida =new boolean[N_PARTIDAS];
+	boolean[] EstadoJugadores =new boolean[N_JUGADORES];
+	
 	
 	
 	
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		JsonNode node = mapper.readTree(message.getPayload()); //Mi nodo que explora
 		ObjectNode msg = mapper.createObjectNode(); //Mi explorador de mensajes
+
+		if(primeravez) {
+			for(int i = 0; i< N_PARTIDAS;i++) {
+				EstadoPartida[i] = false;
+			}
+			for(int i = 0; i< N_JUGADORES;i++) {
+				EstadoJugadores[i] = false;
+			}
+			primeravez = false;
+		}
 		
 		switch(node.get("idFuncion").asInt()) { //Cuando envie mi mensaje, según el parametro en el JSON que llegue "idfuncion", me meteré en una función o en otra
 		
-		case(0): //Creamos la partida
+		
+		case(0): //Creamos la partida (HECHO CON ÉXITO)
 			// Comprobamos si existen partidas
 			Jugador nuevoJugador = new Jugador (node.get("idJugador").asInt(), session);
-			if (partidas == null) {
-				Partida nuevaPartida = new Partida(PARTIDASACTUALES, nuevoJugador);
-				partidas.put(PARTIDASACTUALES, nuevaPartida);
-				PARTIDASACTUALES++;
-			}
-			/*if (partidas == null) { // Si no hay partidas
-				Partida nuevaPartida1 = new Partida(1);
-				partidas.put(0, nuevaPartida1);
-				Partida nuevaPartida2 = new Partida(2);
-				partidas.put(1, nuevaPartida2);
-				Partida nuevaPartida3 = new Partida(3);
-				partidas.put(2, nuevaPartida3);
-				Partida nuevaPartida4 = new Partida(4);
-				partidas.put(3, nuevaPartida4);
-			}
-		
-			int idp = 0;
+			nuevoJugador.setSkin(node.get("idSkin").asInt());
+			
 			String prueba = "No he entrado a ninguna partida";
+			System.err.println(node.get("ayuda").asText());
+			
+			if (EstadoPartida[0]) { //SI existe la partida
+				System.err.println(EstadoPartida[0]);
+				Partida p = partidas.get(0); //Saco esa partida
+				if (p.getVacio()) { //Si solo tiene un jugador (Ya que si existe es porque tiene un jugador)
+					p.setJugador2(nuevoJugador);
+					p.setVacio(false); //Ya tendría 2 jugadores
+					partidas.put(0, p); //La devuelvo
+					msg.put("idPartida", 0);
+					prueba = "He entrado en una partida";
+					msg.put("stringPrueba", prueba);
+					session.sendMessage(new TextMessage(msg.toString()));
+					break;
+				}
+			}
+			else if (!EstadoPartida[0]) {
+				System.err.println(EstadoPartida[0]);
+				EstadoPartida[0] = true;
+				Partida p = new Partida(0, nuevoJugador);
+				partidas.put(0, p);
+				prueba = "He entrado en una partida";
+				msg.put("idPartida", 0);
+				msg.put("stringPrueba", prueba);
+				session.sendMessage(new TextMessage(msg.toString()));
+				break;
+			}
 		
-			if (partidas.get(0).getJ1() != null) {
-				if (partidas.get(0).getVacio() == false) {
-					partidas.get(0).setJugador2(new Jugador(node.get("idJugador").asInt(), session));
-					idp = 0;
+			if (EstadoPartida[1]) { //SI existe la partida
+				System.err.println(EstadoPartida[1]);
+				Partida p = partidas.get(1); //Saco esa partida
+				if (p.getVacio()) { //Vacio solo es true si esta vacio (es false cuando esta lleno, 2 jugadores)
+					p.setJugador2(nuevoJugador); 
+					p.setVacio(false);
+					partidas.put(1, p); //La devuelvo
+					msg.put("idPartida", 1);
 					prueba = "He entrado en una partida";
+					msg.put("stringPrueba", prueba);
+					session.sendMessage(new TextMessage(msg.toString()));
+					break;
 				}
 			}
+			else if (!EstadoPartida[1]) {
+				System.err.println(EstadoPartida[1]);
+				EstadoPartida[1] = true;
+				Partida nuevaPartida = new Partida(1, nuevoJugador);
+				partidas.put(1, nuevaPartida);
+				msg.put("idPartida", 1);
+				prueba = "He entrado en una partida";
+				msg.put("stringPrueba", prueba);
+				session.sendMessage(new TextMessage(msg.toString()));
+				break;
+			}
 			
-			if (partidas.get(1).getJ1() != null) {
-				if (partidas.get(1).getVacio() == false) {
-					partidas.get(1).setJugador2(new Jugador(node.get("idJugador").asInt(), session));
-					idp = 1;
+			if (EstadoPartida[2]) { //SI existe la partida
+				System.err.println(EstadoPartida[2]);
+				Partida p = partidas.get(2); //Saco esa partida
+				if (p.getVacio()) { //Si solo tiene un jugador (Ya que si existe es porque tiene un jugador)
+					p.setJugador2(nuevoJugador);
+					p.setVacio(false);
+					partidas.put(2, p); //La devuelvo
+					msg.put("idPartida", 2);
 					prueba = "He entrado en una partida";
+					msg.put("stringPrueba", prueba);
+					session.sendMessage(new TextMessage(msg.toString()));
+					break;
 				}
 			}
+			else if (!EstadoPartida[2]) {
+				System.err.println(EstadoPartida[2]);
+				EstadoPartida[2] = true;
+				Partida nuevaPartida = new Partida(2, nuevoJugador);
+				partidas.put(2, nuevaPartida);
+				msg.put("idPartida", 2);
+				prueba = "He entrado en una partida";
+				msg.put("stringPrueba", prueba);
+				session.sendMessage(new TextMessage(msg.toString()));
+				break;
+			}
 			
-			if (partidas.get(2).getJ1() != null) {
-				if (partidas.get(2).getVacio() == false) {
-					partidas.get(2).setJugador2(new Jugador(node.get("idJugador").asInt(), session));
-					idp = 2;
+			if (EstadoPartida[3]) { //SI existe la partida
+				System.err.println(EstadoPartida[3]);
+				Partida p = partidas.get(3); //Saco esa partida
+				if (p.getVacio()) { //Si solo tiene un jugador (Ya que si existe es porque tiene un jugador)
+					p.setJugador2(nuevoJugador);
+					p.setVacio(false);
+					partidas.put(3, p); //La devuelvo
+					msg.put("idPartida", 3);
 					prueba = "He entrado en una partida";
+					msg.put("stringPrueba", prueba);
+					session.sendMessage(new TextMessage(msg.toString()));
+					break;
+					
 				}
 			}
-			
-			if (partidas.get(3).getJ1() != null) {
-				if (partidas.get(3).getVacio() == false) {
-					partidas.get(3).setJugador2(new Jugador(node.get("idJugador").asInt(), session));
-					idp = 3;
-					prueba = "He entrado en una partida";
-				}
-			}
-			
-			if(!partidas.get(0).getVacio()) {
-				partidas.get(0).setJugador1(new Jugador(node.get("idJugador").asInt(), session));
-				idp = 0;
+			else if (!EstadoPartida[3]) {
+				System.err.println(EstadoPartida[3]);
+				EstadoPartida[3] = true;
+				Partida nuevaPartida = new Partida(3, nuevoJugador);
+				partidas.put(3, nuevaPartida);
+				msg.put("idPartida", 3);
 				prueba = "He entrado en una partida";
+				msg.put("stringPrueba", prueba);
+				session.sendMessage(new TextMessage(msg.toString()));
+				break;
 			}
-			
-			if(!partidas.get(1).getVacio()) {
-				partidas.get(1).setJugador1(new Jugador(node.get("idJugador").asInt(), session));
-				idp = 1;
-				prueba = "He entrado en una partida";
-			}
-			
-			if(!partidas.get(2).getVacio()) {
-				partidas.get(2).setJugador1(new Jugador(node.get("idJugador").asInt(), session));
-				idp = 2;
-				prueba = "He entrado en una partida";
-			}
-			
-			if(!partidas.get(3).getVacio()) {
-				partidas.get(3).setJugador1(new Jugador(node.get("idJugador").asInt(), session));
-				idp = 3;
-				prueba = "He entrado en una partida";
-			}
-			
-			msg.put("idPartida", idp);
 			msg.put("stringPrueba", prueba);
-			session.sendMessage(new TextMessage(msg.toString()));*/	
+			session.sendMessage(new TextMessage(msg.toString()));
+			
+		
+			
 			break;
 			
 		case(1): // Cerrar partida
 			// Sacar objeto partida de partidas teniendo un id
 			int idBorrado = node.get("idPartida").asInt();
+			int idJugadorBorrado = node.get("idJugador").asInt();
+			EstadoJugadores[idJugadorBorrado] = false;
 			String texto = "Se ha borrado la partida";
-			Partida p = partidas.get(node.get("idPartida").asInt());
+			Partida p = partidas.get(idBorrado);
 			if (!p.getVacio()) {
+				EstadoPartida[idBorrado] = false;
 				Partida partidaBorrada = new Partida();
 				partidaBorrada.setId(idBorrado);
 				partidas.put(idBorrado, partidaBorrada);
 			}
-			int idJugadorBorrado = node.get("idJugador").asInt();
 			
 			msg.put("idPartida", idBorrado);	
 			msg.put("mensajeBorrado", texto);
@@ -134,71 +186,165 @@ public class Handler extends TextWebSocketHandler {
 			break;
 			
 		case(2): //ACTUALIZAR JUGADOR
-			Partida x = partidas.get(node.get("idPartida").asInt());
+			int idja = node.get("idPartida").asInt();
+			Partida x = partidas.get(idja);
 			int idJugadorM = node.get("idJugador").asInt();
+			
 			Jugador J1 = x.getJ1();
 			Jugador J2 = x.getJ2();
 						
-			boolean dañoJ2 = node.get("jugadorDaño").asBoolean();
-			int powerUpJ2 = node.get("jugadorPowerUp").asInt();
-			boolean trampasJ2 = node.get("pinchoGenerado").asBoolean();
-			boolean muerteJ2 = node.get("jugadorMuerto").asBoolean();
-			boolean saltoJ2 = node.get("jugadorSaltando").asBoolean();
-			int vidasJ2 = node.get("jugadorSubirVidas").asInt();
+			boolean dañoJ = node.get("jugadorDaño").asBoolean();
+			int powerUpJ = node.get("jugadorPowerUp").asInt();
+			boolean trampasJ = node.get("jugadorPinchoGenerado").asBoolean();
+			boolean powerUpGeneradoJ = node.get("jugadorPowerupGenerado").asBoolean();
+			boolean cogerPowerupJ = node.get("jugadorCogerPowerup").asBoolean();
+			boolean muerteJ = node.get("jugadorMuerto").asBoolean();
+			boolean saltoJ = node.get("jugadorSaltando").asBoolean();
+			int vidasJ = node.get("jugadorVida").asInt();
+			
 			
 			if (J1.getId() == idJugadorM) {
-				J2.setDaño(dañoJ2);
-				J2.setPowerup(powerUpJ2);
-				J2.setGenerarTrampa(trampasJ2);
-				J2.setMuerte(muerteJ2);
-				J2.setSalto(saltoJ2);	
-				J2.setVidas(vidasJ2);
-				
-				msg.put("jugadorDaño", dañoJ2);
-				msg.put("jugadorPowerUp", powerUpJ2);
-				msg.put("pinchoGenerado", trampasJ2);
-				msg.put("jugadorMuerto", muerteJ2);
-				msg.put("jugadorSaltando", saltoJ2);
-				msg.put("jugadorSubirVidas", vidasJ2);
+				J2.setDaño(dañoJ);
+				J2.setPowerup(powerUpJ);
+				J2.setGenerarTrampa(trampasJ);
+				J2.setMuerte(muerteJ);
+				J2.setSalto(saltoJ);	
+				J2.setVidas(vidasJ);
+				J2.setCogerPowerup(cogerPowerupJ);
+				J2.setGenerarPowerup(powerUpGeneradoJ);
+			
+				msg.put("jugadorDaño", dañoJ);
+				msg.put("jugadorPowerUp", powerUpJ);
+				msg.put("pinchoGenerado", trampasJ);
+				msg.put("jugadorMuerto", muerteJ);
+				msg.put("jugadorSaltando", saltoJ);
+				msg.put("jugadorSubirVidas", vidasJ);
+				msg.put("jugadorPowerupGenerado", powerUpGeneradoJ);
+				msg.put("jugadorCogerPowerup", cogerPowerupJ);
 				
 				WebSocketSession sessionJ2 = J2.getSession();
-				
 				sessionJ2.sendMessage(new TextMessage(msg.toString()));	
+			
 			} else if (J2.getId() == idJugadorM) {
-				J1.setDaño(dañoJ2);
-				J1.setPowerup(powerUpJ2);
-				J1.setGenerarTrampa(trampasJ2);
-				J1.setMuerte(muerteJ2);
-				J1.setSalto(saltoJ2);	
-				J1.setVidas(vidasJ2);
+				J1.setDaño(dañoJ);
+				J1.setPowerup(powerUpJ);
+				J1.setGenerarTrampa(trampasJ);
+				J1.setMuerte(muerteJ);
+				J1.setSalto(saltoJ);	
+				J1.setVidas(vidasJ);
+				J1.setCogerPowerup(cogerPowerupJ);
+				J1.setGenerarPowerup(powerUpGeneradoJ);
 				
-				msg.put("jugadorDaño", dañoJ2);
-				msg.put("jugadorPowerUp", powerUpJ2);
-				msg.put("pinchoGenerado", trampasJ2);
-				msg.put("jugadorMuerto", muerteJ2);
-				msg.put("jugadorSaltando", saltoJ2);
-				msg.put("jugadorSubirVidas", vidasJ2);
+				msg.put("jugadorDaño", dañoJ);
+				msg.put("jugadorPowerUp", powerUpJ);
+				msg.put("pinchoGenerado", trampasJ);
+				msg.put("jugadorMuerto", muerteJ);
+				msg.put("jugadorSaltando", saltoJ);
+				msg.put("jugadorSubirVidas", vidasJ);
+				msg.put("jugadorPowerupGenerado", powerUpGeneradoJ);
+				msg.put("jugadorCogerPowerup", cogerPowerupJ);
 				
 				WebSocketSession sessionJ1 = J1.getSession();
 				
 				sessionJ1.sendMessage(new TextMessage(msg.toString()));	
 			}
+			
 			break;
 		
-		case(3): //Crear jugador(con skin)
-			if (JUGADORESACTUALES < N_JUGADORES) {
-				Jugador j = new Jugador (JUGADORESACTUALES,session);
-				JUGADORESACTUALES++;
+		case(3): //Crear jugador(con skin) (HECHO CON ÉXITO)
+			if (!EstadoJugadores[0]) {
+				Jugador j = new Jugador (0,session);
 				int skin = node.get("idskin").asInt();
 				j.setSkin(skin);
 				j.setSession(session);
-				jugadores.put(JUGADORESACTUALES, j);
+				jugadores.put(0, j);
 				String textito = "Jugador creado correctamente";
 				msg.put("mensaje", textito);
 				msg.put("idJugador", j.getId());
-				
-				JUGADORESACTUALES++;
+				EstadoJugadores[0] = true;
 				}
+			else if (!EstadoJugadores[1]) {
+				Jugador j = new Jugador (1,session);
+				int skin = node.get("idskin").asInt();
+				j.setSkin(skin);
+				j.setSession(session);
+				jugadores.put(1, j);
+				String textito = "Jugador creado correctamente";
+				msg.put("mensaje", textito);
+				msg.put("idJugador", j.getId());
+				EstadoJugadores[1] = true;
+				}
+			else if (!EstadoJugadores[2]) {
+				Jugador j = new Jugador (2,session);
+				int skin = node.get("idskin").asInt();
+				j.setSkin(skin);
+				j.setSession(session);
+				jugadores.put(2, j);
+				String textito = "Jugador creado correctamente";
+				msg.put("mensaje", textito);
+				msg.put("idJugador", j.getId());
+				EstadoJugadores[2] = true;
+				}
+			else if (!EstadoJugadores[3]) {
+				Jugador j = new Jugador (3,session);
+				int skin = node.get("idskin").asInt();
+				j.setSkin(skin);
+				j.setSession(session);
+				jugadores.put(3, j);
+				String textito = "Jugador creado correctamente";
+				msg.put("mensaje", textito);
+				msg.put("idJugador", j.getId());
+				EstadoJugadores[3] = true;
+				}
+			else if (!EstadoJugadores[4]) {
+				Jugador j = new Jugador (4,session);
+				int skin = node.get("idskin").asInt();
+				j.setSkin(skin);
+				j.setSession(session);
+				jugadores.put(4, j);
+				String textito = "Jugador creado correctamente";
+				msg.put("mensaje", textito);
+				msg.put("idJugador", j.getId());
+				EstadoJugadores[4] = true;
+				}
+			else if (!EstadoJugadores[5]) {
+				Jugador j = new Jugador (5,session);
+				int skin = node.get("idskin").asInt();
+				j.setSkin(skin);
+				j.setSession(session);
+				jugadores.put(5, j);
+				String textito = "Jugador creado correctamente";
+				msg.put("mensaje", textito);
+				msg.put("idJugador", j.getId());
+				EstadoJugadores[5] = true;
+				}
+			else if (!EstadoJugadores[6]) {
+				Jugador j = new Jugador (6,session);
+				int skin = node.get("idskin").asInt();
+				j.setSkin(skin);
+				j.setSession(session);
+				jugadores.put(6, j);
+				String textito = "Jugador creado correctamente";
+				msg.put("mensaje", textito);
+				msg.put("idJugador", j.getId());
+				EstadoJugadores[6] = true;
+				}
+			else if (!EstadoJugadores[7]) {
+				Jugador j = new Jugador (7,session);
+				int skin = node.get("idskin").asInt();
+				j.setSkin(skin);
+				j.setSession(session);
+				jugadores.put(7, j);
+				String textito = "Jugador creado correctamente";
+				msg.put("mensaje", textito);
+				msg.put("idJugador", j.getId());
+				EstadoJugadores[7] = true;
+				}
+			else{
+				String textito = "Jugadores llenos :(";
+				msg.put("mensaje", textito);
+			}
+		
 			System.err.println(node.get("mensaje").asText());
 			
 			
@@ -206,8 +352,10 @@ public class Handler extends TextWebSocketHandler {
 			
 			break;
 			
-		case(4):
-			Partida y = partidas.get(node.get("idPartida").asInt());
+		case(4): //Comprobar
+			int idpartidaactual = node.get("idPartida").asInt();
+			Partida y = partidas.get(idpartidaactual);
+			
 			if (y.getJ2() != null) {
 				Jugador jugadorNuevo = y.getJ2();
 				int jnId = jugadorNuevo.getId();
@@ -215,6 +363,11 @@ public class Handler extends TextWebSocketHandler {
 				
 				msg.put("idJugador", jnId);
 				msg.put("idSkin", jnSkin);
+				session.sendMessage(new TextMessage(msg.toString()));
+			}
+			else {
+				msg.put("idJugador",10);
+				msg.put("idSkin", 0);
 				session.sendMessage(new TextMessage(msg.toString()));
 			}
 			break;

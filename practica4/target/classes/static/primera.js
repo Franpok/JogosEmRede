@@ -49,11 +49,16 @@ class primera extends Phaser.Scene {
     	  if (crearPartidaBool == false){
     		  crearPartida();
     		  crearPartidaBool = true;
+    		  var i = 0;
+    		  while (i != 80000){
+    			  i++;
+    		  }
     	  }
-    	  
+    	  console.log(ID_Partida)
     	  comprobar();
-    	  
-    	  if (J2_id != -1) {
+    	 
+    	  if (J2_id != 10) {
+    		
     		  this.scene.start("PlayGame");
     	  }
 } 

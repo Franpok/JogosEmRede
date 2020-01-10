@@ -12,6 +12,7 @@ public class Jugador {
 	private int POWERUP;
 	private boolean MUERTE;
 	private boolean GENERARPOWERUP;
+	private boolean COGERPOWERUP;
 	private int VIDAS;
 	//Crear variables si hiciera falta , NOMBRE??
 	
@@ -70,6 +71,13 @@ public class Jugador {
 		 this.SALTO = b;
 	 }
 	 
+	 public Boolean getCogerPowerup() {
+		 return COGERPOWERUP;
+	 }
+	 
+	 public void setCogerPowerup(Boolean b){
+		 this.COGERPOWERUP = b;
+	 }
 	 public Boolean getDaño() {
 		 return DAÑO;
 	 }

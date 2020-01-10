@@ -13,7 +13,7 @@ public class Partida { //Tiene que tener un ID, los 2 jugadores, boolean para sa
 		this.ID = 0;
 		this.J1 = null;
 		this.J2 = null;
-		this.vacio = false; //Partida esta vacia o llena
+		this.vacio = true; //Partida esta vacia o llena
 	}
 	 
 	 Partida(int id) {
@@ -26,7 +26,7 @@ public class Partida { //Tiene que tener un ID, los 2 jugadores, boolean para sa
 	 Partida(int id, Jugador j1) {
 			this.ID = id;
 			this.J1 = j1;
-			this.vacio = false;
+			this.vacio = true;
 		}
 	 
 	 
