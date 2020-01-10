@@ -317,6 +317,32 @@ No se ha modificado en esta fase ya que lo hemos dejado para la fase V.
 ###### 5.3.4 Capturas de pantalla mezclado con la Fase V
 Algunas de las capturas de pantalla son:
 
+#### 5.4 v1.0 (Fase 5)
+El desarrollo de la última fase se ha realizado a la vez que la fase 4, habiéndonos dividido el trabajo para aminorar la carga de trabajo de cada integrante. Esta fase se divide en tres principales funciones: beta testing, implementación de mejoras y subida del juego a plataformas de juegos.
+
+###### 5.4.1 Beta Testing
+Para hacer beta testing, hemos probado a jugar el juego bastantes veces para así detectar errores que se puedan generar durante el juego, además de tener en cuenta todos los errores señalados al entregar otras fases. 
+Hemos detectado varios tipos de errores: visuales, de gameplay y respecto a la música. 
+Errores de música: Teníamos errores en la continuidad/descontinuidad de la música de fondo en los menús y el juego, creándose, a veces, bucles infinitos donde la música no paraba. Además había una falta de efectos sonoros en el juego, no habiendo ninguna alerta sonora cuando el jugador interactuaba con los elementos del juego.
+Errores visuales: Mezclabamos idiomas, usabamos colores asociados a la agresividad como el "rojo", pequeños fallos ortográficos, uso excesivo de mayúsculas, falta de efectos visuales cuando el personaje interactúa con los objetos a su alrededor, UI ilegible y falta de información sobre la finalidad del juego. Además, se puede hacer aburrido jugar con el mismo personaje una y otra vez.
+Errores de gameplay: El final del juego es demasiado brusco, por lo que no se ve bien lo que pasa al acabar, la jugabilidad llega a hacerse monótona, ya que solo tenemos un obstáculo y un power-up, errores con colisiones.
+
+###### 5.4.2 Mejoras Finales
+En esta parte recae la mayor parte de la carga de trabajo de esta fase, en arreglar (o intentarlo al menos) todos los fallos encontrados durante el Beta Testing.
+Errores de música: Gracias a una variable booleana auxiliar hemos conseguido hacer que la música funcione a la perfección, parando cuando debe parar y continuando cuando le toca únicamente. También hemos añadido efectos de sonido a la muerte del alienígena, cuando se hace daño chocándose con los obstáculos y cuando obtiene un power-up.
+Errores visuales:
+
+###### 5.4.3 Subida a plataformas online
+Hemos subido el juego a 4 plataformas de videojuegos online diferentes (una por cada integrante del grupo), siendo estas:
+Itch.io : https://franpok.itch.io/race51
+Newgrounds: https://www.newgrounds.com/projects/games/1410902/preview
+Kongregate: https://www.kongregate.com/games/Franpok/race-51
+Gamejolt: https://gamejolt.com/games/Race51/461626
+
+**Juego en Itch.io**
+<p align="center">
+  <img width="500" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Fase5_03.png">
+</p>
 
 # 6. Aspectos en el tintero
 
