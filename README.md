@@ -50,6 +50,7 @@
 ###### 5.2.4 Interfaz
 ###### 5.2.5 Capturas de pantalla
 #### 5.3 v1.0 (Fase 4)
+https://youtu.be/jIZzfxImy-k
 ###### 5.3.1 Arte
 ###### 5.3.2 Programación y gameplay
 ###### 5.3.3 Interfaz
