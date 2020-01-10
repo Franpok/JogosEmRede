@@ -39,6 +39,7 @@ class menu extends Phaser.Scene {
         J2_Muerto = false;
         J2_Powerup = 0;
         J2_PinchoGenerado = false;
+        
         //const juego = this.add.text(20,20, "Cargando Juego...")
         //this.scene.start("menuMuerte");
         var fondo = this.add.image(540,360,'fondo');
@@ -70,13 +71,13 @@ class menu extends Phaser.Scene {
          this.clickButton3.setScale(0.5);
          var logo  = this.add.image(550,225, 'logo');
          logo.setScale(.4);
-         this.clickButtonD = this.add.image(900, 675, 'desconectar' )
+         /*this.clickButtonD = this.add.image(900, 675, 'desconectar' )
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("conexion"))
          .on('pointerdown', () =>  sonido.stop())
          .on('pointerover', () => this.add.image(900, 675, 'desconectarP'  ).setScale(0.3))
          .on('pointerout', () => this.add.image(900, 675, 'desconectar' ).setScale(0.3) );
-         this.clickButtonD.setScale(0.3);
+         this.clickButtonD.setScale(0.3);*/
     
        // this.updateClickCountText(clickCount);
       }
