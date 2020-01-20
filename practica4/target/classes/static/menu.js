@@ -17,6 +17,29 @@ class menu extends Phaser.Scene {
       this.load.image("fondo", "resources/fondoMenu.png")
     }
     create (){
+    	ID_Partida = 0;
+    	J1_id = 10;
+        J1_skin = 0;
+        J1_saltando = false;
+        J1_CogerPowerup = false;
+        J1_Vida = 3;
+        J1_DañoRecibido = false;
+        J1_Muerto = false;
+        J1_Powerup = 0;
+        J1_PowerupGenerado = false;
+        J1_PinchoGenerado = false;
+        
+        J2_id = 10;
+        J2_skin = 0;
+        J2_saltando = false;
+        J2_CogerPowerup = false;
+        J2_PowerupGenerado = false;
+        J2_Vida = 3;
+        J2_DañoRecibido = false;
+        J2_Muerto = false;
+        J2_Powerup = 0;
+        J2_PinchoGenerado = false;
+        
         //const juego = this.add.text(20,20, "Cargando Juego...")
         //this.scene.start("menuMuerte");
         var fondo = this.add.image(540,360,'fondo');
@@ -48,13 +71,13 @@ class menu extends Phaser.Scene {
          this.clickButton3.setScale(0.5);
          var logo  = this.add.image(550,225, 'logo');
          logo.setScale(.4);
-         this.clickButtonD = this.add.image(900, 675, 'desconectar' )
+         /*this.clickButtonD = this.add.image(900, 675, 'desconectar' )
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("conexion"))
          .on('pointerdown', () =>  sonido.stop())
          .on('pointerover', () => this.add.image(900, 675, 'desconectarP'  ).setScale(0.3))
          .on('pointerout', () => this.add.image(900, 675, 'desconectar' ).setScale(0.3) );
-         this.clickButtonD.setScale(0.3);
+         this.clickButtonD.setScale(0.3);*/
     
        // this.updateClickCountText(clickCount);
       }

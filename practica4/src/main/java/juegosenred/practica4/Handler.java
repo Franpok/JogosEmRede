@@ -171,12 +171,17 @@ public class Handler extends TextWebSocketHandler {
 			int idBorrado = node.get("idPartida").asInt();
 			int idJugadorBorrado = node.get("idJugador").asInt();
 			EstadoJugadores[idJugadorBorrado] = false;
+			Jugador jaux = new Jugador(idJugadorBorrado, session);
+			jaux.setId(10);
+			jugadores.put(idJugadorBorrado, jaux);
 			String texto = "Se ha borrado la partida";
 			Partida p = partidas.get(idBorrado);
 			if (!p.getVacio()) {
 				EstadoPartida[idBorrado] = false;
 				Partida partidaBorrada = new Partida();
 				partidaBorrada.setId(idBorrado);
+				partidaBorrada.getJ1().setId(10);
+				partidaBorrada.getJ2().setId(10);
 				partidas.put(idBorrado, partidaBorrada);
 			}
 			

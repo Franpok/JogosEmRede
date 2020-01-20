@@ -266,7 +266,7 @@ class playGame extends Phaser.Scene {
 
         // AÑADIMOS SU ANIMACIÓN
         
-        switch (J2_id) {
+        switch (J2_skin) {
         case 0:
             this.player2.anims.play(skinsArray[0]);
             break;
