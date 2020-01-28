@@ -3,6 +3,7 @@ package juegosenred.practica4;
 import java.util.Map;
 import java.util.concurrent.atomic.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Random;
 
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -65,6 +66,7 @@ public class Handler extends TextWebSocketHandler {
 					msg.put("idPartida", 0);
 					prueba = "He entrado en una partida";
 					msg.put("stringPrueba", prueba);
+					msg.put("idFuncion", 0);
 					session.sendMessage(new TextMessage(msg.toString()));
 					break;
 				}
@@ -77,6 +79,7 @@ public class Handler extends TextWebSocketHandler {
 				prueba = "He entrado en una partida";
 				msg.put("idPartida", 0);
 				msg.put("stringPrueba", prueba);
+				msg.put("idFuncion", 0);
 				session.sendMessage(new TextMessage(msg.toString()));
 				break;
 			}
@@ -91,6 +94,7 @@ public class Handler extends TextWebSocketHandler {
 					msg.put("idPartida", 1);
 					prueba = "He entrado en una partida";
 					msg.put("stringPrueba", prueba);
+					msg.put("idFuncion", 0);
 					session.sendMessage(new TextMessage(msg.toString()));
 					break;
 				}
@@ -103,6 +107,7 @@ public class Handler extends TextWebSocketHandler {
 				msg.put("idPartida", 1);
 				prueba = "He entrado en una partida";
 				msg.put("stringPrueba", prueba);
+				msg.put("idFuncion", 0);
 				session.sendMessage(new TextMessage(msg.toString()));
 				break;
 			}
@@ -117,6 +122,7 @@ public class Handler extends TextWebSocketHandler {
 					msg.put("idPartida", 2);
 					prueba = "He entrado en una partida";
 					msg.put("stringPrueba", prueba);
+					msg.put("idFuncion", 0);
 					session.sendMessage(new TextMessage(msg.toString()));
 					break;
 				}
@@ -129,6 +135,7 @@ public class Handler extends TextWebSocketHandler {
 				msg.put("idPartida", 2);
 				prueba = "He entrado en una partida";
 				msg.put("stringPrueba", prueba);
+				msg.put("idFuncion", 0);
 				session.sendMessage(new TextMessage(msg.toString()));
 				break;
 			}
@@ -143,6 +150,7 @@ public class Handler extends TextWebSocketHandler {
 					msg.put("idPartida", 3);
 					prueba = "He entrado en una partida";
 					msg.put("stringPrueba", prueba);
+					msg.put("idFuncion", 0);
 					session.sendMessage(new TextMessage(msg.toString()));
 					break;
 					
@@ -156,6 +164,7 @@ public class Handler extends TextWebSocketHandler {
 				msg.put("idPartida", 3);
 				prueba = "He entrado en una partida";
 				msg.put("stringPrueba", prueba);
+				msg.put("idFuncion", 0);
 				session.sendMessage(new TextMessage(msg.toString()));
 				break;
 			}
@@ -187,6 +196,7 @@ public class Handler extends TextWebSocketHandler {
 			
 			msg.put("idPartida", idBorrado);	
 			msg.put("mensajeBorrado", texto);
+			msg.put("idFuncion", 1);
 			session.sendMessage(new TextMessage(msg.toString()));	
 			break;
 			
@@ -211,7 +221,7 @@ public class Handler extends TextWebSocketHandler {
 			if (J1.getId() == idJugadorM) {
 				J2.setDaño(dañoJ);
 				J2.setPowerup(powerUpJ);
-				J2.setGenerarTrampa(trampasJ);
+				J2.setGenerarTrampa(Probabilidad());
 				J2.setMuerte(muerteJ);
 				J2.setSalto(saltoJ);	
 				J2.setVidas(vidasJ);
@@ -226,7 +236,7 @@ public class Handler extends TextWebSocketHandler {
 				msg.put("jugadorSubirVidas", vidasJ);
 				msg.put("jugadorPowerupGenerado", powerUpGeneradoJ);
 				msg.put("jugadorCogerPowerup", cogerPowerupJ);
-				
+				msg.put("idFuncion", 2);
 				WebSocketSession sessionJ2 = J2.getSession();
 				sessionJ2.sendMessage(new TextMessage(msg.toString()));	
 			
@@ -248,7 +258,7 @@ public class Handler extends TextWebSocketHandler {
 				msg.put("jugadorSubirVidas", vidasJ);
 				msg.put("jugadorPowerupGenerado", powerUpGeneradoJ);
 				msg.put("jugadorCogerPowerup", cogerPowerupJ);
-				
+				msg.put("idFuncion", 2);
 				WebSocketSession sessionJ1 = J1.getSession();
 				
 				sessionJ1.sendMessage(new TextMessage(msg.toString()));	
@@ -352,7 +362,7 @@ public class Handler extends TextWebSocketHandler {
 		
 			System.err.println(node.get("mensaje").asText());
 			
-			
+			msg.put("idFuncion", 3);
 			session.sendMessage(new TextMessage(msg.toString()));
 			
 			break;
@@ -360,19 +370,22 @@ public class Handler extends TextWebSocketHandler {
 		case(4): //Comprobar
 			int idpartidaactual = node.get("idPartida").asInt();
 			Partida y = partidas.get(idpartidaactual);
-			
 			if (y.getJ2() != null) {
+				System.err.println("Me he metido aquí porque si");
 				Jugador jugadorNuevo = y.getJ2();
 				int jnId = jugadorNuevo.getId();
 				int jnSkin =jugadorNuevo.getSkin();
 				
 				msg.put("idJugador", jnId);
 				msg.put("idSkin", jnSkin);
+				msg.put("idFuncion", 4);
 				session.sendMessage(new TextMessage(msg.toString()));
 			}
 			else {
-				msg.put("idJugador",10);
+				msg.put("idJugador", 10);
 				msg.put("idSkin", 0);
+				msg.put("idFuncion", 4);
+				msg.put("Mishuevos", 100);
 				session.sendMessage(new TextMessage(msg.toString()));
 			}
 			break;
@@ -401,4 +414,29 @@ public class Handler extends TextWebSocketHandler {
 		
 		
 	}	
-}
+
+
+private boolean Probabilidad(){
+	int numero = (int) (Math.random() * 100) + 1;
+	if (numero<30){
+		return true;
+	}else
+		return false;
+	}	
+
+}		
+		
+		//Formas de implementar esto:
+		//Llamar al case 2 del text Handler pintando las bombas como activadas
+		
+		//Cuando sea llamado el case 2, podemos poner un if dentro de ese case para ver
+		//si sale probabilidad buena o no. Si es buena, devolvemos la generación como un true
+		//si no, devolvemos un false (Esto hace que el cliente nunca genere las bombas, sino que 
+		//cada vez que llame al server pues este haga un random y decide si va a generar o no)
+
+		//Actualmente no se cual de las dos es mejor, ayer por la noche no podía pensar, hay que decidir
+		//Probablemente la segunda sea la mejor, donde habría que implementar un if en case2 llamando a probabilidad
+		//Y viendo si es menor que 15 O que probabilidad devuelva un boolean directamente y lo calcule todo en esta función.
+
+	
+

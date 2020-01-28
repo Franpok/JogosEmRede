@@ -54,11 +54,13 @@ class primera extends Phaser.Scene {
     			  i++;
     		  }
     	  }
-    	  console.log(ID_Partida)
+    	  //console.log(ID_Partida)
+    	  
     	  comprobar();
-    	 
+    	  
+    	  
     	  if (J2_id != 10) {
-    		
+    		  //console.log("He entrado en el if")
     		  this.scene.start("PlayGame");
     	  }
     	  
