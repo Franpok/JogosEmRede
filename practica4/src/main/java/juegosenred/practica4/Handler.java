@@ -221,7 +221,7 @@ public class Handler extends TextWebSocketHandler {
 			if (J1.getId() == idJugadorM) {
 				J2.setDaño(dañoJ);
 				J2.setPowerup(powerUpJ);
-				J2.setGenerarTrampa(trampasJ);
+				J2.setGenerarTrampa(Probabilidad());
 				J2.setMuerte(muerteJ);
 				J2.setSalto(saltoJ);	
 				J2.setVidas(vidasJ);
@@ -370,8 +370,9 @@ public class Handler extends TextWebSocketHandler {
 		case(4): //Comprobar
 			int idpartidaactual = node.get("idPartida").asInt();
 			Partida y = partidas.get(idpartidaactual);
-			
+			System.err.println("He llegado a comprobar");
 			if (y.getJ2() != null) {
+				System.err.println("Me he metido aquí porque si");
 				Jugador jugadorNuevo = y.getJ2();
 				int jnId = jugadorNuevo.getId();
 				int jnSkin =jugadorNuevo.getSkin();
@@ -382,7 +383,8 @@ public class Handler extends TextWebSocketHandler {
 				session.sendMessage(new TextMessage(msg.toString()));
 			}
 			else {
-				msg.put("idJugador",10);
+				System.err.println("Estoy en else");
+				msg.put("idJugador", 10);
 				msg.put("idSkin", 0);
 				msg.put("idFuncion", 4);
 				session.sendMessage(new TextMessage(msg.toString()));
@@ -413,11 +415,18 @@ public class Handler extends TextWebSocketHandler {
 		
 		
 	}	
-}
 
-/*private int Probabilidad(){
-	numero = (int) (Math.random() * 100) + 1;
-	if (numero<15){
+
+private boolean Probabilidad(){
+	int numero = (int) (Math.random() * 100) + 1;
+	if (numero<30){
+		return true;
+	}else
+		return false;
+	}	
+
+}		
+		
 		//Formas de implementar esto:
 		//Llamar al case 2 del text Handler pintando las bombas como activadas
 		
@@ -430,6 +439,5 @@ public class Handler extends TextWebSocketHandler {
 		//Probablemente la segunda sea la mejor, donde habría que implementar un if en case2 llamando a probabilidad
 		//Y viendo si es menor que 15 O que probabilidad devuelva un boolean directamente y lo calcule todo en esta función.
 
-	}
+	
 
-}*/

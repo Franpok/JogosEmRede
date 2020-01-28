@@ -4,6 +4,43 @@ socket.onopen = function() {
 	console.log("Conexión establecida");
 }
 
+socket.onmessage = function (event) {
+	var aux = JSON.parse(event.data)
+	switch(aux.idFuncion){
+
+		case(0): //CrearPartida()
+		ID_Partida = aux.idPartida; //EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
+		console.log(aux.stringPrueba);
+		console.log(ID_Partida);
+		
+		case(1)://borrarPartida()
+		console.log(aux.mensajeBorrado + aux.idPartida);
+
+		case(2)://actualizaJugador()
+		J2_DañoRecibido = aux.jugadorDaño;
+		J2_Powerup = aux.jugadorPowerUp;
+		J2_PinchoGenerado = aux.pinchoGenerado;
+		J2_Muerto = aux.jugadorMuerto;
+		J2_saltando = aux.jugadorSaltando;
+		J2_Vida = aux.jugadorSubirVida;
+		J2_PowerupGenerado = aux.jugadorPowerupGenerado;
+		J2_CogerPowerup = aux.jugadorCogerPowerup;
+
+		case(3)://crearJugador()
+		J1_id = aux.idJugador;
+		console.log(aux.mensaje);
+		console.log(aux.idJugador);
+
+		case(4)://comprobar()
+		J2_skin = aux.idSkin;
+		console.log("El id jugador del server es:"+ aux.idJugador);
+		console.log("La skin del jugador 2 es:"+ aux.idSkin);
+		console.log("J2 antes de comprobar:"+ J2_id);
+		J2_id = aux.idJugador;
+		console.log("J2 después de comprobar:"+ J2_id);
+	}
+}
+
 
 //AÑADIR LAS FUNCIONES NECESARIAS PARA LAS DISTINTAS COSAS QUE HAGAN FALTA
 
@@ -17,12 +54,6 @@ function crearPartida(){ //Mi función que envía los datos que necesito al serv
 	}	
 	socket.send(JSON.stringify(message)); //Por hacer
 	
-	socket.onmessage = function (event) {
-		var aux = JSON.parse(event.data); //ESTO CONVIERTE CUALQUIER ELEMENTO DE LA FUNCION A JSON PARA PODER ENVIARLO DE UN LADO A OTRO	
-		ID_Partida = aux.idPartida; //EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
-		console.log(aux.stringPrueba);
-		console.log(ID_Partida);
-	}
 }
 
 function borrarPartida() {
@@ -33,10 +64,6 @@ function borrarPartida() {
 	}
 	socket.send(JSON.stringify(message));
 	
-	socket.onmessage = function (event) {
-		var aux = JSON.parse(event.data);
-		console.log(aux.mensajeBorrado + aux.idPartida);
-	}
 }
 
 function actualizaJugador() {
@@ -55,17 +82,6 @@ function actualizaJugador() {
 	}
 	socket.send(JSON.stringify(message));
 	
-	socket.onmessage = function (event) {
-		var aux = JSON.parse(event.data);
-		J2_DañoRecibido = aux.jugadorDaño;
-		J2_Powerup = aux.jugadorPowerUp;
-		J2_PinchoGenerado = aux.pinchoGenerado;
-		J2_Muerto = aux.jugadorMuerto;
-		J2_saltando = aux.jugadorSaltando;
-		J2_Vida = aux.jugadorSubirVida;
-		J2_PowerupGenerado = aux.jugadorPowerupGenerado;
-		J2_CogerPowerup = aux.jugadorCogerPowerup;
-	}
 }
 
 function crearJugador(){ //Mi función que recibe los datos que necesito del jugador 2
@@ -75,29 +91,16 @@ function crearJugador(){ //Mi función que recibe los datos que necesito del jug
 			mensaje: hola
 	}
 	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
-	
-	socket.onmessage = function (event) {
-		var aux = JSON.parse(event.data);
-		J1_id = aux.idJugador;
-		console.log(aux.mensaje);
-		console.log(aux.idJugador);
-	}
-	
-	
+
 }
 
 function comprobar() {
 	let message = {
 			idFuncion: 4,
-			idPartida: ID_Partida
+			idPartida: ID_Partida,
+			idJugador: 10
 	}
 	socket.send(JSON.stringify(message));
 	
-	socket.onmessage = function (event) {
-		var aux = JSON.parse(event.data);
-		J2_skin = aux.idSkin;
-		console.log(aux.idSkin);
-		J2_id = aux.idJugador;
-	}
 }
 
