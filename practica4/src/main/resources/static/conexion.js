@@ -33,8 +33,11 @@ socket.onmessage = function (event) {
 
 		case(4)://comprobar()
 		J2_skin = aux.idSkin;
-		console.log(aux.idSkin);
+		console.log("El id jugador del server es:"+ aux.idJugador);
+		console.log("La skin del jugador 2 es:"+ aux.idSkin);
+		console.log("J2 antes de comprobar:"+ J2_id);
 		J2_id = aux.idJugador;
+		console.log("J2 después de comprobar:"+ J2_id);
 	}
 }
 
@@ -94,7 +97,8 @@ function crearJugador(){ //Mi función que recibe los datos que necesito del jug
 function comprobar() {
 	let message = {
 			idFuncion: 4,
-			idPartida: ID_Partida
+			idPartida: ID_Partida,
+			idJugador: 10
 	}
 	socket.send(JSON.stringify(message));
 	

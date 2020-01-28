@@ -92,12 +92,14 @@ class skins extends Phaser.Scene {
          .setInteractive()
          .on('pointerover', () =>this.add.image(200,500,'nombre1P').setScale(.5))
          .on('pointerout', () =>this.add.image(200,500,'nombre1').setScale(.5))
-         .on('pointerover', () => this.aspecto.anims.play('skin1corriendo')) //Al pasar por encima el ratón, la animación empieza
+         .on('pointerover', () => this.aspecto.anims.play('skin1corriendo'))//Al pasar por encima el ratón, la animación empieza
+         .on('pointerover', () => console.log(J2_id))
          .on('pointerout', () => this.aspecto.anims.stop('skin1corriendo')) //Al sacar el cursor, para
          .on('pointerdown', () =>  this.scene.start("conexion"))
          .on('pointerdown', () => skinChosen= 0) //Si haces click, se elige
          .on('pointerdown', () => J1_skin= 0) //Si haces click, se elige
          .on('pointerdown', () => crearJugador()) //Si haces click, se elige
+         .on('pointerdown', () =>  console.log(J2_id))
          .on('pointerdown', () =>  sonido.stop())
 
          this.clickButtonSkin2 = fondoskins2

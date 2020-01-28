@@ -516,9 +516,9 @@ class playGame extends Phaser.Scene {
         });
 
 
-    }
+    }// SE CIERRA CREATE AQUI
 
-    updateTimer() {
+    updateTimer() { //Si con este update no refresca la información lo suficientemente rápido, hay que usar el de phaser
         tiempo++;
         tiempoText.setText("Tiempo: " + tiempo);
         duracion1--;
@@ -528,6 +528,7 @@ class playGame extends Phaser.Scene {
         indicadorV--;
         indicadorV2--;
         decidirPowerUp = Phaser.Math.Between(0,1);
+        actualizaJugador(); //Mirar si llama a la función con los parámetros que queremos y no con los false
         
          J1_saltando = false;
          J1_CogerPowerup = false;
@@ -540,7 +541,7 @@ class playGame extends Phaser.Scene {
          J2_CogerPowerup = false;
          J2_DañoRecibido = false;
          J2_PinchoGenerado = false;
-         actualizaJugador();
+         
     }
 
     //MENU DE PAUSA
