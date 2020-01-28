@@ -370,7 +370,6 @@ public class Handler extends TextWebSocketHandler {
 		case(4): //Comprobar
 			int idpartidaactual = node.get("idPartida").asInt();
 			Partida y = partidas.get(idpartidaactual);
-			System.err.println("He llegado a comprobar");
 			if (y.getJ2() != null) {
 				System.err.println("Me he metido aquí porque si");
 				Jugador jugadorNuevo = y.getJ2();
@@ -383,10 +382,10 @@ public class Handler extends TextWebSocketHandler {
 				session.sendMessage(new TextMessage(msg.toString()));
 			}
 			else {
-				System.err.println("Estoy en else");
 				msg.put("idJugador", 10);
 				msg.put("idSkin", 0);
 				msg.put("idFuncion", 4);
+				msg.put("Mishuevos", 100);
 				session.sendMessage(new TextMessage(msg.toString()));
 			}
 			break;

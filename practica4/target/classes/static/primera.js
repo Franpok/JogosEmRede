@@ -55,10 +55,9 @@ class primera extends Phaser.Scene {
     		  }
     	  }
     	  //console.log(ID_Partida)
-    	  console.log("El id del jugador es: " + J2_id)
     	  
     	  comprobar();
-    	  console.log("El id del jugador es: " + J2_id)
+    	  
     	  
     	  if (J2_id != 10) {
     		  //console.log("He entrado en el if")
