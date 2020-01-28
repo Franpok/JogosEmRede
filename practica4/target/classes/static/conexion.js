@@ -6,15 +6,18 @@ socket.onopen = function() {
 
 socket.onmessage = function (event) {
 	var aux = JSON.parse(event.data)
-	switch(aux.idFuncion){
+	ID_Funcion = aux.idFuncion
+	switch(ID_Funcion){
 
 		case(0): //CrearPartida()
 		ID_Partida = aux.idPartida; //EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
 		console.log(aux.stringPrueba);
 		console.log(ID_Partida);
+		break;
 		
 		case(1)://borrarPartida()
 		console.log(aux.mensajeBorrado + aux.idPartida);
+		break;
 
 		case(2)://actualizaJugador()
 		J2_DañoRecibido = aux.jugadorDaño;
@@ -25,11 +28,13 @@ socket.onmessage = function (event) {
 		J2_Vida = aux.jugadorSubirVida;
 		J2_PowerupGenerado = aux.jugadorPowerupGenerado;
 		J2_CogerPowerup = aux.jugadorCogerPowerup;
+		break;
 
 		case(3)://crearJugador()
 		J1_id = aux.idJugador;
 		console.log(aux.mensaje);
 		console.log(aux.idJugador);
+		break;
 
 		case(4)://comprobar()
 		J2_skin = aux.idSkin;
@@ -39,10 +44,18 @@ socket.onmessage = function (event) {
 =======
 		console.log("El id jugador del server es:"+ aux.idJugador);
 		console.log("La skin del jugador 2 es:"+ aux.idSkin);
-		console.log("J2 antes de comprobar:"+ J2_id);
 		J2_id = aux.idJugador;
+<<<<<<< HEAD
 		console.log("J2 después de comprobar:"+ J2_id);
 >>>>>>> bb8f87c7b1e77fbf50d9d138ce734a0b553a7fe5
+=======
+		
+		break;
+		
+		default:
+			
+			break;
+>>>>>>> 88d922bbe119b9d78657730cf084557c50ad901b
 	}
 }
 
