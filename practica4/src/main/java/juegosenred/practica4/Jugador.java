@@ -1,6 +1,7 @@
 package juegosenred.practica4;
 
 import org.springframework.web.socket.WebSocketSession;
+import java.time.LocalDateTime;
 
 public class Jugador {
 	private int ID;
@@ -14,6 +15,8 @@ public class Jugador {
 	private boolean GENERARPOWERUP;
 	private boolean COGERPOWERUP;
 	private int VIDAS;
+	private LocalDateTime Tiempo;
+	
 	//Crear variables si hiciera falta , NOMBRE??
 	
 	
@@ -28,6 +31,7 @@ public class Jugador {
 		this.POWERUP = 0;
 		this.MUERTE = false;
 		this.VIDAS = 3;
+		this.Tiempo = LocalDateTime.now();
 	}
 	 
 	 
@@ -107,6 +111,14 @@ public class Jugador {
 	 
 	 public void setGenerarPowerup(Boolean b){
 		 this.GENERARPOWERUP = b;
+	 }
+	 
+	 public LocalDateTime getTiempo() {
+		 return Tiempo;
+	 }
+	 
+	 public void setTiempo(LocalDateTime t) {
+		 this.Tiempo = t;
 	 }
 	 
 	 public WebSocketSession getSession() {

@@ -1,6 +1,7 @@
 package juegosenred.practica4;
 
 import java.util.Map;
+
 import java.util.concurrent.atomic.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Random;
@@ -12,6 +13,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 
 public class Handler extends TextWebSocketHandler {
 	public static ObjectMapper mapper = new ObjectMapper(); //MI mapper
@@ -65,6 +69,7 @@ public class Handler extends TextWebSocketHandler {
 					partidas.put(0, p); //La devuelvo
 					msg.put("idPartida", 0);
 					prueba = "He entrado en una partida";
+					msg.put("SoyJ1", false);
 					msg.put("stringPrueba", prueba);
 					msg.put("idFuncion", 0);
 					session.sendMessage(new TextMessage(msg.toString()));
@@ -77,6 +82,7 @@ public class Handler extends TextWebSocketHandler {
 				Partida p = new Partida(0, nuevoJugador);
 				partidas.put(0, p);
 				prueba = "He entrado en una partida";
+				msg.put("SoyJ1", true);
 				msg.put("idPartida", 0);
 				msg.put("stringPrueba", prueba);
 				msg.put("idFuncion", 0);
@@ -93,6 +99,7 @@ public class Handler extends TextWebSocketHandler {
 					partidas.put(1, p); //La devuelvo
 					msg.put("idPartida", 1);
 					prueba = "He entrado en una partida";
+					msg.put("SoyJ1", false);
 					msg.put("stringPrueba", prueba);
 					msg.put("idFuncion", 0);
 					session.sendMessage(new TextMessage(msg.toString()));
@@ -106,6 +113,7 @@ public class Handler extends TextWebSocketHandler {
 				partidas.put(1, nuevaPartida);
 				msg.put("idPartida", 1);
 				prueba = "He entrado en una partida";
+				msg.put("SoyJ1", true);
 				msg.put("stringPrueba", prueba);
 				msg.put("idFuncion", 0);
 				session.sendMessage(new TextMessage(msg.toString()));
@@ -121,6 +129,7 @@ public class Handler extends TextWebSocketHandler {
 					partidas.put(2, p); //La devuelvo
 					msg.put("idPartida", 2);
 					prueba = "He entrado en una partida";
+					msg.put("SoyJ1", false);
 					msg.put("stringPrueba", prueba);
 					msg.put("idFuncion", 0);
 					session.sendMessage(new TextMessage(msg.toString()));
@@ -134,6 +143,7 @@ public class Handler extends TextWebSocketHandler {
 				partidas.put(2, nuevaPartida);
 				msg.put("idPartida", 2);
 				prueba = "He entrado en una partida";
+				msg.put("SoyJ1", true);
 				msg.put("stringPrueba", prueba);
 				msg.put("idFuncion", 0);
 				session.sendMessage(new TextMessage(msg.toString()));
@@ -149,6 +159,7 @@ public class Handler extends TextWebSocketHandler {
 					partidas.put(3, p); //La devuelvo
 					msg.put("idPartida", 3);
 					prueba = "He entrado en una partida";
+					msg.put("SoyJ1", false);
 					msg.put("stringPrueba", prueba);
 					msg.put("idFuncion", 0);
 					session.sendMessage(new TextMessage(msg.toString()));
@@ -163,6 +174,7 @@ public class Handler extends TextWebSocketHandler {
 				partidas.put(3, nuevaPartida);
 				msg.put("idPartida", 3);
 				prueba = "He entrado en una partida";
+				msg.put("SoyJ1", true);
 				msg.put("stringPrueba", prueba);
 				msg.put("idFuncion", 0);
 				session.sendMessage(new TextMessage(msg.toString()));
@@ -370,6 +382,7 @@ public class Handler extends TextWebSocketHandler {
 		case(4): //Comprobar
 			int idpartidaactual = node.get("idPartida").asInt();
 			Partida y = partidas.get(idpartidaactual);
+			y.getJ1().setTiempo(LocalDateTime.now());
 			if (y.getJ2() != null) {
 				System.err.println("Me he metido aquí porque si");
 				Jugador jugadorNuevo = y.getJ2();
@@ -390,42 +403,49 @@ public class Handler extends TextWebSocketHandler {
 			}
 			break;
 		
-		case(5): //Perder una vida (QUIZAS ESTO VA DIRECTAMENTE EN ACTUALIZAR 
-			//Recibo el id de partida y del jugador
-			
-			//Actualizo el valor de vidas de ese jugador (Decrementar 1) EJ: J1.setVida(J1.getVida() -1 );
-			
-			//Enviar de vuelta
-			
-			break;
-		
-		case(6): // Cerrar partida
-			//RECIBO ID PARTIDA Y JUGADOR 
-			
-			//SI ESTA PARTIDA Y JUGADOR EXISTE, COJO LAS ID DE PARTIDA DEL J1 Y J2 como ids auxiliares y Si los auxiliares son distintos de null(es decir que esta o el 1 o el jugador 2 en partida), LO PASO TODO A CERO O NULL (segun el parámetro)
-			
-			
-			break;
-		
-			
-			
 		
 		}
+		//HACER FOR EACH DONDE RECORRO CADA PARTIDA SACANDO A CADA JUGADOR PARA COMPROBAR SU TIEMPO Y VER SI ALGUNO TARDA MÁS DE 15 SEGUNDOS
+		//For each jugador in partida
+		
+		//Si es true, llamaré a borrar partida
+		if(JugadorDesconectado(LocalDateTime.now())) {
+			
+		}//Else no hago nada ya que sigue conectado correctamente
 		
 		
-	}	
-
-
+	}
+		
+		
+		
 private boolean Probabilidad(){
 	int numero = (int) (Math.random() * 100) + 1;
-	if (numero<30){
-		return true;
-	}else
-		return false;
-	}	
+		if (numero<30){
+			return true;
+		}else
+			return false;
+		}	
 
-}		
+			
+				
+
+
+public boolean JugadorDesconectado(LocalDateTime TiempoJugador) { // Ponerlo o como parametro de Jugador o directamente lo maneja el servidor
+	LocalDateTime TiempoActual = LocalDateTime.now();
+	long diferencia = ChronoUnit.SECONDS.between(TiempoActual, TiempoJugador);
+	
+		if(diferencia>15) {
+			return true;
+			}	
+		else
+			return false;
+		}
 		
+}	
+
+
+
+
 		//Formas de implementar esto:
 		//Llamar al case 2 del text Handler pintando las bombas como activadas
 		
