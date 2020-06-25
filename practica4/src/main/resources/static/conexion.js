@@ -59,7 +59,6 @@ function crearPartida(){ //Mi función que envía los datos que necesito al serv
 	let message = {
 		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
 		idJugador: J1_id,
-		idSkin: J1_skin,
 		SoyJ1: Soy_J1,
 		ayuda: "Partida llegue"
 			

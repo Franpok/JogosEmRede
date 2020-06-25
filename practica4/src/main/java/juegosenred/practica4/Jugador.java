@@ -132,4 +132,7 @@ public class Jugador {
 	 public void sendMessage(String message) {
 		 
 	 }
+	 
+	 
+	 
 }
