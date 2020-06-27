@@ -47,7 +47,11 @@ socket.onmessage = function (event) {
 		
 		default:
 			
+<<<<<<< HEAD
+			break;
+=======
 		break;
+>>>>>>> 67dbd14300d9559c6e8cb888af72ec8c391b3060
 	}
 }
 
