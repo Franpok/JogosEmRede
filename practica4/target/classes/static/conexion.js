@@ -38,24 +38,15 @@ socket.onmessage = function (event) {
 
 		case(4)://comprobar()
 		J2_skin = aux.idSkin;
-<<<<<<< HEAD
-		console.log(aux.idSkin);
-		J2_id = aux.idJugador;
-=======
 		console.log("El id jugador del server es:"+ aux.idJugador);
 		console.log("La skin del jugador 2 es:"+ aux.idSkin);
 		J2_id = aux.idJugador;
-<<<<<<< HEAD
-		console.log("J2 después de comprobar:"+ J2_id);
->>>>>>> bb8f87c7b1e77fbf50d9d138ce734a0b553a7fe5
-=======
 		
 		break;
 		
 		default:
 			
 			break;
->>>>>>> 88d922bbe119b9d78657730cf084557c50ad901b
 	}
 }
 
