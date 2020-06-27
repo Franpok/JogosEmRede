@@ -9,9 +9,11 @@ socket.onmessage = function (event) {
 	ID_Funcion = aux.idFuncion
 	switch(ID_Funcion){
 
-		case(0): //CrearPartida()
+//LO QUE RECIBO DEL SERVIDOR
+
+
+		case(0): //CrearPartida() (Pending)
 		ID_Partida = aux.idPartida;//EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
-		Soy_J1 = aux.SoyJ1;
 		console.log(aux.stringPrueba);
 		console.log(ID_Partida);
 		break;
@@ -31,7 +33,7 @@ socket.onmessage = function (event) {
 		J2_CogerPowerup = aux.jugadorCogerPowerup;
 		break;
 
-		case(3)://crearJugador()
+		case(3)://crearJugador() (WORKS)
 		J1_id = aux.idJugador;
 		console.log(aux.mensaje);
 		console.log(aux.idJugador);
@@ -39,9 +41,12 @@ socket.onmessage = function (event) {
 
 		case(4)://comprobar()
 		J2_skin = aux.idSkin;
+		StartGame = aux.estadoPartida;
+		console.log(aux.estadoPartida);
+		
 		console.log("El id jugador del server es:"+ aux.idJugador);
 		console.log("La skin del jugador 2 es:"+ aux.idSkin);
-		J2_id = aux.idJugador;
+		//J2_id = aux.idJugador;
 		
 		break;
 		
@@ -52,14 +57,13 @@ socket.onmessage = function (event) {
 }
 
 
-//AÑADIR LAS FUNCIONES NECESARIAS PARA LAS DISTINTAS COSAS QUE HAGAN FALTA
+//LO QUE LE ENVIO AL SERVIDOR
 
 
 function crearPartida(){ //Mi función que envía los datos que necesito al server
 	let message = {
 		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
 		idJugador: J1_id,
-		SoyJ1: Soy_J1,
 		ayuda: "Partida llegue"
 			
 	}	
@@ -105,13 +109,4 @@ function crearJugador(){ //Mi función que recibe los datos que necesito del jug
 
 }
 
-function comprobar() {
-	let message = {
-			idFuncion: 4,
-			idPartida: ID_Partida,
-			idJugador: 10
-	}
-	socket.send(JSON.stringify(message));
-	
-}
 

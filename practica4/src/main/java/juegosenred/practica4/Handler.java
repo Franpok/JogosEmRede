@@ -45,165 +45,58 @@ public class Handler extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		JsonNode node = mapper.readTree(message.getPayload()); //Mi nodo que explora
 		ObjectNode msg = mapper.createObjectNode(); //Mi explorador de mensajes
+		ObjectNode msgaux = mapper.createObjectNode(); //Para situaciones donde tenga que enviar a dos clientes a la vez información distinta
 
-		if(primeravez) { // Esto no debería ser así, el server debería ya inicializar todo
-			for(int i = 0; i< N_PARTIDAS;i++) {
-				EstadoPartida[i] = false;
-			}
-			for(int i = 0; i< N_JUGADORES;i++) {
-				EstadoJugadores[i] = false;
-			}
-			primeravez = false;
-		}
 		
 		switch(node.get("idFuncion").asInt()) { //Cuando envie mi mensaje, según el parametro en el JSON que llegue "idfuncion", me meteré en una función o en otra
 		
 		
-		case(0): //Creamos la partida (PENDIENTE DE COMPROBACIÓN)
+		case(0): //Creamos la partida (Funciona)
 			int idJug = node.get("idJugador").asInt(); //Cojo el id del cliente
-		
-			String prueba = "He entrado a una partida"; //Debug
-			System.err.println(node.get("ayuda").asText()); //Debug
-			
+			int idLocal = 0;
+			Partida f = new Partida();
+			String prueba = "Me he unido a una partida";
 			if (numPartidaActual < N_PARTIDAS) { //Si el numero de partidas no es el maximo establecido (4)
-				for (Partida p: partidillas)  //Recorro mi lista por cada elemento partida
+				for (Partida p: partidillas){//Recorro mi lista por cada elemento partida
 					if (!p.getHayJugador()) { //SI NO HAY J1 (es decir, no hay jugadores)
-						crearPartida(numPartidaActual, jugadoriños.get(idJug)); //Llamo a mi función crearPartida con los datos necesarios
+						crearPartida(numPartidaActual, jugadoriños.get(idJug));//Llamo a mi función crearPartida con los datos necesarios
+						break;
+					}
+					else if (p.getVacio()){ //SI HAY UN J1, compruebo si hay un J2
+						llenarPartida(p, jugadoriños.get(idJug), msg); //Si no lo hay, lleno ese J2
 						numPartidaActual++; //Aumento el número de partidas que existen
+						 f = p;
+						
+						break;
 					}
-					else if (!p.getVacio()){ //SI HAY UN J1, compruebo si hay un J2
-						llenarPartida(p, jugadoriños.get(idJug)); //Si no lo hay, lleno ese J2
-					}
+					idLocal++;
+				}
 			}else {
 				prueba = "No puedo crear partida (Reached Max Games)";
 			}
-				
-	
-			
-			
-			/*if (EstadoPartida[0]) { //SI existe la partida
-				System.err.println(EstadoPartida[0]);
-				Partida p = partidas.get(0); //Saco esa partida
-				if (p.getVacio()) { //Si solo tiene un jugador (Ya que si existe es porque tiene un jugador)
-					p.setJugador2(nuevoJugador);
-					p.setVacio(false); //Ya tendría 2 jugadores
-					partidas.put(0, p); //La devuelvo
-					msg.put("idPartida", 0);
-					prueba = "He entrado en una partida";
-					msg.put("SoyJ1", false);
-					msg.put("stringPrueba", prueba);
-					msg.put("idFuncion", 0);
-					session.sendMessage(new TextMessage(msg.toString()));
-					break;
-				}
-			}
-			else if (!EstadoPartida[0]) {
-				System.err.println(EstadoPartida[0]);
-				EstadoPartida[0] = true;
-				Partida p = new Partida(0, nuevoJugador);
-				partidas.put(0, p);
-				prueba = "He entrado en una partida";
-				msg.put("SoyJ1", true);
-				msg.put("idPartida", 0);
-				msg.put("stringPrueba", prueba);
-				msg.put("idFuncion", 0);
-				session.sendMessage(new TextMessage(msg.toString()));
-				break;
-			}
-		
-			if (EstadoPartida[1]) { //SI existe la partida
-				System.err.println(EstadoPartida[1]);
-				Partida p = partidas.get(1); //Saco esa partida
-				if (p.getVacio()) { //Vacio solo es true si esta vacio (es false cuando esta lleno, 2 jugadores)
-					p.setJugador2(nuevoJugador); 
-					p.setVacio(false);
-					partidas.put(1, p); //La devuelvo
-					msg.put("idPartida", 1);
-					prueba = "He entrado en una partida";
-					msg.put("SoyJ1", false);
-					msg.put("stringPrueba", prueba);
-					msg.put("idFuncion", 0);
-					session.sendMessage(new TextMessage(msg.toString()));
-					break;
-				}
-			}
-			else if (!EstadoPartida[1]) {
-				System.err.println(EstadoPartida[1]);
-				EstadoPartida[1] = true;
-				Partida nuevaPartida = new Partida(1, nuevoJugador);
-				partidas.put(1, nuevaPartida);
-				msg.put("idPartida", 1);
-				prueba = "He entrado en una partida";
-				msg.put("SoyJ1", true);
-				msg.put("stringPrueba", prueba);
-				msg.put("idFuncion", 0);
-				session.sendMessage(new TextMessage(msg.toString()));
-				break;
-			}
-			
-			if (EstadoPartida[2]) { //SI existe la partida
-				System.err.println(EstadoPartida[2]);
-				Partida p = partidas.get(2); //Saco esa partida
-				if (p.getVacio()) { //Si solo tiene un jugador (Ya que si existe es porque tiene un jugador)
-					p.setJugador2(nuevoJugador);
-					p.setVacio(false);
-					partidas.put(2, p); //La devuelvo
-					msg.put("idPartida", 2);
-					prueba = "He entrado en una partida";
-					msg.put("SoyJ1", false);
-					msg.put("stringPrueba", prueba);
-					msg.put("idFuncion", 0);
-					session.sendMessage(new TextMessage(msg.toString()));
-					break;
-				}
-			}
-			else if (!EstadoPartida[2]) {
-				System.err.println(EstadoPartida[2]);
-				EstadoPartida[2] = true;
-				Partida nuevaPartida = new Partida(2, nuevoJugador);
-				partidas.put(2, nuevaPartida);
-				msg.put("idPartida", 2);
-				prueba = "He entrado en una partida";
-				msg.put("SoyJ1", true);
-				msg.put("stringPrueba", prueba);
-				msg.put("idFuncion", 0);
-				session.sendMessage(new TextMessage(msg.toString()));
-				break;
-			}
-			
-			if (EstadoPartida[3]) { //SI existe la partida
-				System.err.println(EstadoPartida[3]);
-				Partida p = partidas.get(3); //Saco esa partida
-				if (p.getVacio()) { //Si solo tiene un jugador (Ya que si existe es porque tiene un jugador)
-					p.setJugador2(nuevoJugador);
-					p.setVacio(false);
-					partidas.put(3, p); //La devuelvo
-					msg.put("idPartida", 3);
-					prueba = "He entrado en una partida";
-					msg.put("SoyJ1", false);
-					msg.put("stringPrueba", prueba);
-					msg.put("idFuncion", 0);
-					session.sendMessage(new TextMessage(msg.toString()));
-					break;
-					
-				}
-			}
-			else if (!EstadoPartida[3]) {
-				System.err.println(EstadoPartida[3]);
-				EstadoPartida[3] = true;
-				Partida nuevaPartida = new Partida(3, nuevoJugador);
-				partidas.put(3, nuevaPartida);
-				msg.put("idPartida", 3);
-				prueba = "He entrado en una partida";
-				msg.put("SoyJ1", true);
-				msg.put("stringPrueba", prueba);
-				msg.put("idFuncion", 0);
-				session.sendMessage(new TextMessage(msg.toString()));
-				break;
-			}*/
+			msg.put("idPartida", idLocal);
+			msgaux.put("idPartida", idLocal);
 			
 			msg.put("stringPrueba", prueba);
 			session.sendMessage(new TextMessage(msg.toString()));
+			
+			if (!f.getVacio()) {
+				WebSocketSession sesionLocalJ1 = f.getJ1().getSession();
+				WebSocketSession sesionLocalJ2 = f.getJ2().getSession();
+				
+				msg.put("idFuncion", 4);
+				msgaux.put("idFuncion", 4);
+				
+				msg.put("estadoPartida", true);
+				msgaux.put("estadoPartida", true);
+				
+				msg.put("idSkin", f.getJ2().getSkin()); //Le envio a J1 la skin de J2
+				msgaux.put("idSkin", f.getJ1().getSkin()); // Le envio a J2 la skin de J1
+				
+				sesionLocalJ1.sendMessage(new TextMessage(msg.toString()));
+				sesionLocalJ2.sendMessage(new TextMessage(msgaux.toString()));
+				System.err.println("He llegado");
+			}
 			
 			break;
 			
@@ -305,9 +198,13 @@ public class Handler extends TextWebSocketHandler {
 			break;
 		
 		case(3): //Crear jugador(con skin) (FUNCIONA)
+			if(primeravez) {
+				inicializar();
+				primeravez=false;
+			}
+			
 			if (numJugadoresActual < N_JUGADORES) { //Si hay menos de 8 jugadores (indices de 0 a 7)
 				Jugador j = new Jugador (numJugadoresActual,session); // Creo al jugador con la sesion del WebSocket
-				numJugadoresActual++;
 				int skin = node.get("idskin").asInt(); //Cojo del cliente la skin que ha elegido.
 				j.setSkin(skin); //Guardo en la instancia de jugador la skin (por si me hiciera falta)
 				j.setSession(session); //Guardo en la instancia del jugador la sesion (por si me hiciera falta) 
@@ -319,13 +216,12 @@ public class Handler extends TextWebSocketHandler {
 			}else {
 				String textito = "Jugadores llenos :("; //Debug
 			}
-			System.err.println(node.get("mensaje").asText()); //Debug
 			msg.put("idFuncion", 3); //La función en cliente que quiero que haga al recibir el mensaje del servidor
 			session.sendMessage(new TextMessage(msg.toString())); //Envio el mensaje
 			
 			break;
 			
-		case(4): //Comprobar (Habrá que ver que pasa con esta función si sigue existiendo o no)
+		/*case(4): //La función para ver si se ha unido un jugador a la partida
 			int idpartidaactual = node.get("idPartida").asInt();
 			Partida y = partidas.get(idpartidaactual);
 			y.getJ1().setTiempo(LocalDateTime.now());
@@ -348,8 +244,8 @@ public class Handler extends TextWebSocketHandler {
 				session.sendMessage(new TextMessage(msg.toString()));
 			}
 			break;
-		
-		
+		*/
+			
 		}
 		//HACER FOR EACH DONDE RECORRO CADA PARTIDA SACANDO A CADA JUGADOR PARA COMPROBAR SU TIEMPO Y VER SI ALGUNO TARDA MÁS DE 15 SEGUNDOS
 		//For each jugador in partida
@@ -359,21 +255,21 @@ public class Handler extends TextWebSocketHandler {
 			
 		}//Else no hago nada ya que sigue conectado correctamente
 		
-		//HAY QUE VER DONDE COLOCAR INICIALIZAR DE MANERA CORRECTA PARA QUE LO HAGA AL CREAR EL SERVER Y SOLO DURANTE LA CREACIÓN
-		inicializar();
-		
 	}
 		
 	public void crearPartida(int ID, Jugador player){ //Creación de partidas
 		Partida p = new Partida(ID, player); //Creo una partida por el constructor
 		p.setHayJugador(true); 
 		partidillas.set(ID,p);//añado esa partida a la posición correspondiente (QUE COINCIDE CON SU ID)
+		//System.err.println("He creado una nueva partida con id: "+ ID);
 	}
 	
-	public void llenarPartida(Partida p, Jugador J){
+	public void llenarPartida(Partida p, Jugador J, ObjectNode msg){
 		p.setJugador2(J); //Añado a la partida el jugador 2
 		p.setVacio(false); 
-		partidillas.set(p.getId(), p); //Actualizo en la posición correspondiente esa partida
+		partidillas.set(p.getId(), p);
+		//Actualizo en la posición correspondiente esa partida
+		//System.err.println("He llenado la partida con id: "+ p.getId());
 	}
 	
 	public void inicializar() { // Cuando se inicie el server, lleno mi lista de partidas de elementos partida con valores por defecto para poder recorrer el for each de creación de partidas.
@@ -393,7 +289,7 @@ private boolean Probabilidad(){
 			return false;
 		}	
 
-			
+
 				
 
 
