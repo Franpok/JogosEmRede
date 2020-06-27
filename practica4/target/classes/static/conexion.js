@@ -10,7 +10,8 @@ socket.onmessage = function (event) {
 	switch(ID_Funcion){
 
 		case(0): //CrearPartida()
-		ID_Partida = aux.idPartida; //EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
+		ID_Partida = aux.idPartida;//EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
+		Soy_J1 = aux.SoyJ1;
 		console.log(aux.stringPrueba);
 		console.log(ID_Partida);
 		break;
@@ -46,7 +47,11 @@ socket.onmessage = function (event) {
 		
 		default:
 			
+<<<<<<< HEAD
 			break;
+=======
+		break;
+>>>>>>> 67dbd14300d9559c6e8cb888af72ec8c391b3060
 	}
 }
 
@@ -59,7 +64,9 @@ function crearPartida(){ //Mi función que envía los datos que necesito al serv
 		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
 		idJugador: J1_id,
 		idSkin: J1_skin,
+		SoyJ1: Soy_J1,
 		ayuda: "Partida llegue"
+			
 	}	
 	socket.send(JSON.stringify(message)); //Por hacer
 	

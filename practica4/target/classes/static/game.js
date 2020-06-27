@@ -304,11 +304,9 @@ class playGame extends Phaser.Scene {
                 case 0:
                 	J1_CogerPowerup = true;
                 	J1_Powerup = 0;
-                	actualizaJugador();
                     if (vidaAnt1 === gameOptions.vidas1) { // Si las vidas anteriores son iguales a las actuales, se añade una más a las actuales
                         gameOptions.vidas1++;
                         J1_Vida++;
-                        actualizaJugador()
                         vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
                         indicadorV=3; //duración del aviso
                         imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');// se añade el aviso
@@ -318,7 +316,6 @@ class playGame extends Phaser.Scene {
                 case 1:
                 	J1_CogerPowerup = true;
                 	J1_Powerup = 1;
-                	actualizaJugador();
                     if(duracion1<0){
                         duracion1 = 5; //duracion del doble salto
                         saltos1 = 2; //ahora tenemos como maximo 2 saltos
@@ -391,7 +388,6 @@ class playGame extends Phaser.Scene {
             if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
                 J1_DañoRecibido = true;
             	J1_Vida--;
-                actualizaJugador();
             	gameOptions.vidas1--;
                 vidaAnt1--;
                 indicadorD=3; //duracion del aviso
@@ -405,7 +401,6 @@ class playGame extends Phaser.Scene {
                 vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
                     this.dying = true;
                     J1_Muerto = true;
-                    actualizaJugador();
                     this.player.visible = false;
                     death_sound.play();
                     this.player.body.setVelocityX(-200);
@@ -582,7 +577,6 @@ class playGame extends Phaser.Scene {
 
             if (Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad) { //AQUI DECIDO SI APARECE UN POWERUP O NO (JUGADOR 1)
             	J1_PowerupGenerado =true;
-            	actualizaJugador();
             	if (this.powerupPool.getLength()) {
                     let powerup = this.powerupPool.getFirst();
                     powerup.x = posX;
@@ -604,7 +598,6 @@ class playGame extends Phaser.Scene {
             // AQUI DECIDO SI VOY A SPAWNEAR UN OBSTACULO O NO EN UNA PLATAFORMA DEL JUGADOR 1
             if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad) {
             	J1_PinchoGenerado = true;
-            	actualizaJugador();
                 if (this.obstaculoPool.getLength()) {
                     let obstaculo = this.obstaculoPool.getFirst();
                     obstaculo.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
@@ -736,7 +729,6 @@ class playGame extends Phaser.Scene {
     // NUESTRA FUNCION DE SALTO PARA EL JUGADOR UNO
     jump() {
     	J1_saltando = true;
-    	actualizaJugador();
         if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < saltos1))) { // SI NO ESTOY MUERTO Y ESTOY TOCANDO EL SUELO o TENGO MAS SALTOS CONSECUTIVOS PUEDO SALTAR
             if (this.player.body.touching.down) {
                 this.playerJumps = 0;
