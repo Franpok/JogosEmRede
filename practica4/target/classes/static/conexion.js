@@ -9,9 +9,11 @@ socket.onmessage = function (event) {
 	ID_Funcion = aux.idFuncion
 	switch(ID_Funcion){
 
-		case(0): //CrearPartida()
+//LO QUE RECIBO DEL SERVIDOR
+
+
+		case(0): //CrearPartida() (Pending)
 		ID_Partida = aux.idPartida;//EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
-		Soy_J1 = aux.SoyJ1;
 		console.log(aux.stringPrueba);
 		console.log(ID_Partida);
 		break;
@@ -31,40 +33,42 @@ socket.onmessage = function (event) {
 		J2_CogerPowerup = aux.jugadorCogerPowerup;
 		break;
 
-		case(3)://crearJugador()
+		case(3)://crearJugador() (WORKS)
 		J1_id = aux.idJugador;
 		console.log(aux.mensaje);
 		console.log(aux.idJugador);
 		break;
 
-		case(4)://comprobar()
+		case(4)://CUANDO LA PARTIDA ESTA LLENA()
 		J2_skin = aux.idSkin;
+		StartGame = aux.estadoPartida;
+		console.log(aux.estadoPartida);
+		
 		console.log("El id jugador del server es:"+ aux.idJugador);
 		console.log("La skin del jugador 2 es:"+ aux.idSkin);
-		J2_id = aux.idJugador;
+		//J2_id = aux.idJugador;
 		
+		break;
+		
+		case(5):
+		console.log("Me han dicho que salte");
+		saltoJugador();
 		break;
 		
 		default:
 			
-<<<<<<< HEAD
-			break;
-=======
 		break;
->>>>>>> 67dbd14300d9559c6e8cb888af72ec8c391b3060
 	}
 }
 
 
-//AÑADIR LAS FUNCIONES NECESARIAS PARA LAS DISTINTAS COSAS QUE HAGAN FALTA
+//LO QUE LE ENVIO AL SERVIDOR
 
 
 function crearPartida(){ //Mi función que envía los datos que necesito al server
 	let message = {
 		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
 		idJugador: J1_id,
-		idSkin: J1_skin,
-		SoyJ1: Soy_J1,
 		ayuda: "Partida llegue"
 			
 	}	
@@ -110,13 +114,14 @@ function crearJugador(){ //Mi función que recibe los datos que necesito del jug
 
 }
 
-function comprobar() {
-	let message = {
-			idFuncion: 4,
+function jugadorSalto(){ //Mi función que recibe los datos que necesito del jugador 2
+	let message ={
+			idFuncion: 5,
 			idPartida: ID_Partida,
-			idJugador: 10
+			idJugador: J1_id
 	}
-	socket.send(JSON.stringify(message));
-	
+	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+
 }
+
 

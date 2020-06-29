@@ -523,7 +523,7 @@ class playGame extends Phaser.Scene {
         indicadorV--;
         indicadorV2--;
         decidirPowerUp = Phaser.Math.Between(0,1);
-        actualizaJugador(); //Mirar si llama a la función con los parámetros que queremos y no con los false
+        //actualizaJugador(); //Mirar si llama a la función con los parámetros que queremos y no con los false
         
          J1_saltando = false;
          J1_CogerPowerup = false;
@@ -728,7 +728,7 @@ class playGame extends Phaser.Scene {
 
     // NUESTRA FUNCION DE SALTO PARA EL JUGADOR UNO
     jump() {
-    	J1_saltando = true;
+    	jugadorSalto();
         if ((!this.dying) && (this.player.body.touching.down || (this.playerJumps > 0 && this.playerJumps < saltos1))) { // SI NO ESTOY MUERTO Y ESTOY TOCANDO EL SUELO o TENGO MAS SALTOS CONSECUTIVOS PUEDO SALTAR
             if (this.player.body.touching.down) {
                 this.playerJumps = 0;
@@ -782,7 +782,9 @@ class playGame extends Phaser.Scene {
     }
 
 
-
+    saltoJugador2(){
+		this.jump2;
+	}
 
     update() { //FUNCION UPDATE
 
@@ -821,7 +823,13 @@ class playGame extends Phaser.Scene {
             this.player2.anims.play('r2');
             jumping2 = false;
         }
-
+		
+		
+		//ZONA DE PRUEBAS
+		
+		
+		
+		
         // FUNCION GAME OVER (CUANDO MUERE ALGUNO DE LOS JUGADORES)
         function reiniciarJ1(){
             porfavorquelamusicasueneunavez++;
@@ -881,7 +889,7 @@ class playGame extends Phaser.Scene {
         }
         if (this.dying == true) {
         	J1_Muerto = true;
-        	actualizaJugador();
+        	//actualizaJugador();
             timedEvent = this.time.delayedCall(3000, reiniciarJ1, [], this);           
         }
         if (J2_Muerto == true) {
@@ -927,6 +935,11 @@ class playGame extends Phaser.Scene {
     }
     
 };
+
+	function saltoJugador(){
+			console.log("Voy a saltar");
+			this.jump2;
+}
 
 function resize() { //FUNCION RESIZE
     let canvas = document.querySelector("canvas");

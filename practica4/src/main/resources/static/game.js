@@ -782,7 +782,9 @@ class playGame extends Phaser.Scene {
     }
 
 
-
+    saltoJugador2(){
+		this.jump2;
+	}
 
     update() { //FUNCION UPDATE
 
@@ -824,9 +826,7 @@ class playGame extends Phaser.Scene {
 		
 		
 		//ZONA DE PRUEBAS
-		function saltoJugador2(){
-			this.jump2;
-}
+		
 		
 		
 		
@@ -938,7 +938,7 @@ class playGame extends Phaser.Scene {
 
 	function saltoJugador(){
 			console.log("Voy a saltar");
-			saltoJugador2();
+			this.jump2;
 }
 
 function resize() { //FUNCION RESIZE
