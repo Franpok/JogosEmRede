@@ -221,31 +221,20 @@ public class Handler extends TextWebSocketHandler {
 			
 			break;
 			
-		/*case(4): //La función para ver si se ha unido un jugador a la partida
-			int idpartidaactual = node.get("idPartida").asInt();
-			Partida y = partidas.get(idpartidaactual);
-			y.getJ1().setTiempo(LocalDateTime.now());
-			if (y.getJ2() != null) {
-				System.err.println("Me he metido aquí porque si");
-				Jugador jugadorNuevo = y.getJ2();
-				int jnId = jugadorNuevo.getId();
-				int jnSkin =jugadorNuevo.getSkin();
-				
-				msg.put("idJugador", jnId);
-				msg.put("idSkin", jnSkin);
-				msg.put("idFuncion", 4);
-				session.sendMessage(new TextMessage(msg.toString()));
-			}
-			else {
-				msg.put("idJugador", 10);
-				msg.put("idSkin", 0);
-				msg.put("idFuncion", 4);
-				msg.put("Mishuevos", 100);
-				session.sendMessage(new TextMessage(msg.toString()));
+		case(5): 
+			System.err.println("Quiero saltar");
+			int a = node.get("idPartida").asInt();
+			int b = node.get("idJugador").asInt();
+			Partida A = partidillas.get(a);
+			msg.put("idFuncion", 5);
+			if (b == A.getJ1().getId()) {
+				WebSocketSession sesionaux = A.getJ2().getSession();
+				sesionaux.sendMessage(new TextMessage(msg.toString()));
+			}else {
+				WebSocketSession sesionaux2 = A.getJ1().getSession();
+				sesionaux2.sendMessage(new TextMessage(msg.toString()));
 			}
 			break;
-		*/
-			
 		}
 		//HACER FOR EACH DONDE RECORRO CADA PARTIDA SACANDO A CADA JUGADOR PARA COMPROBAR SU TIEMPO Y VER SI ALGUNO TARDA MÁS DE 15 SEGUNDOS
 		//For each jugador in partida

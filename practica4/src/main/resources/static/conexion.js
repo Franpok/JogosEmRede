@@ -39,7 +39,7 @@ socket.onmessage = function (event) {
 		console.log(aux.idJugador);
 		break;
 
-		case(4)://comprobar()
+		case(4)://CUANDO LA PARTIDA ESTA LLENA()
 		J2_skin = aux.idSkin;
 		StartGame = aux.estadoPartida;
 		console.log(aux.estadoPartida);
@@ -48,6 +48,11 @@ socket.onmessage = function (event) {
 		console.log("La skin del jugador 2 es:"+ aux.idSkin);
 		//J2_id = aux.idJugador;
 		
+		break;
+		
+		case(5):
+		console.log("Me han dicho que salte");
+		saltoJugador();
 		break;
 		
 		default:
@@ -104,6 +109,16 @@ function crearJugador(){ //Mi función que recibe los datos que necesito del jug
 			idFuncion: 3,
 			idskin: J1_skin,
 			mensaje: hola
+	}
+	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+
+}
+
+function jugadorSalto(){ //Mi función que recibe los datos que necesito del jugador 2
+	let message ={
+			idFuncion: 5,
+			idPartida: ID_Partida,
+			idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
 
