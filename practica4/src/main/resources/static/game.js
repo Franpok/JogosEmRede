@@ -203,13 +203,9 @@ class playGame extends Phaser.Scene {
                 obstaculo.scene.obstaculoGroup.add(obstaculo)
             }
         });
-<<<<<<< HEAD
-  
-=======
 
 
         // **************************************** FIN DE LA ZONA DE GESTIÓN Y CREACIÓN DE RECURSOS ********************************************
->>>>>>> 7534ea09bba6d92052be1f921994e61f1741b411
 
 
         // Saltos que hace mi jugador consecutivos (Para controlar el doble salto)
@@ -420,10 +416,6 @@ class playGame extends Phaser.Scene {
                 
             }
         }, null, this);
-<<<<<<< HEAD
-
-=======
->>>>>>> 7534ea09bba6d92052be1f921994e61f1741b411
         
         // Colision Jugador2 con un obstáculo
         if(J2_DañoRecibido){ //WEB
@@ -449,14 +441,9 @@ class playGame extends Phaser.Scene {
             }
         }, null, this);
         }
-<<<<<<< HEAD
- 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-=======
 
 
         // ****************************************** FIN COLISION JUGADOR CON PLATAFORMAS Y OTROS OBJETOS ******************************************
->>>>>>> 7534ea09bba6d92052be1f921994e61f1741b411
 
 
 		// ************************************************** GESTIÓN DE INPUTS ******************************************************
@@ -604,8 +591,26 @@ class playGame extends Phaser.Scene {
                     obstaculo.setDepth(2);
                     this.obstaculoGroup.add(obstaculo);
                 }
-            }
-          
+            }/*
+            if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad) {
+                if (this.dronPool.getLength()) {
+                    let dron = this.dronPool.getFirst();
+                    dron.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
+                    dron.y = game.config.height * 0.65;
+                    dron.alpha = 1;
+                    dron.active = true;
+                    dron.visible = true;
+                    this.obstaculoPool.remove(dron);
+                }
+                else {
+                    let dron = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), game.config.height * 0.65, "obstaculo");
+                    dron.setImmovable(true);
+                    dron.setVelocityX(platform.body.velocity.x);
+                    dron.setSize(8, 2, true);
+                    dron.setDepth(2);
+                    this.dronGroup.add(dron);
+                }
+            }*/
         }
         if (J2_Muerto) { //LO ANTERIOR PERO PARA NUESTRO JUGADOR 2
 
@@ -671,8 +676,26 @@ class playGame extends Phaser.Scene {
                     obstaculo.setDepth(2);
                     this.obstaculoGroup.add(obstaculo);
                 }
-            }
-           
+            }/*
+            if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad2) {
+                if (this.dronPool.getLength()) {
+                    let dron = this.dronPool.getFirst();
+                    dron.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
+                    dron.y = game.config.height * 0.25;
+                    dron.alpha = 1;
+                    dron.active = true;
+                    dron.visible = true;
+                    this.dronPool.remove(dron);
+                }
+                else {
+                    let dron = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), game.config.height * 0.25, "obstaculo");
+                    dron.setImmovable(true);
+                    dron.setVelocityX(platform2.body.velocity.x);
+                    dron.setSize(8, 2, true);
+                    dron.setDepth(2);
+                    this.dronGroup.add(dron);
+                }
+            }*/
         }
 
     }
@@ -707,12 +730,6 @@ class playGame extends Phaser.Scene {
         }
     }
 
-<<<<<<< HEAD
-
-    saltoJugador2(){
-		this.jump2;
-	}
-=======
     agachar() { // POR IMPLEMENTAR
         if (!this.dying && this.player.body.touching.down) {
             /*
@@ -743,7 +760,6 @@ class playGame extends Phaser.Scene {
 	//ZONA DE PRUEBAS
    
 	
->>>>>>> 7534ea09bba6d92052be1f921994e61f1741b411
 
     update() { //FUNCION UPDATE
 
@@ -791,7 +807,6 @@ class playGame extends Phaser.Scene {
         if (WEB_generarObstaculo){
         console.log("Buenas generaciones de noche");
          // AQUI VA CODIGO
-         
          
          
         WEB_generarObstaculo = false;

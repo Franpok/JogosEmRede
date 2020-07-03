@@ -100,99 +100,41 @@ public class Handler extends TextWebSocketHandler {
 			
 			break;
 			
-		case(1): // Cerrar partida
-			// Sacar objeto partida de partidas teniendo un id
-			int idBorrado = node.get("idPartida").asInt(); //id de mi lista
-			int idJugadorBorrado = node.get("idJugador").asInt(); //No se si me hace falta esto
-			EstadoJugadores[idJugadorBorrado] = false;
+		/*case(1): // Cerrar partida
+			int idJugador = node.get("idJugador").asInt();
+			int idPartidita = node.get("idPartida").asInt();
+			Partida borrada = partidillas.get(idPartidita);
+			Jugador borradito = jugadoriños.get(idJugador);
+			int idAnt = borrada.getId();
+
+			if (borrada.getJ1().getSession() == borradito.getSession()) {
+				Partida nueva = new Partida();
+				partidillas.set(idAnt, nueva);
+				
+			}
+				
+				
 			
-			partidillas.remove(idBorrado);
-			
-			/*Jugador jaux = new Jugador(idJugadorBorrado, session);
-			jaux.setId(10);
-			jugadores.put(idJugadorBorrado, jaux);
-			String texto = "Se ha borrado la partida";
-			Partida p = partidas.get(idBorrado);
-			if (!p.getVacio()) {
-				EstadoPartida[idBorrado] = false;
-				Partida partidaBorrada = new Partida();
-				partidaBorrada.setId(idBorrado);
-				partidaBorrada.getJ1().setId(10);
-				partidaBorrada.getJ2().setId(10);
-				partidas.put(idBorrado, partidaBorrada);
-			}*/
 			
 			String texto = "Se ha borrado la partida";
 			msg.put("idPartida", idBorrado);	
 			msg.put("mensajeBorrado", texto);
 			msg.put("idFuncion", 1);
 			session.sendMessage(new TextMessage(msg.toString()));	
-			break;
+			break;*/
 			
-		case(2): //ACTUALIZAR JUGADOR
-			int idja = node.get("idPartida").asInt(); //id lista 
-			Partida x = partidas.get(idja); 
-			Partida copia = partidillas.get(idja);
-			
-			int idJugadorM = node.get("idJugador").asInt();
-			
-			Jugador J1 = x.getJ1();
-			Jugador J2 = x.getJ2();
-						
-			boolean dañoJ = node.get("jugadorDaño").asBoolean();
-			int powerUpJ = node.get("jugadorPowerUp").asInt();
-			boolean trampasJ = node.get("jugadorPinchoGenerado").asBoolean();
-			boolean powerUpGeneradoJ = node.get("jugadorPowerupGenerado").asBoolean();
-			boolean cogerPowerupJ = node.get("jugadorCogerPowerup").asBoolean();
-			boolean muerteJ = node.get("jugadorMuerto").asBoolean();
-			boolean saltoJ = node.get("jugadorSaltando").asBoolean();
-			int vidasJ = node.get("jugadorVida").asInt();
-			
-			
-			if (J1.getId() == idJugadorM) {
-				J2.setDaño(dañoJ);
-				J2.setPowerup(powerUpJ);
-				J2.setGenerarTrampa(Probabilidad());
-				J2.setMuerte(muerteJ);
-				J2.setSalto(saltoJ);	
-				J2.setVidas(vidasJ);
-				J2.setCogerPowerup(cogerPowerupJ);
-				J2.setGenerarPowerup(powerUpGeneradoJ);
-			
-				msg.put("jugadorDaño", dañoJ);
-				msg.put("jugadorPowerUp", powerUpJ);
-				msg.put("pinchoGenerado", trampasJ);
-				msg.put("jugadorMuerto", muerteJ);
-				msg.put("jugadorSaltando", saltoJ);
-				msg.put("jugadorSubirVidas", vidasJ);
-				msg.put("jugadorPowerupGenerado", powerUpGeneradoJ);
-				msg.put("jugadorCogerPowerup", cogerPowerupJ);
-				msg.put("idFuncion", 2);
-				WebSocketSession sessionJ2 = J2.getSession();
-				sessionJ2.sendMessage(new TextMessage(msg.toString()));	
-			
-			} else if (J2.getId() == idJugadorM) {
-				J1.setDaño(dañoJ);
-				J1.setPowerup(powerUpJ);
-				J1.setGenerarTrampa(trampasJ);
-				J1.setMuerte(muerteJ);
-				J1.setSalto(saltoJ);	
-				J1.setVidas(vidasJ);
-				J1.setCogerPowerup(cogerPowerupJ);
-				J1.setGenerarPowerup(powerUpGeneradoJ);
-				
-				msg.put("jugadorDaño", dañoJ);
-				msg.put("jugadorPowerUp", powerUpJ);
-				msg.put("pinchoGenerado", trampasJ);
-				msg.put("jugadorMuerto", muerteJ);
-				msg.put("jugadorSaltando", saltoJ);
-				msg.put("jugadorSubirVidas", vidasJ);
-				msg.put("jugadorPowerupGenerado", powerUpGeneradoJ);
-				msg.put("jugadorCogerPowerup", cogerPowerupJ);
-				msg.put("idFuncion", 2);
-				WebSocketSession sessionJ1 = J1.getSession();
-				
-				sessionJ1.sendMessage(new TextMessage(msg.toString()));	
+		case(2): // Comunicar Jugador coge Powerup
+			System.err.println("Tengo Powerup");
+			int a2 = node.get("idPartida").asInt();
+			int b2 = node.get("idJugador").asInt();
+			Partida A2 = partidillas.get(a2);
+			msg.put("idFuncion", 2);
+			if (b2 == A2.getJ1().getId()) {
+				WebSocketSession sesionaux2 = A2.getJ2().getSession();
+				sesionaux2.sendMessage(new TextMessage(msg.toString()));
+			}else {
+				WebSocketSession sesionaux22 = A2.getJ1().getSession();
+				sesionaux22.sendMessage(new TextMessage(msg.toString()));
 			}
 			
 			break;
@@ -223,18 +165,64 @@ public class Handler extends TextWebSocketHandler {
 			
 		case(5): 
 			System.err.println("Quiero saltar");
-			int a = node.get("idPartida").asInt();
-			int b = node.get("idJugador").asInt();
-			Partida A = partidillas.get(a);
+			int a5 = node.get("idPartida").asInt();
+			int b5 = node.get("idJugador").asInt();
+			Partida A5 = partidillas.get(a5);
 			msg.put("idFuncion", 5);
-			if (b == A.getJ1().getId()) {
-				WebSocketSession sesionaux = A.getJ2().getSession();
-				sesionaux.sendMessage(new TextMessage(msg.toString()));
+			if (b5 == A5.getJ1().getId()) {
+				WebSocketSession sesionaux5 = A5.getJ2().getSession();
+				sesionaux5.sendMessage(new TextMessage(msg.toString()));
 			}else {
-				WebSocketSession sesionaux2 = A.getJ1().getSession();
-				sesionaux2.sendMessage(new TextMessage(msg.toString()));
+				WebSocketSession sesionaux25 = A5.getJ1().getSession();
+				sesionaux25.sendMessage(new TextMessage(msg.toString()));
 			}
 			break;
+			
+		case(6): 
+			System.err.println("Quiero generar powerup");
+			int a6 = node.get("idPartida").asInt();
+			int b6 = node.get("idJugador").asInt();
+			Partida A6 = partidillas.get(a6);
+			msg.put("idFuncion", 6);
+			if (b6 == A6.getJ1().getId()) {
+				WebSocketSession sesionaux5 = A6.getJ2().getSession();
+				sesionaux5.sendMessage(new TextMessage(msg.toString()));
+			}else {
+				WebSocketSession sesionaux25 = A6.getJ1().getSession();
+				sesionaux25.sendMessage(new TextMessage(msg.toString()));
+			}
+			break;
+			
+		case(7): 
+			System.err.println("He recibido daño");
+			int a7 = node.get("idPartida").asInt();
+			int b7 = node.get("idJugador").asInt();
+			Partida A7 = partidillas.get(a7);
+			msg.put("idFuncion", 7);
+			if (b7 == A7.getJ1().getId()) {
+				WebSocketSession sesionaux7 = A7.getJ2().getSession();
+				sesionaux7.sendMessage(new TextMessage(msg.toString()));
+			}else {
+				WebSocketSession sesionaux27 = A7.getJ1().getSession();
+				sesionaux27.sendMessage(new TextMessage(msg.toString()));
+			}
+			break;
+			
+		case(8): 
+			System.err.println("He generado obstáculo");
+			int a8 = node.get("idPartida").asInt();
+			int b8 = node.get("idJugador").asInt();
+			Partida A8 = partidillas.get(a8);
+			msg.put("idFuncion", 8);
+			if (b8 == A8.getJ1().getId()) {
+				WebSocketSession sesionaux8 = A8.getJ2().getSession();
+				sesionaux8.sendMessage(new TextMessage(msg.toString()));
+			}else {
+				WebSocketSession sesionaux28 = A8.getJ1().getSession();
+				sesionaux28.sendMessage(new TextMessage(msg.toString()));
+			}
+			break;
+			
 		}
 		//HACER FOR EACH DONDE RECORRO CADA PARTIDA SACANDO A CADA JUGADOR PARA COMPROBAR SU TIEMPO Y VER SI ALGUNO TARDA MÁS DE 15 SEGUNDOS
 		//For each jugador in partida

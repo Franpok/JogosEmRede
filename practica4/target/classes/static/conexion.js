@@ -22,15 +22,11 @@ socket.onmessage = function (event) {
 		console.log(aux.mensajeBorrado + aux.idPartida);
 		break;
 
-		case(2)://actualizaJugador()
-		J2_DañoRecibido = aux.jugadorDaño;
-		J2_Powerup = aux.jugadorPowerUp;
-		J2_PinchoGenerado = aux.pinchoGenerado;
-		J2_Muerto = aux.jugadorMuerto;
-		J2_saltando = aux.jugadorSaltando;
-		J2_Vida = aux.jugadorSubirVida;
-		J2_PowerupGenerado = aux.jugadorPowerupGenerado;
-		J2_CogerPowerup = aux.jugadorCogerPowerup;
+		case(2)://Jugador coge powerup
+		
+		console.log("He cogido powerup")
+		
+		cogerPowerup();
 		break;
 
 		case(3)://crearJugador() (WORKS)
@@ -55,6 +51,21 @@ socket.onmessage = function (event) {
 		saltoJugador();
 		break;
 		
+		case(6):
+		console.log("Me han dicho que genere un powerup ");
+		generarPowerup();
+		break;
+		
+		case(7):
+		console.log("Me han dicho que he recibido daño");
+		recibirDaño();
+		break;
+		
+		case(8):
+		console.log("Me han dicho que genere un obstáculo");
+		generarObstaculo();
+		break;
+		
 		default:
 			
 		break;
@@ -69,36 +80,18 @@ function crearPartida(){ //Mi función que envía los datos que necesito al serv
 	let message = {
 		idFuncion: 0, //Cuando el server mire el mensaje, sabra que función llamar gracias a este nombre
 		idJugador: J1_id,
-		ayuda: "Partida llegue"
+		ayuda: "Partida llegue" //debug
 			
 	}	
-	socket.send(JSON.stringify(message)); //Por hacer
+	socket.send(JSON.stringify(message)); 
 	
 }
 
-function borrarPartida() {
+function borrarPartida() { // POR HACER
 	let message = {
 			idFuncion: 1,
 			idPartida: ID_Partida,
 			idJugador: J1_id
-	}
-	socket.send(JSON.stringify(message));
-	
-}
-
-function actualizaJugador() {
-	let message = {
-			idFuncion: 2,
-			idJugador: J1_id,
-			idPartida: ID_Partida,
-			jugadorSaltando: J1_saltando,
-			jugadorDaño: J1_DañoRecibido,
-			jugadorVida: J1_Vida,
-			jugadorMuerto: J1_Muerto,
-			jugadorPowerUp: J1_Powerup,
-			jugadorPinchoGenerado: J1_PinchoGenerado,
-			jugadorPowerupGenerado: J1_PowerupGenerado,
-			jugadorCogerPowerup: J1_CogerPowerup
 	}
 	socket.send(JSON.stringify(message));
 	
@@ -124,4 +117,42 @@ function jugadorSalto(){ //Mi función que recibe los datos que necesito del jug
 
 }
 
+function jugadorPowerup(){ //Mi función que recibe los datos que necesito del jugador 2
+	let message ={
+			idFuncion: 2,
+			idPartida: ID_Partida,
+			idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
 
+}
+
+function jugadorDaño(){ //Mi función que recibe los datos que necesito del jugador 2
+	let message ={
+			idFuncion: 7,
+			idPartida: ID_Partida,
+			idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+
+}
+
+function jugadorGenerarObstaculo(){ //Mi función que recibe los datos que necesito del jugador 2
+	let message ={
+			idFuncion: 8,
+			idPartida: ID_Partida,
+			idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+
+}
+
+function jugadorGenerarPowerup(){ //Mi función que recibe los datos que necesito del jugador 2
+	let message ={
+			idFuncion: 6,
+			idPartida: ID_Partida,
+			idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+
+}
