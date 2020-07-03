@@ -41,6 +41,15 @@ window.onload = function () {
 /////////// OTRAS VARIABLES DEL JUEGO ////////////////
 var jumping1 = false;
 var jumping2 = false;
+
+// VAR WEB
+var WEB_Salto = false;
+var WEB_generarPowerup = false;
+var WEB_generarObstaculo = false;
+var WEB_Daño = false;
+var WEB_cogerPowerup = false;
+
+
 let sonido;
 let dano;
 let salto;
@@ -76,7 +85,7 @@ class playGame extends Phaser.Scene {
         super("PlayGame");
     }
     preload() {
-        //NUESTRA FUNCIÓN PRELOAD, CARGAMOS NUESTROS RECURSOS 
+        //****************************NUESTRA FUNCIÓN PRELOAD, CARGAMOS NUESTROS RECURSOS********************************************* 
         this.load.image("sky", "resources/sky.png");
         this.load.image("platform", "resources/platform.png");
         this.load.image("player", "resources/player.png");
@@ -99,9 +108,13 @@ class playGame extends Phaser.Scene {
         this.load.image("indicadorDamage", "resources/indicadorDamage.png")
         this.load.image("indicadorDobleSalto", "resources/indicadorDobleSalto.png")
         this.load.image("indicadorVida", "resources/indicadorVida.png")  
+        
+        //************************************************* FIN FUNCTION PRELOAD ********************************************************
     }
     
     create() {
+    
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++ Comienza la función Create +++++++++++++++++++++++++++++++++++++++++++++++++++
         duracion1=0;
         duracion2=0;
         saltos1 = 1;
@@ -133,27 +146,31 @@ class playGame extends Phaser.Scene {
         this.add.image(540, 360, 'sky');
         this.add.image(540, game.config.height * 0.8, 'track');
         this.add.image(540, game.config.height * 0.4, 'track')
-        ////////////////////////////////////////////////////////// CREACIÓN, GESTIÓN Y REUSO DE NUESTROS RECURSOS ////////////////////////////////////////////////////////////////////////////////
-
-        // CREAMOS UN RECOLECTOR DE TODOS NUESTROS OBJETOS TIPO PLATAFORMAS QUE ESTEN ACTIVOS
+        
+        
+        //************************************************ CREACIÓN, GESTIÓN Y REUSO DE NUESTROS RECURSOS ********************************************
+        
+        
+        
+        // Creamos un recolector de todos nuestros objetos del tipo plataforma que se encuentren activos en la escena
         this.platformGroup = this.add.group({
 
-            // CUANDO LA PLATAFORMA SE HAYA DESTRUIDO ( ES DECIR, SE SALGA DEL CANVAS) LA ENVIAMOS A NUESTRO RECOLECTOR DE OBJETOS YA CREADOS INACTIVOS
+            // Cuando la plataforma se haya destruido (es decir, se sale del canvas), la enviamos a nuestro recolector de objetos inactivos del tipo plataformas
             removeCallback: function (platform) {
                 platform.scene.platformPool.add(platform)
             }
         });
 
-        // CREAMOS NUESTRO RECOLECTOR DE OBJETOS TIPO PLATAFORMAS QUE ESTEN INACTIVOS
+        // Creamos un recolector para las plataformas inactivas
         this.platformPool = this.add.group({
 
-            // SI NECESITAMOS UN OBJETO PLATAFORMA Y YA EXISTE UNO INACTIVO, LO COGEMOS Y LO MOVEMOS AL GRUPO ACTIVO
+            // Para evitar crear y destruir infinitas plataformas, si se necesita pintar o crear una nueva plataforma en escena, y tenemos libre alguna plataforma que ya haya salido en escena, podemos reutilizarla.
             removeCallback: function (platform) {
                 platform.scene.platformGroup.add(platform)
             }
         });
 
-        //PARA LOS POWERUP Y OBSTACULOS USAMOS LA MISMA MANERA DE GENERACIÓN (Por tanto no hace falta comentarlos)
+        //La generación de powerups y obstáculos tienen el mismo concepto, por lo tanto su generación es similar y no hace falta comentarlo.
 
         //Grupo activo powerUps
         this.powerupGroup = this.add.group({
@@ -186,9 +203,14 @@ class playGame extends Phaser.Scene {
                 obstaculo.scene.obstaculoGroup.add(obstaculo)
             }
         });
+<<<<<<< HEAD
   
+=======
 
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // **************************************** FIN DE LA ZONA DE GESTIÓN Y CREACIÓN DE RECURSOS ********************************************
+>>>>>>> 7534ea09bba6d92052be1f921994e61f1741b411
+
 
         // Saltos que hace mi jugador consecutivos (Para controlar el doble salto)
         this.playerJumps = 0;
@@ -197,11 +219,13 @@ class playGame extends Phaser.Scene {
         //Añadimos una plataforma al juego (La plataforma inicial) , que tiene una dimensión x e y
         this.addPlatform(game.config.width, game.config.width / 2);
 
-        // CREAMOS AL JUGADOR 1
+		// ************************************************* CREACIÓN DE JUGADORES ********************************************************
+		
+        // Creamos al jugador 1
         this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.71, 'alien', 0);
         this.player.setGravityY(gameOptions.playerGravity);
 
-        // AÑADIMOS SU ANIMACIÓN
+        // Añadimos su animación
         this.anims.create({ //Skin 1
             key: skinsArray[0],
             frameRate: 12,
@@ -228,7 +252,6 @@ class playGame extends Phaser.Scene {
             repeat: -1
         });
        
-
         switch (skinChosen){
             case 0:
                 this.player.anims.play(skinsArray[0]);
@@ -244,11 +267,11 @@ class playGame extends Phaser.Scene {
                 break;
         }
         
-        // CREAMOS AL JUGADOR 2
+        // Creamos al jugador 2
         this.player2 = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.31, 'alien2', 0);
         this.player2.setGravityY(gameOptions.playerGravity);
 
-        // AÑADIMOS SU ANIMACIÓN
+        // Añadimos su animación
         
         switch (J2_skin) {
         case 0:
@@ -270,17 +293,22 @@ class playGame extends Phaser.Scene {
         var dying2 = false;
         var tengoPowerup = false;
         var tengoPowerup2 = false;
+        
+        
+        // ********************************************************** FIN DE LA CREACIÓN DE JUGADORES ***************************************
 
 
-        ////////////////////////////////////////////////////////////////////////////////// COLISIÓN DE JUGADOR CON PLATAFORMAS Y OTROS OBJETOS ////////////////////////////////////////////////////        
+
+        // *************************************** COLISIÓN DE JUGADOR CON PLATAFORMAS Y OTROS OBJETOS  ****************************************        
 
 
-        // Añadimos colision entre los jugadores y el grupo activo de plataformas
+        // Añadimos colisión entre los jugadores y el grupo activo de plataformas
+        
         this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function () { }, null, this);
         this.platformCollider2 = this.physics.add.collider(this.player2, this.platformGroup, function () { }, null, this);
 
         
-        //COLISIÓN JUGADOR1 CON UN POWERUP
+        //La colisión del Jugador 1 con un powerup
         this.physics.add.overlap(this.player, this.powerupGroup, function (player, powerup) {
             this.tengoPowerup == true; //Activamos nuestra variable
             
@@ -326,7 +354,7 @@ class playGame extends Phaser.Scene {
             powerUP_sound.play();
         }, null, this);
 
-        //COLISION JUGADOR2 POWERUP
+        //Colision Jugador 2 con un powerup 
         if(J2_CogerPowerup){
         this.physics.add.overlap(this.player2, this.powerupGroup, function (player2, powerup) {
             this.tengoPowerup == true;
@@ -367,7 +395,7 @@ class playGame extends Phaser.Scene {
         }, null, this);
 
         }
-        // COLISION JUGADOR1 OBSTACULO
+        // Colision de el jugador1 con un obstaculo
         this.physics.add.overlap(this.player, this.obstaculoGroup, function (player, obstaculo) {
             if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
                 J1_DañoRecibido = true;
@@ -392,9 +420,12 @@ class playGame extends Phaser.Scene {
                 
             }
         }, null, this);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7534ea09bba6d92052be1f921994e61f1741b411
         
-        // COLISION JUGADOR2 OBSTACULO
+        // Colision Jugador2 con un obstáculo
         if(J2_DañoRecibido){ //WEB
         this.physics.add.overlap(this.player2, this.obstaculoGroup, function (player2, obstaculo) {
             if (J2_Vida > 1) { //WEB
@@ -418,10 +449,20 @@ class playGame extends Phaser.Scene {
             }
         }, null, this);
         }
+<<<<<<< HEAD
  
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+=======
 
-        // NUESTROS INPUTS POR TECLADO (ACTUALMENTE AGACHAR NO TIENE FUNCIONALIDAD)
+
+        // ****************************************** FIN COLISION JUGADOR CON PLATAFORMAS Y OTROS OBJETOS ******************************************
+>>>>>>> 7534ea09bba6d92052be1f921994e61f1741b411
+
+
+		// ************************************************** GESTIÓN DE INPUTS ******************************************************
+
+
+        // INputs por teclado
         this.input.keyboard.on('keydown_W', this.jump, this);
         //this.input.keyboard.on('keydown_UP', this.jump2, this);
         if(J2_saltando){ //WEB
@@ -434,7 +475,7 @@ class playGame extends Phaser.Scene {
         //this.input.keyboard.on('keydown_P', this.pause, this);
 
 
-        //NUESTROS TEXTOS QUE SE VISUALIZAN DURANTE EL JUEGO
+        //Visualización de textos en el juego (UI)
         this.add.image(105,350,'layout').setScale(0.27,0.5); //fondo para las vidas del jugador 1
         this.add.image(105,40,'layout').setScale(0.27,0.5);//fondo para las vidas del jugador 2
         this.add.image(920,40,'layout').setScale(0.3,0.5);//fondo para el tiempo
@@ -452,8 +493,14 @@ class playGame extends Phaser.Scene {
             loop: true
         });
 
-
-    }// SE CIERRA CREATE AQUI
+	function saltoJugador2(){
+		this.jump2;
+	}
+	
+    }// ++++++++++++++++++++++++++++++++++++++++++++ FIN DE LA FUNCIÓN CREATE +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
+    
+    
 
     updateTimer() { //Si con este update no refresca la información lo suficientemente rápido, hay que usar el de phaser
         tiempo++;
@@ -660,14 +707,99 @@ class playGame extends Phaser.Scene {
         }
     }
 
+<<<<<<< HEAD
 
     saltoJugador2(){
 		this.jump2;
 	}
+=======
+    agachar() { // POR IMPLEMENTAR
+        if (!this.dying && this.player.body.touching.down) {
+            /*
+             this.anims.create({
+                 key: 'down',
+                 frames: this.anims.generateFrameNumbers('playerAgachado', { start: 0, end: 0 }),
+                 frameRate: 10,
+                 repeat: -1
+             });
+             this.player.anims.play("down");*/
+
+        }
+    }
+
+    sinAgachar() { // POR IMPLEMENTAR
+        //this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height*0.74, "player");
+        //this.player.setGravityY(gameOptions.playerGravity);
+        // this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function(){}, null, this);
+        /*this.anims.create({
+         key: 'up',
+         frames: this.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
+         frameRate: 10,
+         repeat: -1
+     });
+     this.player.anims.play("up");*/
+    }
+
+	//ZONA DE PRUEBAS
+   
+	
+>>>>>>> 7534ea09bba6d92052be1f921994e61f1741b411
 
     update() { //FUNCION UPDATE
 
-        //CONDICIONALES PARA LOS AVISOS Y POWERUPS
+        //++++++++++++++++++++++++++++++++++++++ PARTE DE LA WEB (CLIENTE HOST) VA AQUI ++++++++++++++++++++++++++++++++++++++++++++++++++++
+        if (WEB_Salto){
+        console.log("Buenas tardes");
+         // AQUI VA CODIGO
+         
+         
+         
+        WEB_Salto = false;
+        }
+        
+        
+        if (WEB_Daño){
+        console.log("Buenas noches");
+         // AQUI VA CODIGO
+         
+         
+         
+        WEB_Daño = false;
+        }
+        
+        
+        if (WEB_cogerPowerup){
+        console.log("Buenos días");
+         // AQUI VA CODIGO
+         
+         
+         
+        WEB_cogerPowerup = false;
+        }
+        
+        
+        if (WEB_generarPowerup){
+        console.log("Buenas generaciones de dia");
+         // AQUI VA CODIGO
+         
+         
+         
+        WEB_generarPowerup = false;
+        }
+        
+        
+        if (WEB_generarObstaculo){
+        console.log("Buenas generaciones de noche");
+         // AQUI VA CODIGO
+         
+         
+         
+        WEB_generarObstaculo = false;
+        }
+        
+        
+        
+        
         if(indicadorD<=0){
             imagenD.visible=false;
         } 
@@ -702,12 +834,6 @@ class playGame extends Phaser.Scene {
             this.player2.anims.play('r2');
             jumping2 = false;
         }
-		
-		
-		//ZONA DE PRUEBAS
-		
-		
-		
 		
         // FUNCION GAME OVER (CUANDO MUERE ALGUNO DE LOS JUGADORES)
         function reiniciarJ1(){
@@ -813,11 +939,31 @@ class playGame extends Phaser.Scene {
         
     }
     
-};
+}; // WHAT IS THIS? Probablemente phaser
 
 	function saltoJugador(){
 			console.log("Voy a saltar");
-			this.jump2;
+			WEB_Salto = true;
+}
+
+function cogerPowerup(){
+			console.log("Voy a coger el powerup");
+			WEB_cogerPowerup = true;
+}
+
+function generarPowerup(){
+			console.log("Voy a generar un powerup");
+			WEB_generarPowerup = true;
+}
+
+function recibirDaño(){
+			console.log("Voy a recibir daño");
+			WEB_Daño = true;
+}
+
+function generarObstaculo(){
+			console.log("Voy a generar un obstaculo");
+			WEB_generarObstaculo = true;
 }
 
 function resize() { //FUNCION RESIZE
