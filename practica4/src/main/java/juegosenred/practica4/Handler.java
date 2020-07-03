@@ -60,13 +60,14 @@ public class Handler extends TextWebSocketHandler {
 				for (Partida p: partidillas){//Recorro mi lista por cada elemento partida
 					if (!p.getHayJugador()) { //SI NO HAY J1 (es decir, no hay jugadores)
 						crearPartida(numPartidaActual, jugadoriños.get(idJug));//Llamo a mi función crearPartida con los datos necesarios
+						msg.put("soyJ1", true);
 						break;
 					}
 					else if (p.getVacio()){ //SI HAY UN J1, compruebo si hay un J2
 						llenarPartida(p, jugadoriños.get(idJug), msg); //Si no lo hay, lleno ese J2
 						numPartidaActual++; //Aumento el número de partidas que existen
 						 f = p;
-						
+						 msg.put("soyJ1", false);
 						break;
 					}
 					idLocal++;

@@ -14,6 +14,7 @@ socket.onmessage = function (event) {
 
 		case(0): //CrearPartida() (Pending)
 		ID_Partida = aux.idPartida;//EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
+		Soy_J1 = aux.soyJ1;
 		console.log(aux.stringPrueba);
 		console.log(ID_Partida);
 		break;
