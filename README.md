@@ -4,8 +4,8 @@
 <p align="center">
   <img width="460" src="https://github.com/Franpok/JogosEmRede/blob/master/PRESENTACIONES%202.0/Logo Grupo B.png">
 </p>
-Video de Youtube de Race 51 con WebSockets
-https://youtu.be/jIZzfxImy-k
+Video de Youtube de Race 51 con WebSockets (Extraordinaria)
+https://youtu.be/6iGJyzSa6Wg
 
 # Índice
 ## 1. Introducción
@@ -323,6 +323,8 @@ Una vez que el server procesa el mensaje y se lo envia al cliente, para reflejar
 ###### 5.3.2 Capturas de pantalla 
 
 Al ser el juego el mismo, no se pueden ver cambios sustanciales, aun así subire una captura de dos navegadores jugando a la vez para reflejar el juego online. También hemos actualizado el video en youtube y pondremos el enlace al principio del readme y aquí para mejor contexto.
+
+Video de youtube demostrando los cambios : https://youtu.be/6iGJyzSa6Wg
 
 #### 5.4 v1.0 (Fase 5)
 El desarrollo de la última fase se ha realizado a la vez que la fase 4, habiéndonos dividido el trabajo para aminorar la carga de trabajo de cada integrante. Esta fase se divide en tres principales funciones: beta testing, implementación de mejoras y subida del juego a plataformas de juegos.
