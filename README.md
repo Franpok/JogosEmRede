@@ -308,19 +308,18 @@ Para la interfaz hemos hecho una nueva escena que mientras se conecta el jugador
 </p>
 
 #### 5.3 v1.0 (Fase 4)
-Durante esta fase hemos implementado WebSockets para proporcionalidad la jugabilidad en red entre dos jugadores a nuestro juego. Aparte, hemos decidido realizar todo con WebSockets por lo que eliminamos el contenido de ApiRest de nuestro juego para gestionar todo el servidor mediante Websockets. Para ello hemos creado mapas de Partidas y Jugadores donde permitimos hasta un máximo de 4 partidas simultáneas u ocho jugadores conectados al mismo tiempo. En el servidor, procesamos las partidas y jugadores y al finalizar una partida la borramos con sus correspondientes jugadores para hacer hueco a nuevos usuarios.
+En esta fase hemos implementado nuestro juego para que pudiese ser jugado por dos jugadores mediante WebSockets. De esta forma, al ejecutar el servidor con Spring y usando la misma dirección IP varios jugadores se pueden conectar entre sí para poder jugar.
 
-###### 5.3.1 Arte
-Hemos cambiado la pantalla de carga de ApiRest para usarla como sala de Espera para el jugador mientras que el servidor busca otro usuario si lo hay para emparejarlo.
+###### 5.3.1 Programación
+La parte fundamental de esta fase ha sido la programación. En primer lugar hemos creado una clase nueva llamada Handler, que fuese capaz de manejar los mensajes entre el servidor y el cliente. Para poder crear nuestros jugadores y nuestras partidas hemos creado otras dos clases adicionales llamadas Jugadores y Partidas para poder gestionar estos durante el gameplay y poder comunicar los mensajes correctamente. En el cliente hemos tenido que crear una nueva clase llamada Conexión para enviar mensajes al servidor con lo que quería hacer este, como unirse a una partida, salirse de esta o borrarla.
 
-###### 5.3.3 Programación y gameplay
-En cuanto a cosas del juego no hemos tocado nada de jugabilidad pero si hemos adaptado para que la versión en local se transformase en una versión preparada para websockets. Donde se encuentra la programación es en la construcción de WebSockets y sus correspondientes funciones en cliente y la construcción del servidor para soportar conexiones de jugadores.
+Entrando en matería, dentro de la clase Conexión existen una serie de funciones que, al ser invocadas, mandan un mensaje al servidor. Estas funciones son, por ejemplo, crear una partida, crear un jugador, etc. además de las distintas acciones que puede hacer un jugador, como saltar, coger un Power Up o morir. Cada una de estas funciones cuenta con una variable "idFuncion", fundamental en el desarrollo del servidor.
 
-###### 5.3.4 Interfaz
-No se ha modificado en esta fase ya que lo hemos dejado para la fase V.
+En el Handler recogemos la variable "idFuncion" de los jugadores y la usamos para decidir qué hará el servidor mediante un switch. Es decir, si "idFuncion" es igual a cero, entra en el "case 0" del switch, el cual crea la partida con el id del jugador que lo ha solicitado, y así con el resto de "case". 
 
-###### 5.3.4 Capturas de pantalla mezclado con la Fase V
-Algunas de las capturas de pantalla son:
+Para poder adaptar el juego a dos jugadores, tuvimos que reestructurar gran parte del juego. Diseñamos el juego de tal forma que el primer jugador en conectarse siempre jugase en el carril de abajo y el segundo jugador, en el de arriba. De esta forma, podemos reflejar las acciones de un jugador en la pantalla del contrario y viceversa. Para poder hacer esto, cada vez que el jugador hacía una acción, como saltar, por ejemplo, el servidor envía al cliente contrario una variable booleana. Posteriormente, en la función update del juego, si esa variable es true, ejecuta el código que se le ha pedido. De esta forma hemos sido capaces de pintar por pantalla las acciones del jugador y del contrario.
+
+###### 5.3.2 Capturas de pantalla 
 
 #### 5.4 v1.0 (Fase 5)
 El desarrollo de la última fase se ha realizado a la vez que la fase 4, habiéndonos dividido el trabajo para aminorar la carga de trabajo de cada integrante. Esta fase se divide en tres principales funciones: beta testing, implementación de mejoras y subida del juego a plataformas de juegos.
