@@ -8,13 +8,13 @@ let gameOptions = {
     playerGravity: 900,                 //Gravedad
     jumpForce: 400,                     //Velocidad en y del jugador cuando salta
     playerStartPosition: 200,           //Posición donde comienza el jugador
-    powerupProbabilidad: 20,            //Probabilidad powerUp(Jugador 1)
-    obstaculoProbabilidad: 90,          //Probabilidad de aparición de obstáculos del jugador 1
-    powerupProbabilidad2: 20,           //Probabilidad powerUp(Jugador 2)
-    obstaculoProbabilidad2: 0,         //Probabilidad de aparición de obstáculos del jugador 2
+    powerupProbabilidad: 8,            //Probabilidad powerUp(Jugador 1)
+    obstaculoProbabilidad: 30,          //Probabilidad de aparición de obstáculos del jugador 1
+    powerupProbabilidad2: 8,           //Probabilidad powerUp(Jugador 2)
+    obstaculoProbabilidad2: 70,         //Probabilidad de aparición de obstáculos del jugador 2
     jumps: 1,                           // He creado un power up de doble salto, así que me creo una variable que me permita controlar el número de saltos que puedo hacer
     vidas1: 3,                          //Vidas jugador 1
-    vidas2: 20                           //Vidas jugador 2
+    vidas2: 3                           //Vidas jugador 2
 }
 
 window.onload = function () {
@@ -345,6 +345,7 @@ class playGame extends Phaser.Scene {
                         indicadorV=3; //duración del aviso
                         imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');// se añade el aviso
                     }; 
+                  
                     
                 break;
 
@@ -358,11 +359,8 @@ class playGame extends Phaser.Scene {
                         imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.55, 'indicadorDobleSalto');//se añade el aviso
                     }; 
                 break; 
-            }
-            
-            
-
-            //Esta función modifica las propiedades de un objeto ya creado, en este caso es la animación que hace que el powerup desaparezca
+             }
+              //Esta función modifica las propiedades de un objeto ya creado, en este caso es la animación que hace que el powerup desaparezca
             this.tweens.add({
                 targets: powerup,
                 y: powerup.y - 100,
@@ -377,9 +375,63 @@ class playGame extends Phaser.Scene {
                 }
             });
             powerUP_sound.play();
-        }, null, this);
-        
-        }
+             
+           }, null, this);  
+            
+            }else{
+            
+            this.physics.add.overlap(this.player, this.powerupGroup, function (player, powerup) {
+        	
+        	
+            this.tengoPowerup2 == true; //Activamos nuestra variable
+            decisionPowerup = Phaser.Math.Between(0,1);
+
+            switch(decisionPowerup){
+               case 0:
+                	J2_CogerPowerup = true;
+                	J2_Powerup = 0;
+                    if (vidaAnt2 === gameOptions.vidas2) { // Si las vidas anteriores son iguales a las actuales, se añade una más a las actuales
+                        gameOptions.vidas2++;
+                        jugadorPowerup();
+                        J2_Vida++;
+                        vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                        indicadorV=3; //duración del aviso
+                        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida');// se añade el aviso
+                    }; 
+                    
+                break;
+
+                case 1:
+                jugadorPowerup();
+                	J2_CogerPowerup = true;
+                	J2_Powerup = 1;
+                    if(duracion1<0){
+                        duracion1 = 5; //duracion del doble salto
+                        saltos1 = 2; //ahora tenemos como maximo 2 saltos
+                        imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.15, 'indicadorDobleSalto');//se añade el aviso
+                    }; 
+                break; 
+            
+            }
+            
+              this.tweens.add({
+                targets: powerup,
+                y: powerup.y - 100,
+                alpha: 0,
+                duration: 800,
+                ease: "Cubic.easeOut",
+                callbackScope: this,
+                onComplete: function () {
+                    this.powerupGroup.killAndHide(powerup);
+                    this.powerupGroup.remove(powerup);
+                    vidaAnt2 = gameOptions.vidas2;
+                }
+            });
+            powerUP_sound.play();
+     	  }, null, this);    
+        }    
+
+
        
        
        if(LocalJ1){
@@ -415,7 +467,7 @@ class playGame extends Phaser.Scene {
       }else{
       
       this.physics.add.overlap(this.player, this.obstaculoGroup, function (player, obstaculo) {
-        	//jugadorDaño();
+        	jugadorDaño();
             if (gameOptions.vidas2 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
                 J2_DañoRecibido = true;
             	J2_Vida--;
@@ -596,6 +648,9 @@ class playGame extends Phaser.Scene {
                 jugadorGenerarObstaculo();
             }
         }
+        
+        
+        
         if (J2_Muerto) { //LO ANTERIOR PERO PARA NUESTRO JUGADOR 2
 
         } else {
@@ -633,7 +688,7 @@ class playGame extends Phaser.Scene {
                 else {
                     let powerup = this.physics.add.sprite(posX, game.config.height * 0.3, "powerup");
                     powerup.setImmovable(true);
-                    powerup.setVelocityX(platform.body.velocity.x);
+                    powerup.setVelocityX(gameOptions.platformStartSpeed * -1);
                     powerup.setDepth(2);
                     this.powerupGroup.add(powerup);
                 }
@@ -643,7 +698,7 @@ class playGame extends Phaser.Scene {
 
 
             // AQUI DECIDO SI VOY A SPAWNEAR UN OBSTACULO O NO EN UNA PLATAFORMA DEL JUGADOR 2
-            if (Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad2 && !Soy_J1) {
+            if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad2 && !Soy_J1) {
                 if (this.obstaculoPool.getLength()) {
                     let obstaculo = this.obstaculoPool.getFirst();
                     obstaculo.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
@@ -716,7 +771,7 @@ class playGame extends Phaser.Scene {
         if (WEB_Daño){
         console.log("Me he hecho pupita");
      // Colision de el jugador1 con un obstaculo
-     	//if (Soy_J1){
+     	if (!Soy_J1){
         	if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
             	J1_DañoRecibido = true;
         		J1_Vida--;
@@ -736,16 +791,14 @@ class playGame extends Phaser.Scene {
                 this.player2.body.setVelocityX(-200);
                 //this.physics.world.removeCollider(this.platformCollider);
          	}
-       //  }else{
-         	/*if (gameOptions.vidas2 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
+         }else{
+         	if (gameOptions.vidas2 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
                 J2_DañoRecibido = true;
             	J2_Vida--;
             	gameOptions.vidas2--;
                 vidaAnt2--;
                 indicadorD=3; //duracion del aviso
                 imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage');//aviso            
-                this.obstaculoGroup.killAndHide(obstaculo);
-                this.obstaculoGroup.remove(obstaculo);
                 vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
                 dano.play(); //sonido de daño
             } else { // Si ya no tiene vidas, cambia de estado a muerto
@@ -757,10 +810,10 @@ class playGame extends Phaser.Scene {
                     death_sound.play();
                     this.player.body.setVelocityX(-200);
                     this.physics.world.removeCollider(this.platformCollider);
-            }*/
+            }
          
          	
-       // }
+        }
        WEB_Daño = false;
       }
         
@@ -771,6 +824,7 @@ class playGame extends Phaser.Scene {
         if (WEB_cogerPowerup){
         console.log("He recibido un powerUP")
         
+        if (!Soy_J1){
         switch(WEB_TipoPowerup){
                case 0:
                 	J1_CogerPowerup = true;
@@ -802,7 +856,42 @@ class playGame extends Phaser.Scene {
                 break; 
                 
            }    
+         } else {
          
+          switch(WEB_TipoPowerup){
+               case 0:
+                	J2_CogerPowerup = true;
+                	J2_Powerup = 0;
+                	var bruh = true;
+                	if (bruh){
+                		bruh = false;
+                   	 // Si las vidas anteriores son iguales a las actuales, se añade una más a las actuales
+                        gameOptions.vidas2 = gameOptions.vidas2 + 1;
+                        J2_Vida++;
+                        vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                        indicadorV=3; //duración del aviso
+                        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida');// se añade el aviso
+                      }  
+            		powerUP_sound.play();
+                break;
+
+                case 1:
+                	J2_CogerPowerup = true;
+                	J2_Powerup = 1;
+                    if(duracion2<0){
+                        duracion2 = 5; //duracion del doble salto
+                        saltos2 = 2; //ahora tenemos como maximo 2 saltos
+                        imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.15, 'indicadorDobleSalto');//se añade el aviso
+                    }; 
+                    
+                 
+            powerUP_sound.play();
+                break; 
+                
+           }
+         
+         
+         }
         WEB_cogerPowerup = false;
         }
         
