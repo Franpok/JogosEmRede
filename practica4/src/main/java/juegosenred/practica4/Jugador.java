@@ -7,15 +7,8 @@ public class Jugador {
 	private int ID;
 	private int SKIN;
 	private WebSocketSession SESSION;
-	private boolean SALTO;
-	private boolean DAÑO;
-	private boolean GENERARTRAMPA;
-	private int POWERUP;
-	private boolean MUERTE;
-	private boolean GENERARPOWERUP;
-	private boolean COGERPOWERUP;
-	private int VIDAS;
 	private LocalDateTime Tiempo;
+	private boolean inGame;
 	
 	//Crear variables si hiciera falta , NOMBRE??
 	
@@ -24,16 +17,14 @@ public class Jugador {
 		this.ID = id;
 		this.SKIN = 0;
 		this.SESSION = session;
-		this.SALTO = false;
-		this.DAÑO = false;
-		this.GENERARPOWERUP = false;
-		this.GENERARTRAMPA = false;
-		this.POWERUP = 0;
-		this.MUERTE = false;
-		this.VIDAS = 3;
 		this.Tiempo = LocalDateTime.now();
+		this.inGame = false;
 	}
-	 
+	 Jugador() { //Pasar como parámetros las variables que hagan falta y no puedan inicializarse a 0 o null o false
+			this.SKIN = 0;
+			this.Tiempo = LocalDateTime.now();
+			this.inGame = false;
+		}
 	 
 	 //Getters y Setters
 	 public int getId() {
@@ -44,6 +35,13 @@ public class Jugador {
 		 this.ID = id;
 	 }
 	 
+	 public boolean getInGame() {
+		 return inGame;
+	 }
+	 
+	 public void setinGame(boolean b) {
+		 this.inGame = b;
+	 }
 	 public int getSkin() {
 		 return SKIN;
 	 }
@@ -52,66 +50,6 @@ public class Jugador {
 		 this.SKIN = skin;
 	 }
 	 
-	 public int getPowerup() {
-		 return POWERUP;
-	 }
-	 
-	 public void setPowerup(int powerup) {
-		 this.POWERUP = powerup;
-	 }
-	 public int getVidas() {
-		 return VIDAS;
-	 }
-	 
-	 public void setVidas(int vidas) {
-		 this.VIDAS = vidas;
-	 }
-	 
-	 public Boolean getSalto() {
-		 return SALTO;
-	 }
-	 
-	 public void setSalto(Boolean b){
-		 this.SALTO = b;
-	 }
-	 
-	 public Boolean getCogerPowerup() {
-		 return COGERPOWERUP;
-	 }
-	 
-	 public void setCogerPowerup(Boolean b){
-		 this.COGERPOWERUP = b;
-	 }
-	 public Boolean getDaño() {
-		 return DAÑO;
-	 }
-	 
-	 public void setDaño(Boolean b){
-		 this.DAÑO= b;
-	 }
-	 
-	 public Boolean getGenerarTrampa() {
-		 return GENERARTRAMPA;
-	 }
-	 
-	 public void setGenerarTrampa(Boolean b){
-		 this.GENERARTRAMPA = b;
-	 }
-	 
-	 public Boolean getMuerte() {
-		 return MUERTE;
-	 }
-	 
-	 public void setMuerte(Boolean b){
-		 this.MUERTE = b;
-	 }
-	 public Boolean getGenerarPowerup() {
-		 return GENERARPOWERUP;
-	 }
-	 
-	 public void setGenerarPowerup(Boolean b){
-		 this.GENERARPOWERUP = b;
-	 }
 	 
 	 public LocalDateTime getTiempo() {
 		 return Tiempo;
