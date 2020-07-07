@@ -8,13 +8,13 @@ let gameOptions = {
     playerGravity: 900,                 //Gravedad
     jumpForce: 400,                     //Velocidad en y del jugador cuando salta
     playerStartPosition: 200,           //Posición donde comienza el jugador
-    powerupProbabilidad: 8,            //Probabilidad powerUp(Jugador 1)
-    obstaculoProbabilidad: 30,          //Probabilidad de aparición de obstáculos del jugador 1
-    powerupProbabilidad2: 8,           //Probabilidad powerUp(Jugador 2)
-    obstaculoProbabilidad2: 30,         //Probabilidad de aparición de obstáculos del jugador 2
+    powerupProbabilidad: 20,            //Probabilidad powerUp(Jugador 1)
+    obstaculoProbabilidad: 90,          //Probabilidad de aparición de obstáculos del jugador 1
+    powerupProbabilidad2: 20,           //Probabilidad powerUp(Jugador 2)
+    obstaculoProbabilidad2: 0,         //Probabilidad de aparición de obstáculos del jugador 2
     jumps: 1,                           // He creado un power up de doble salto, así que me creo una variable que me permita controlar el número de saltos que puedo hacer
     vidas1: 3,                          //Vidas jugador 1
-    vidas2: 3                           //Vidas jugador 2
+    vidas2: 20                           //Vidas jugador 2
 }
 
 window.onload = function () {
@@ -57,6 +57,9 @@ let powerUP_sound;
 let death_sound;
 let pause_sound;
 var vidaTextP1;
+var myNewPos;
+var myNewWidth;
+var myNewSpeed;
 var vidaTextP2;
 var tiempo;
 var tiempoText;
@@ -79,7 +82,9 @@ var imagenDobleSalto;//imagen que se le va a asignar al jugador 1 al tener doble
 var imagenDobleSalto2;//imagen que se le va a asignar al jugador 2 al tener doble salto
 var imagenV;//imagen que se le va a asignar al jugador 1 al recibir una vida extra
 var imagenV2;//imagen que se le va a asignar al jugador 2 al recibir una vida extra
-
+var randomF;
+var auxP; //auxiliar que se manda para el random del powerup al server
+var auxPP;
 class playGame extends Phaser.Scene {
     constructor() {
         super("PlayGame");
@@ -214,13 +219,22 @@ class playGame extends Phaser.Scene {
 
         //Añadimos una plataforma al juego (La plataforma inicial) , que tiene una dimensión x e y
         this.addPlatform(game.config.width, game.config.width / 2);
-
+        myNewPos = game.config.width / 2
+		myNewWidth = game.config.width
 		// ************************************************* CREACIÓN DE JUGADORES ********************************************************
 		
         // Creamos al jugador 1
-        this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.71, 'alien', 0);
-        this.player.setGravityY(gameOptions.playerGravity);
-
+       if(Soy_J1){
+        	this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.71, 'alien', 0);
+            this.player.setGravityY(gameOptions.playerGravity);
+            LocalJ1 = true;
+        }else{
+        	this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.31, 'alien', 0);
+            this.player.setGravityY(gameOptions.playerGravity);
+            LocalJ1 = false;
+        }
+       
+        
         // Añadimos su animación
         this.anims.create({ //Skin 1
             key: skinsArray[0],
@@ -264,9 +278,16 @@ class playGame extends Phaser.Scene {
         }
         
         // Creamos al jugador 2
-        this.player2 = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.31, 'alien2', 0);
-        this.player2.setGravityY(gameOptions.playerGravity);
+       if(Soy_J1){
+    	   this.player2 = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.31, 'alien2', 0);
+           this.player2.setGravityY(gameOptions.playerGravity);
 
+       }else{
+    	   this.player2 = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height * 0.71, 'alien2', 0);
+           this.player2.setGravityY(gameOptions.playerGravity);
+
+       }
+        
         // Añadimos su animación
         
         switch (J2_skin) {
@@ -305,23 +326,30 @@ class playGame extends Phaser.Scene {
 
         
         //La colisión del Jugador 1 con un powerup
+        if (LocalJ1){
         this.physics.add.overlap(this.player, this.powerupGroup, function (player, powerup) {
+        	
+        	
             this.tengoPowerup == true; //Activamos nuestra variable
-            
-            switch(decidirPowerUp){
-                case 0:
+            decisionPowerup = Phaser.Math.Between(0,1);
+
+            switch(decisionPowerup){
+               case 0:
                 	J1_CogerPowerup = true;
                 	J1_Powerup = 0;
                     if (vidaAnt1 === gameOptions.vidas1) { // Si las vidas anteriores son iguales a las actuales, se añade una más a las actuales
                         gameOptions.vidas1++;
+                        jugadorPowerup();
                         J1_Vida++;
                         vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
                         indicadorV=3; //duración del aviso
                         imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');// se añade el aviso
                     }; 
+                    
                 break;
 
                 case 1:
+                jugadorPowerup();
                 	J1_CogerPowerup = true;
                 	J1_Powerup = 1;
                     if(duracion1<0){
@@ -331,6 +359,7 @@ class playGame extends Phaser.Scene {
                     }; 
                 break; 
             }
+            
             
 
             //Esta función modifica las propiedades de un objeto ya creado, en este caso es la animación que hace que el powerup desaparezca
@@ -349,50 +378,14 @@ class playGame extends Phaser.Scene {
             });
             powerUP_sound.play();
         }, null, this);
-
-        //Colision Jugador 2 con un powerup 
-        if(J2_CogerPowerup){
-        this.physics.add.overlap(this.player2, this.powerupGroup, function (player2, powerup) {
-            this.tengoPowerup == true;
-            switch(J2_PowerUp){
-                case 0:
-                    if (vidaAnt2 === J2_Vida) {
-                        gameOptions.vidas2++;
-                        vidaTextP2.setText("Vidas J2: " + J2_Vida);
-                        indicadorV2=3;//duracion del aviso
-                        imagenV2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida'); //aviso  
-                    };
-                break;
-
-                case 1:
-                    if(duracion2<0){
-                        duracion2 = 5;//duración del doble salto
-                        saltos2 = 2;//ahora tenemos como maximo 2 saltos, en vez de 1
-                        imagenDobleSalto2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.15, 'indicadorDobleSalto');//aviso
-                    };
-                    
-                break;   
-            }
-
-            this.tweens.add({
-                targets: powerup,
-                y: powerup.y - 100,
-                alpha: 0,
-                duration: 800,
-                ease: "Cubic.easeOut",
-                callbackScope: this,
-                onComplete: function () {
-                    this.powerupGroup.killAndHide(powerup);
-                    this.powerupGroup.remove(powerup);
-                    vidaAnt2 = gameOptions.vidas2;
-                }
-            });
-            powerUP_sound.play();
-        }, null, this);
-
+        
         }
-        // Colision de el jugador1 con un obstaculo
-        this.physics.add.overlap(this.player, this.obstaculoGroup, function (player, obstaculo) {
+       
+       
+       if(LocalJ1){
+       
+       this.physics.add.overlap(this.player, this.obstaculoGroup, function (player, obstaculo) {
+        	jugadorDaño();
             if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
                 J1_DañoRecibido = true;
             	J1_Vida--;
@@ -417,30 +410,43 @@ class playGame extends Phaser.Scene {
             }
         }, null, this);
         
-        // Colision Jugador2 con un obstáculo
-        if(J2_DañoRecibido){ //WEB
-        this.physics.add.overlap(this.player2, this.obstaculoGroup, function (player2, obstaculo) {
-            if (J2_Vida > 1) { //WEB
-                gameOptions.vidas2--;
+        
+    
+      }else{
+      
+      this.physics.add.overlap(this.player, this.obstaculoGroup, function (player, obstaculo) {
+        	//jugadorDaño();
+            if (gameOptions.vidas2 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
+                J2_DañoRecibido = true;
+            	J2_Vida--;
+            	gameOptions.vidas2--;
                 vidaAnt2--;
-                indicadorD2=3; //tiempo de aviso
-                imagenD2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage'); //aviso
+                indicadorD=3; //duracion del aviso
+                imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage');//aviso            
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
-                vidaTextP2.setText("Vidas J2: " + J2_Vida); //WEB
-                dano.play(); //sonido de recibir daño suena
-            } else {
-                J2_Vida=0;
-                vidaTextP2.setText("Vidas J2: " + J2_Vida); //WEB
-                this.dying2 = true;
-                this.player2.visible = false;
-                death_sound.play();
-                this.player2.body.setVelocityX(-200);
-                    this.physics.world.removeCollider(this.platformCollider2);
-               
-            }
+                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                dano.play(); //sonido de daño
+            } else { // Si ya no tiene vidas, cambia de estado a muerto
+                gameOptions.vidas2=0;
+                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                    this.dying2 = true;
+                    J2_Muerto = true;
+                    this.player.visible = false;
+                    death_sound.play();
+                    this.player.body.setVelocityX(-200);
+                    this.physics.world.removeCollider(this.platformCollider);
+                    }
         }, null, this);
-        }
+                    
+      }
+       
+       
+     
+       
+       
+        
+    
 
 
         // ****************************************** FIN COLISION JUGADOR CON PLATAFORMAS Y OTROS OBJETOS ******************************************
@@ -452,13 +458,6 @@ class playGame extends Phaser.Scene {
         // INputs por teclado
         this.input.keyboard.on('keydown_W', this.jump, this);
         //this.input.keyboard.on('keydown_UP', this.jump2, this);
-        if(J2_saltando){ //WEB
-        	this.jump2
-        }
-        this.input.keyboard.on('keydown_DOWN', this.agachar, this);
-        this.input.keyboard.on('keydown_S', this.agachar, this);
-        this.input.keyboard.on('keyup_DOWN', this.sinAgachar, this);
-        this.input.keyboard.on('keyup_S', this.sinAgachar, this);
         //this.input.keyboard.on('keydown_P', this.pause, this);
 
 
@@ -488,7 +487,7 @@ class playGame extends Phaser.Scene {
     
     
     
-
+   
     updateTimer() { //Si con este update no refresca la información lo suficientemente rápido, hay que usar el de phaser
         tiempo++;
         tiempoText.setText("Tiempo: " + tiempo);
@@ -498,9 +497,8 @@ class playGame extends Phaser.Scene {
         indicadorD2--;
         indicadorV--;
         indicadorV2--;
-        decidirPowerUp = Phaser.Math.Between(0,1);
-        //actualizaJugador(); //Mirar si llama a la función con los parámetros que queremos y no con los false
-        
+       
+      
          J1_saltando = false;
          J1_CogerPowerup = false;
          J1_DañoRecibido = false;
@@ -551,7 +549,7 @@ class playGame extends Phaser.Scene {
             this.nextPlatformDistance = 0;
 
 
-            if (Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad) { //AQUI DECIDO SI APARECE UN POWERUP O NO (JUGADOR 1)
+            if (Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad && Soy_J1) { //AQUI DECIDO SI APARECE UN POWERUP O NO (JUGADOR 1)
             	J1_PowerupGenerado =true;
             	if (this.powerupPool.getLength()) {
                     let powerup = this.powerupPool.getFirst();
@@ -566,17 +564,20 @@ class playGame extends Phaser.Scene {
                     let powerup = this.physics.add.sprite(posX, game.config.height * 0.7, "powerup");
                     powerup.setImmovable(true);
                     powerup.setVelocityX(platform.body.velocity.x);
+                    console.log(platform.body.velocity.x);
                     powerup.setDepth(2);
                     this.powerupGroup.add(powerup);
                 }
+                jugadorGenerarPowerup();
             }
 
             // AQUI DECIDO SI VOY A SPAWNEAR UN OBSTACULO O NO EN UNA PLATAFORMA DEL JUGADOR 1
-            if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad) {
+            if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad && Soy_J1) {
             	J1_PinchoGenerado = true;
                 if (this.obstaculoPool.getLength()) {
                     let obstaculo = this.obstaculoPool.getFirst();
-                    obstaculo.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
+                    J1_randObstaculo = platformWidth / 2 + Phaser.Math.Between(1, platformWidth)
+                    obstaculo.x = posX - J1_randObstaculo;
                     obstaculo.y = game.config.height * 0.75;
                     obstaculo.alpha = 1;
                     obstaculo.active = true;
@@ -584,33 +585,16 @@ class playGame extends Phaser.Scene {
                     this.obstaculoPool.remove(obstaculo);
                 }
                 else {
-                    let obstaculo = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), game.config.height * 0.75, "obstaculo");
+                J1_randObstaculo = platformWidth / 2 + Phaser.Math.Between(1, platformWidth)
+                    let obstaculo = this.physics.add.sprite(posX - J1_randObstaculo, game.config.height * 0.75, "obstaculo");
                     obstaculo.setImmovable(true);
                     obstaculo.setVelocityX(platform.body.velocity.x);
                     obstaculo.setSize(8, 2, true);
                     obstaculo.setDepth(2);
                     this.obstaculoGroup.add(obstaculo);
                 }
-            }/*
-            if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad) {
-                if (this.dronPool.getLength()) {
-                    let dron = this.dronPool.getFirst();
-                    dron.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
-                    dron.y = game.config.height * 0.65;
-                    dron.alpha = 1;
-                    dron.active = true;
-                    dron.visible = true;
-                    this.obstaculoPool.remove(dron);
-                }
-                else {
-                    let dron = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), game.config.height * 0.65, "obstaculo");
-                    dron.setImmovable(true);
-                    dron.setVelocityX(platform.body.velocity.x);
-                    dron.setSize(8, 2, true);
-                    dron.setDepth(2);
-                    this.dronGroup.add(dron);
-                }
-            }*/
+                jugadorGenerarObstaculo();
+            }
         }
         if (J2_Muerto) { //LO ANTERIOR PERO PARA NUESTRO JUGADOR 2
 
@@ -636,7 +620,7 @@ class playGame extends Phaser.Scene {
             this.nextPlatformDistance = 0;
 
             // AQUI DECIDO SI VOY A SPAWNEAR UN POWER UP O NO EN UNA PLATAFORMA DEL JUGADOR 2
-            if (J2_PowerupGenerado) {
+            if (Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad2 && !Soy_J1) {
                 if (this.powerupPool.getLength()) {
                     let powerup = this.powerupPool.getFirst();
                     powerup.x = posX;
@@ -653,12 +637,13 @@ class playGame extends Phaser.Scene {
                     powerup.setDepth(2);
                     this.powerupGroup.add(powerup);
                 }
+                jugadorGenerarPowerup();
             }
 
 
 
             // AQUI DECIDO SI VOY A SPAWNEAR UN OBSTACULO O NO EN UNA PLATAFORMA DEL JUGADOR 2
-            if (J2_PinchoGenerado) {
+            if (Phaser.Math.Between(1, 100) <= gameOptions.powerupProbabilidad2 && !Soy_J1) {
                 if (this.obstaculoPool.getLength()) {
                     let obstaculo = this.obstaculoPool.getFirst();
                     obstaculo.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
@@ -676,26 +661,8 @@ class playGame extends Phaser.Scene {
                     obstaculo.setDepth(2);
                     this.obstaculoGroup.add(obstaculo);
                 }
-            }/*
-            if (Phaser.Math.Between(1, 100) <= gameOptions.obstaculoProbabilidad2) {
-                if (this.dronPool.getLength()) {
-                    let dron = this.dronPool.getFirst();
-                    dron.x = posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth);
-                    dron.y = game.config.height * 0.25;
-                    dron.alpha = 1;
-                    dron.active = true;
-                    dron.visible = true;
-                    this.dronPool.remove(dron);
-                }
-                else {
-                    let dron = this.physics.add.sprite(posX - platformWidth / 2 + Phaser.Math.Between(1, platformWidth), game.config.height * 0.25, "obstaculo");
-                    dron.setImmovable(true);
-                    dron.setVelocityX(platform2.body.velocity.x);
-                    dron.setSize(8, 2, true);
-                    dron.setDepth(2);
-                    this.dronGroup.add(dron);
-                }
-            }*/
+ 				jugadorGenerarObstaculo();           
+            }
         }
 
     }
@@ -714,101 +681,220 @@ class playGame extends Phaser.Scene {
             jumping1 = true;
             this.player.anims.stop();
             salto.play();
+            
+            
         }
     }
-
-    jump2() { // PARA EL JUGADOR 2
-        if ((!J2_Muerto) && (this.player2.body.touching.down || (this.playerJumps > 0 && this.playerJumps < saltos2))) {
-            if (this.player2.body.touching.down) {
-                this.playerJumps = 0;
-            }
-            this.player2.setVelocityY(gameOptions.jumpForce * -1);
-            this.playerJumps++;
-            jumping2 = true;
-            this.player2.anims.stop();
-            salto.play();
-        }
-    }
-
-    agachar() { // POR IMPLEMENTAR
-        if (!this.dying && this.player.body.touching.down) {
-            /*
-             this.anims.create({
-                 key: 'down',
-                 frames: this.anims.generateFrameNumbers('playerAgachado', { start: 0, end: 0 }),
-                 frameRate: 10,
-                 repeat: -1
-             });
-             this.player.anims.play("down");*/
-
-        }
-    }
-
-    sinAgachar() { // POR IMPLEMENTAR
-        //this.player = this.physics.add.sprite(gameOptions.playerStartPosition, game.config.height*0.74, "player");
-        //this.player.setGravityY(gameOptions.playerGravity);
-        // this.platformCollider = this.physics.add.collider(this.player, this.platformGroup, function(){}, null, this);
-        /*this.anims.create({
-         key: 'up',
-         frames: this.anims.generateFrameNumbers('player', { start: 0, end: 0 }),
-         frameRate: 10,
-         repeat: -1
-     });
-     this.player.anims.play("up");*/
-    }
-
-	//ZONA DE PRUEBAS
+    
    
 	
-
+	
     update() { //FUNCION UPDATE
-
+    	 
         //++++++++++++++++++++++++++++++++++++++ PARTE DE LA WEB (CLIENTE HOST) VA AQUI ++++++++++++++++++++++++++++++++++++++++++++++++++++
         if (WEB_Salto){
-        console.log("Buenas tardes");
+        	console.log("Buenas tardes");
          // AQUI VA CODIGO
-         
-         
-         
+        	console.log("De verdad que quiero saltar");
+            if ((!J2_Muerto) && (this.player2.body.touching.down || (this.playerJumps > 0 && this.playerJumps < saltos2))) {
+                if (this.player2.body.touching.down) {
+                    this.playerJumps = 0;
+                }
+                this.player2.setVelocityY(gameOptions.jumpForce * -1);
+                this.playerJumps++;
+                jumping2 = true;
+                this.player2.anims.stop();
+                salto.play();
+            }  
         WEB_Salto = false;
         }
         
         
+        
+        
+        
         if (WEB_Daño){
-        console.log("Buenas noches");
-         // AQUI VA CODIGO
+        console.log("Me he hecho pupita");
+     // Colision de el jugador1 con un obstaculo
+     	//if (Soy_J1){
+        	if (gameOptions.vidas1 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
+            	J1_DañoRecibido = true;
+        		J1_Vida--;
+        		gameOptions.vidas1--;
+            	vidaAnt1--;
+            	indicadorD=3; //duracion del aviso
+            	imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorDamage');//aviso            
+            	vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
+            	dano.play(); //sonido de daño
+        	} else { // Si ya no tiene vidas, cambia de estado a muerto
+            	gameOptions.vidas1=0;
+            	vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
+                this.dying = true;
+                J1_Muerto = true;
+                this.player2.visible = false;
+                death_sound.play();
+                this.player2.body.setVelocityX(-200);
+                //this.physics.world.removeCollider(this.platformCollider);
+         	}
+       //  }else{
+         	/*if (gameOptions.vidas2 > 1) { //Mientras tenga vidas, eliminamos el obstaculo y le descontamos una vida al jugador
+                J2_DañoRecibido = true;
+            	J2_Vida--;
+            	gameOptions.vidas2--;
+                vidaAnt2--;
+                indicadorD=3; //duracion del aviso
+                imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage');//aviso            
+                this.obstaculoGroup.killAndHide(obstaculo);
+                this.obstaculoGroup.remove(obstaculo);
+                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                dano.play(); //sonido de daño
+            } else { // Si ya no tiene vidas, cambia de estado a muerto
+                gameOptions.vidas2=0;
+                vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
+                    this.dying2 = true;
+                    J2_Muerto = true;
+                    this.player.visible = false;
+                    death_sound.play();
+                    this.player.body.setVelocityX(-200);
+                    this.physics.world.removeCollider(this.platformCollider);
+            }*/
          
-         
-         
-        WEB_Daño = false;
-        }
+         	
+       // }
+       WEB_Daño = false;
+      }
+        
+        
+        
         
         
         if (WEB_cogerPowerup){
-        console.log("Buenos días");
-         // AQUI VA CODIGO
-         
-         
+        console.log("He recibido un powerUP")
+        
+        switch(WEB_TipoPowerup){
+               case 0:
+                	J1_CogerPowerup = true;
+                	J1_Powerup = 0;
+                	var bruh = true;
+                	if (bruh){
+                		bruh = false;
+                   	 // Si las vidas anteriores son iguales a las actuales, se añade una más a las actuales
+                        gameOptions.vidas1 = gameOptions.vidas1 + 1;
+                        J1_Vida++;
+                        vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
+                        indicadorV=3; //duración del aviso
+                        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');// se añade el aviso
+                      }  
+            		powerUP_sound.play();
+                break;
+
+                case 1:
+                	J2_CogerPowerup = true;
+                	J2_Powerup = 1;
+                    if(duracion2<0){
+                        duracion2 = 5; //duracion del doble salto
+                        saltos2 = 2; //ahora tenemos como maximo 2 saltos
+                        imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.55, 'indicadorDobleSalto');//se añade el aviso
+                    }; 
+                    
+                 
+            powerUP_sound.play();
+                break; 
+                
+           }    
          
         WEB_cogerPowerup = false;
         }
         
         
+        
+        
+        
         if (WEB_generarPowerup){
-        console.log("Buenas generaciones de dia");
-         // AQUI VA CODIGO
-         
-         
-         
-        WEB_generarPowerup = false;
+        	console.log("Buenas generaciones de dia");
+        
+        	if (Soy_J1){
+        		if (this.powerupPool.getLength()) {
+                    let powerup = this.powerupPool.getFirst();
+                    powerup.x = myNewPos;
+                    powerup.y = game.config.height * 0.3;
+                    powerup.alpha = 1;
+                    powerup.active = false;
+                    powerup.visible = true;
+                    this.powerupPool.remove(powerup);
+                }else{
+                    let powerup = this.physics.add.sprite(myNewPos, game.config.height * 0.3, "powerup");
+                    powerup.setImmovable(true);
+                    powerup.setVelocityX(gameOptions.platformStartSpeed * -1);
+                    powerup.setDepth(2);
+                    powerup.active = false;
+                    this.powerupGroup.add(powerup);
+				}
+			}else{
+				if (this.powerupPool.getLength()) {
+                    let powerup = this.powerupPool.getFirst();
+                    powerup.x = myNewPos;
+                    powerup.y = game.config.height * 0.7;
+                    powerup.alpha = 1;
+                    powerup.active = false;
+                    powerup.visible = true;
+                    this.powerupPool.remove(powerup);
+                }else{
+                    let powerup = this.physics.add.sprite(myNewPos, game.config.height * 0.7, "powerup");
+                    powerup.setImmovable(true);
+                    powerup.setVelocityX(gameOptions.platformStartSpeed * -1);
+                    powerup.setDepth(2);
+                    powerup.active = false;
+                    this.powerupGroup.add(powerup);
+        		}
+        	}
+        	WEB_generarPowerup=false;
         }
         
         
         if (WEB_generarObstaculo){
         console.log("Buenas generaciones de noche");
-         // AQUI VA CODIGO
-         
-         
+        if (Soy_J1){
+        if (this.obstaculoPool.getLength()) {
+            	let obstaculo = this.obstaculoPool.getFirst();
+                obstaculo.x = myNewPos - WEB_J1randObstaculo;
+                obstaculo.y = game.config.height * 0.35;
+                obstaculo.alpha = 1;
+                obstaculo.active = false;
+                obstaculo.visible = true;
+                this.obstaculoPool.remove(obstaculo);
+        	}else 
+        		{
+            	let obstaculo = this.physics.add.sprite(myNewPos - WEB_J1randObstaculo, game.config.height * 0.35, "obstaculo");
+                obstaculo.setImmovable(true);
+                obstaculo.setVelocityX(gameOptions.platformStartSpeed * -1);
+                obstaculo.setSize(8, 2, true);
+                obstaculo.setDepth(2);
+                obstaculo.active = false;
+                this.obstaculoGroup.add(obstaculo);
+        	}	
+		} 
+		else
+		{
+        	if (this.obstaculoPool.getLength()) {
+                    let obstaculo = this.obstaculoPool.getFirst();
+                    obstaculo.x = myNewPos - WEB_J2randObstaculo;
+                    obstaculo.y = game.config.height * 0.75;
+                    obstaculo.alpha = 1;
+                    obstaculo.active = false;
+                    obstaculo.visible = true;
+                    this.obstaculoPool.remove(obstaculo);
+                }
+                else {
+                    let obstaculo = this.physics.add.sprite(myNewPos - WEB_J2randObstaculo, game.config.height * 0.75, "obstaculo");
+                    obstaculo.setImmovable(true);
+                    obstaculo.setVelocityX(gameOptions.platformStartSpeed * -1);
+                    obstaculo.setSize(8, 2, true);
+                    obstaculo.setDepth(2);
+                    obstaculo.active = false;
+                    this.obstaculoGroup.add(obstaculo);
+                }
+        	}
         WEB_generarObstaculo = false;
         }
         
@@ -907,6 +993,7 @@ class playGame extends Phaser.Scene {
             this.scene.start("menuMuerte2");
             
         }
+         
         if (this.dying == true) {
         	J1_Muerto = true;
         	//actualizaJugador();
@@ -948,16 +1035,31 @@ class playGame extends Phaser.Scene {
         // CREACION DE NUEVAS PLATAFORMAS ALEATORIAS (EN TAMAÑO)
         if (minDistance > this.nextPlatformDistance) {
             var nextPlatformWidth = Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
+            myNewWidth = nextPlatformWidth
+            myNewPos = game.config.width + nextPlatformWidth / 2
             this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
         }
 
-        
+        function jump2() { // PARA EL JUGADOR 2
+        	console.log("De verdad que quiero saltar");
+            if ((!J2_Muerto) && (this.player2.body.touching.down || (this.playerJumps > 0 && this.playerJumps < saltos2))) {
+                if (this.player2.body.touching.down) {
+                    this.playerJumps = 0;
+                }
+                this.player2.setVelocityY(gameOptions.jumpForce * -1);
+                this.playerJumps++;
+                jumping2 = true;
+                this.player2.anims.stop();
+                salto.play();
+            }
+        }
     }
     
 }; // WHAT IS THIS? Probablemente phaser
 
 	function saltoJugador(){
 			console.log("Voy a saltar");
+			
 			WEB_Salto = true;
 }
 

@@ -15,6 +15,8 @@ socket.onmessage = function (event) {
 		case(0): //CrearPartida() (Pending)
 		ID_Partida = aux.idPartida;//EJEMPLO if(aux.Estado) // EN SERVER ESTARIA msg.put("Estado", partidas.getId(idpartida).getVacio();
 		Soy_J1 = aux.soyJ1;
+		console.log("aux " + aux.soyJ1);
+		console.log("la buena " +Soy_J1);
 		console.log(aux.stringPrueba);
 		console.log(ID_Partida);
 		break;
@@ -26,14 +28,17 @@ socket.onmessage = function (event) {
 		case(2)://Jugador coge powerup
 		
 		console.log("He cogido powerup")
-		
+		WEB_TipoPowerup = aux.tipoPowerup;
 		cogerPowerup();
 		break;
 
-		case(3)://crearJugador() (WORKS)
+		case(3)://crearJugador() (WORKS)7
+		
 		J1_id = aux.idJugador;
+		
 		console.log(aux.mensaje);
 		console.log(aux.idJugador);
+		barrera= true;
 		break;
 
 		case(4)://CUANDO LA PARTIDA ESTA LLENA()
@@ -50,6 +55,7 @@ socket.onmessage = function (event) {
 		case(5):
 		console.log("Me han dicho que salte");
 		saltoJugador();
+
 		break;
 		
 		case(6):
@@ -64,6 +70,8 @@ socket.onmessage = function (event) {
 		
 		case(8):
 		console.log("Me han dicho que genere un obstáculo");
+		WEB_J1randObstaculo = aux.randObst;
+		WEB_J2randObstaculo = aux.randObst;
 		generarObstaculo();
 		break;
 		
@@ -95,7 +103,14 @@ function borrarPartida() { // POR HACER
 			idJugador: J1_id
 	}
 	socket.send(JSON.stringify(message));
-	
+}
+
+function borrarJugador() { // POR HACER
+	let message = {
+			idFuncion: 9,
+			idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message));
 }
 
 function crearJugador(){ //Mi función que recibe los datos que necesito del jugador 2
@@ -122,7 +137,8 @@ function jugadorPowerup(){ //Mi función que recibe los datos que necesito del j
 	let message ={
 			idFuncion: 2,
 			idPartida: ID_Partida,
-			idJugador: J1_id
+			idJugador: J1_id,
+			decision: decisionPowerup
 	}
 	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
 
@@ -142,7 +158,9 @@ function jugadorGenerarObstaculo(){ //Mi función que recibe los datos que neces
 	let message ={
 			idFuncion: 8,
 			idPartida: ID_Partida,
-			idJugador: J1_id
+			idJugador: J1_id,
+			randObstaculo: J1_randObstaculo,
+			randObstaculo2: J2_randObstaculo
 	}
 	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
 

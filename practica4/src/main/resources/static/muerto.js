@@ -8,6 +8,8 @@ class muerto extends Phaser.Scene {
         this.load.image("estasmuertachacha2", "resources/j2ganaALT.png")
     }
     create(){
+    borrarPartida();
+    borrarJugador();
         var fondo = this.add.image(540,360,'fondo');
    var resultado = this.add.image(540,260, "estasmuertachacha2")
     

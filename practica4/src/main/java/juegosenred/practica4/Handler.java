@@ -36,8 +36,7 @@ public class Handler extends TextWebSocketHandler {
 	int JUGADORESACTUALES = 0;
 	int PARTIDASACTUALES = 0;
 	boolean primeravez = true;
-	boolean[] EstadoPartida =new boolean[N_PARTIDAS];
-	boolean[] EstadoJugadores =new boolean[N_JUGADORES];
+	int[] EstadoJugadores =new int[N_JUGADORES];
 	
 	
 	//
@@ -78,6 +77,7 @@ public class Handler extends TextWebSocketHandler {
 			msg.put("idPartida", idLocal);
 			msgaux.put("idPartida", idLocal);
 			
+			msg.put("idFuncion", 0);
 			msg.put("stringPrueba", prueba);
 			session.sendMessage(new TextMessage(msg.toString()));
 			
@@ -101,35 +101,32 @@ public class Handler extends TextWebSocketHandler {
 			
 			break;
 			
-		/*case(1): // Cerrar partida
+		case(1): // Cerrar partida
 			int idJugador = node.get("idJugador").asInt();
 			int idPartidita = node.get("idPartida").asInt();
 			Partida borrada = partidillas.get(idPartidita);
-			Jugador borradito = jugadoriños.get(idJugador);
 			int idAnt = borrada.getId();
 
-			if (borrada.getJ1().getSession() == borradito.getSession()) {
+			if (!borrada.getVacio()) {
 				Partida nueva = new Partida();
 				partidillas.set(idAnt, nueva);
-				
+				numPartidaActual--;
 			}
-				
-				
-			
 			
 			String texto = "Se ha borrado la partida";
-			msg.put("idPartida", idBorrado);	
 			msg.put("mensajeBorrado", texto);
 			msg.put("idFuncion", 1);
 			session.sendMessage(new TextMessage(msg.toString()));	
-			break;*/
+			break;
 			
 		case(2): // Comunicar Jugador coge Powerup
 			System.err.println("Tengo Powerup");
 			int a2 = node.get("idPartida").asInt();
 			int b2 = node.get("idJugador").asInt();
+			int myPowerup =  node.get("decision").asInt();
 			Partida A2 = partidillas.get(a2);
 			msg.put("idFuncion", 2);
+			msg.put("tipoPowerup", myPowerup);
 			if (b2 == A2.getJ1().getId()) {
 				WebSocketSession sesionaux2 = A2.getJ2().getSession();
 				sesionaux2.sendMessage(new TextMessage(msg.toString()));
@@ -145,17 +142,23 @@ public class Handler extends TextWebSocketHandler {
 				inicializar();
 				primeravez=false;
 			}
-			
+			int idLocalisimo = 0;
 			if (numJugadoresActual < N_JUGADORES) { //Si hay menos de 8 jugadores (indices de 0 a 7)
-				Jugador j = new Jugador (numJugadoresActual,session); // Creo al jugador con la sesion del WebSocket
-				int skin = node.get("idskin").asInt(); //Cojo del cliente la skin que ha elegido.
-				j.setSkin(skin); //Guardo en la instancia de jugador la skin (por si me hiciera falta)
-				j.setSession(session); //Guardo en la instancia del jugador la sesion (por si me hiciera falta) 
-				numJugadoresActual++; //Actualizo el numero de jugadores que hay en el server
-				jugadoriños.add(j); //Añado mi jugador a la lista en la posición correspondiente
-				msg.put("idJugador", numJugadoresActual-1); //Le envio el id al jugador para que lo guarde, esto sera util cuando necesite saber en otros métodos que id tiene ese jugador
-				String textito = "Se ha creado el jugador "+ (numJugadoresActual-1); //MENSAJE DEBUG(SOBRA)
-				msg.put("mensaje", textito); //Debug
+				for (Jugador x : jugadoriños) {
+					if (!x.getInGame()) {
+						Jugador j = new Jugador (idLocalisimo,session); // Creo al jugador con la sesion del WebSocket
+						int skin = node.get("idskin").asInt(); //Cojo del cliente la skin que ha elegido.
+						j.setSkin(skin); //Guardo en la instancia de jugador la skin (por si me hiciera falta)
+						j.setSession(session); //Guardo en la instancia del jugador la sesion (por si me hiciera falta) 
+						numJugadoresActual++; //Actualizo el numero de jugadores que hay en el server
+						jugadoriños.set(idLocalisimo, j);//Añado mi jugador a la lista en la posición correspondiente
+						msg.put("idJugador", numJugadoresActual-1); //Le envio el id al jugador para que lo guarde, esto sera util cuando necesite saber en otros métodos que id tiene ese jugador
+						String textito = "Se ha creado el jugador "+ (numJugadoresActual-1); //MENSAJE DEBUG(SOBRA)
+						msg.put("mensaje", textito); //Debug
+						break;
+					}
+					idLocalisimo++;
+				}
 			}else {
 				String textito = "Jugadores llenos :("; //Debug
 			}
@@ -213,15 +216,27 @@ public class Handler extends TextWebSocketHandler {
 			System.err.println("He generado obstáculo");
 			int a8 = node.get("idPartida").asInt();
 			int b8 = node.get("idJugador").asInt();
+			int rand1 = node.get("randObstaculo").asInt();
+			int rand2 =  node.get("randObstaculo2").asInt();
 			Partida A8 = partidillas.get(a8);
 			msg.put("idFuncion", 8);
 			if (b8 == A8.getJ1().getId()) {
+				msg.put("randObst", rand1);
 				WebSocketSession sesionaux8 = A8.getJ2().getSession();
 				sesionaux8.sendMessage(new TextMessage(msg.toString()));
 			}else {
+				msg.put("randObst", rand2);
 				WebSocketSession sesionaux28 = A8.getJ1().getSession();
 				sesionaux28.sendMessage(new TextMessage(msg.toString()));
 			}
+			break;
+			
+		case(9): // Borrado jugador 
+			int borrado = node.get("idJugador").asInt();
+			Jugador borradinchis = new Jugador();
+			jugadoriños.remove(borrado);
+			jugadoriños.add(borrado, borradinchis);
+			numJugadoresActual--;
 			break;
 			
 		}
@@ -236,6 +251,7 @@ public class Handler extends TextWebSocketHandler {
 	}
 		
 	public void crearPartida(int ID, Jugador player){ //Creación de partidas
+		player.setinGame(true);
 		Partida p = new Partida(ID, player); //Creo una partida por el constructor
 		p.setHayJugador(true); 
 		partidillas.set(ID,p);//añado esa partida a la posición correspondiente (QUE COINCIDE CON SU ID)
@@ -243,6 +259,7 @@ public class Handler extends TextWebSocketHandler {
 	}
 	
 	public void llenarPartida(Partida p, Jugador J, ObjectNode msg){
+		J.setinGame(true);
 		p.setJugador2(J); //Añado a la partida el jugador 2
 		p.setVacio(false); 
 		partidillas.set(p.getId(), p);
@@ -255,6 +272,10 @@ public class Handler extends TextWebSocketHandler {
 		for (int i = 0; i < N_PARTIDAS; i++) {
 			p.setId(i);
 			partidillas.add(p);
+		}
+		Jugador s = new Jugador();
+		for (int i = 0; i < N_JUGADORES; i++) {
+			jugadoriños.add(s);
 		}
 	}
 		

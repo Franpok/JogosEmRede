@@ -30,18 +30,33 @@
     <script type='text/javascript' src='primera.js'></script>
     <script type='text/javascript' src='skins.js'></script>
     <script>
-    
+    var repeticion = 0;
     var crearPartidaBool = false;
-    
+    var barrera = false;
     var skinsArray =["'r1'", "'r2'", "r3", "r4"];
-    
     var isPaused= false;
     var ID_Funcion = 5;
     var skinChosen = 0;
     var Soy_J1 = false;
-    
+    var randomDecision = 0;
     var StartGame = false;
     var ID_Partida = 0;
+    var iAmFirst = false;
+    
+    
+    var J1_randObstaculo = 1;
+    var J2_randObstaculo = 1;
+    
+    var WEB_J1randObstaculo;
+    var WEB_J2randObstaculo;
+    
+    var LocalJ1 = false;
+    
+    var decisionPowerup = 0;
+    var WEB_TipoPowerup;
+    
+    
+    
     
     var J1_id = 10;
     var J1_skin = 0;

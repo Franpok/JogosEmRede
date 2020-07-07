@@ -46,7 +46,7 @@ class primera extends Phaser.Scene {
       }
       
       update () {
-    	  if (crearPartidaBool == false){
+    	  if ((crearPartidaBool == false) && (barrera == true)){
     		  crearPartida();
     		  console.log("He enviado petición para crear partida");
     		  crearPartidaBool = true;
