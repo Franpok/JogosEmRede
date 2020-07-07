@@ -50,12 +50,12 @@ public class Handler extends TextWebSocketHandler {
 		switch(node.get("idFuncion").asInt()) { //Cuando envie mi mensaje, según el parametro en el JSON que llegue "idfuncion", me meteré en una función o en otra
 		
 		
-		case(0): //Creamos la partida (Funciona)
-			int idJug = node.get("idJugador").asInt(); //Cojo el id del cliente
+		case(0): //Creamos la partida (Funciona) 
 			int idLocal = 0;
 			Partida f = new Partida();
 			String prueba = "Me he unido a una partida";
-			if (numPartidaActual < N_PARTIDAS) { //Si el numero de partidas no es el maximo establecido (4)
+			if (numPartidaActual < N_PARTIDAS) {
+				int idJug = node.get("idJugador").asInt();
 				for (Partida p: partidillas){//Recorro mi lista por cada elemento partida
 					if (!p.getHayJugador()) { //SI NO HAY J1 (es decir, no hay jugadores)
 						crearPartida(numPartidaActual, jugadoriños.get(idJug));//Llamo a mi función crearPartida con los datos necesarios
@@ -107,10 +107,16 @@ public class Handler extends TextWebSocketHandler {
 			Partida borrada = partidillas.get(idPartidita);
 			int idAnt = borrada.getId();
 
+			System.err.println("Voy a borrar la partida: "+ idPartidita + "que esta guardada con id "+ idAnt);
 			if (!borrada.getVacio()) {
+				System.err.println("He entrado a borrar");
 				Partida nueva = new Partida();
 				partidillas.set(idAnt, nueva);
 				numPartidaActual--;
+				for (Partida p: partidillas){
+					System.err.println("En esta partida tengo el hayjugador en "+ p.getHayJugador() + "y el vacio en "+ p.getVacio());
+					
+				}
 			}
 			
 			String texto = "Se ha borrado la partida";
@@ -120,7 +126,6 @@ public class Handler extends TextWebSocketHandler {
 			break;
 			
 		case(2): // Comunicar Jugador coge Powerup
-			System.err.println("Tengo Powerup");
 			int a2 = node.get("idPartida").asInt();
 			int b2 = node.get("idJugador").asInt();
 			int myPowerup =  node.get("decision").asInt();
@@ -168,7 +173,6 @@ public class Handler extends TextWebSocketHandler {
 			break;
 			
 		case(5): 
-			System.err.println("Quiero saltar");
 			int a5 = node.get("idPartida").asInt();
 			int b5 = node.get("idJugador").asInt();
 			Partida A5 = partidillas.get(a5);
@@ -183,7 +187,6 @@ public class Handler extends TextWebSocketHandler {
 			break;
 			
 		case(6): 
-			System.err.println("Quiero generar powerup");
 			int a6 = node.get("idPartida").asInt();
 			int b6 = node.get("idJugador").asInt();
 			Partida A6 = partidillas.get(a6);
@@ -198,7 +201,6 @@ public class Handler extends TextWebSocketHandler {
 			break;
 			
 		case(7): 
-			System.err.println("He recibido daño");
 			int a7 = node.get("idPartida").asInt();
 			int b7 = node.get("idJugador").asInt();
 			Partida A7 = partidillas.get(a7);
@@ -213,7 +215,6 @@ public class Handler extends TextWebSocketHandler {
 			break;
 			
 		case(8): 
-			System.err.println("He generado obstáculo");
 			int a8 = node.get("idPartida").asInt();
 			int b8 = node.get("idJugador").asInt();
 			int rand1 = node.get("randObstaculo").asInt();
@@ -234,8 +235,7 @@ public class Handler extends TextWebSocketHandler {
 		case(9): // Borrado jugador 
 			int borrado = node.get("idJugador").asInt();
 			Jugador borradinchis = new Jugador();
-			jugadoriños.remove(borrado);
-			jugadoriños.add(borrado, borradinchis);
+			jugadoriños.set(borrado,borradinchis);
 			numJugadoresActual--;
 			break;
 			
