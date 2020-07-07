@@ -9,9 +9,9 @@ let gameOptions = {
     jumpForce: 400,                     //Velocidad en y del jugador cuando salta
     playerStartPosition: 200,           //Posición donde comienza el jugador
     powerupProbabilidad: 8,            //Probabilidad powerUp(Jugador 1)
-    obstaculoProbabilidad: 30,          //Probabilidad de aparición de obstáculos del jugador 1
+    obstaculoProbabilidad: 25,          //Probabilidad de aparición de obstáculos del jugador 1
     powerupProbabilidad2: 8,           //Probabilidad powerUp(Jugador 2)
-    obstaculoProbabilidad2: 70,         //Probabilidad de aparición de obstáculos del jugador 2
+    obstaculoProbabilidad2: 25,         //Probabilidad de aparición de obstáculos del jugador 2
     jumps: 1,                           // He creado un power up de doble salto, así que me creo una variable que me permita controlar el número de saltos que puedo hacer
     vidas1: 3,                          //Vidas jugador 1
     vidas2: 3                           //Vidas jugador 2
@@ -125,6 +125,9 @@ class playGame extends Phaser.Scene {
         saltos1 = 1;
         saltos2 = 1;
         indicadorD =0;
+        indicadorD2 = 0;
+        indicadorV = 0;
+        indicadorV2 = 0;
         porfavorquelamusicasueneunavez=0;
         tiempo = 0;
         sonido = this.sound.add("fondo");
@@ -342,8 +345,11 @@ class playGame extends Phaser.Scene {
                         jugadorPowerup();
                         J1_Vida++;
                         vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
-                        indicadorV=3; //duración del aviso
-                        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');// se añade el aviso
+                       // if(indicadorV<0){
+                        	indicadorV=1; //duración del aviso
+                            imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');// se añade el aviso
+                        //}
+                        
                     }; 
                   
                     
@@ -353,7 +359,7 @@ class playGame extends Phaser.Scene {
                 jugadorPowerup();
                 	J1_CogerPowerup = true;
                 	J1_Powerup = 1;
-                    if(duracion1<0){
+                    if(duracion1<=0){
                         duracion1 = 5; //duracion del doble salto
                         saltos1 = 2; //ahora tenemos como maximo 2 saltos
                         imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.55, 'indicadorDobleSalto');//se añade el aviso
@@ -394,9 +400,12 @@ class playGame extends Phaser.Scene {
                         gameOptions.vidas2++;
                         jugadorPowerup();
                         J2_Vida++;
+                        if(indicadorV<0){
+                        	 indicadorV=1; //duración del aviso
+                             imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida');// se añade el aviso
+                        }
                         vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
-                        indicadorV=3; //duración del aviso
-                        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida');// se añade el aviso
+                       
                     }; 
                     
                 break;
@@ -443,8 +452,11 @@ class playGame extends Phaser.Scene {
             	J1_Vida--;
             	gameOptions.vidas1--;
                 vidaAnt1--;
-                indicadorD=3; //duracion del aviso
-                imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorDamage');//aviso            
+                if(indicadorD<=0){
+                	indicadorD=1; //duracion del aviso
+                    imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorDamage');//aviso
+                }
+                            
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
                 vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
@@ -473,8 +485,11 @@ class playGame extends Phaser.Scene {
             	J2_Vida--;
             	gameOptions.vidas2--;
                 vidaAnt2--;
-                indicadorD=3; //duracion del aviso
-                imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage');//aviso            
+                if(indicadorD<=0){
+                	indicadorD=1; //duracion del aviso
+                    imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage');//aviso     
+                }
+                       
                 this.obstaculoGroup.killAndHide(obstaculo);
                 this.obstaculoGroup.remove(obstaculo);
                 vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
@@ -550,7 +565,7 @@ class playGame extends Phaser.Scene {
         indicadorV--;
         indicadorV2--;
        
-      
+      console.log("Debug de vida: "+ indicadorV);
          J1_saltando = false;
          J1_CogerPowerup = false;
          J1_DañoRecibido = false;
@@ -777,8 +792,11 @@ class playGame extends Phaser.Scene {
         		J1_Vida--;
         		gameOptions.vidas1--;
             	vidaAnt1--;
-            	indicadorD=3; //duracion del aviso
-            	imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorDamage');//aviso            
+            	if(indicadorD<=0){
+            		indicadorD=1; //duracion del aviso
+                	imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorDamage');//aviso 
+            	}
+            	           
             	vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
             	dano.play(); //sonido de daño
         	} else { // Si ya no tiene vidas, cambia de estado a muerto
@@ -797,8 +815,10 @@ class playGame extends Phaser.Scene {
             	J2_Vida--;
             	gameOptions.vidas2--;
                 vidaAnt2--;
-                indicadorD=3; //duracion del aviso
-                imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage');//aviso            
+                if(indicadorD<=0){
+            		indicadorD=1; //duracion del aviso
+                	imagenD = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorDamage');//aviso 
+            	}         
                 vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
                 dano.play(); //sonido de daño
             } else { // Si ya no tiene vidas, cambia de estado a muerto
@@ -806,10 +826,10 @@ class playGame extends Phaser.Scene {
                 vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
                     this.dying2 = true;
                     J2_Muerto = true;
-                    this.player.visible = false;
+                    this.player2.visible = false;
                     death_sound.play();
-                    this.player.body.setVelocityX(-200);
-                    this.physics.world.removeCollider(this.platformCollider);
+                    this.player2.body.setVelocityX(-200);
+                    //this.physics.world.removeCollider(this.platformCollider);
             }
          
          	
@@ -836,18 +856,21 @@ class playGame extends Phaser.Scene {
                         gameOptions.vidas1 = gameOptions.vidas1 + 1;
                         J1_Vida++;
                         vidaTextP1.setText("Vidas J1: " + gameOptions.vidas1);
-                        indicadorV=3; //duración del aviso
-                        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');// se añade el aviso
-                      }  
+                        if(indicadorV<0){
+                        	indicadorV=2; //duración del aviso
+                            imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.6, 'indicadorVida');// se añade el aviso
+                          
+                        }
+                       }  
             		powerUP_sound.play();
                 break;
 
                 case 1:
                 	J2_CogerPowerup = true;
                 	J2_Powerup = 1;
-                    if(duracion2<0){
-                        duracion2 = 5; //duracion del doble salto
-                        saltos2 = 2; //ahora tenemos como maximo 2 saltos
+                    if(duracion1<0){
+                        duracion1 = 5; //duracion del doble salto
+                        saltos1 = 2; //ahora tenemos como maximo 2 saltos
                         imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.55, 'indicadorDobleSalto');//se añade el aviso
                     }; 
                     
@@ -869,9 +892,12 @@ class playGame extends Phaser.Scene {
                         gameOptions.vidas2 = gameOptions.vidas2 + 1;
                         J2_Vida++;
                         vidaTextP2.setText("Vidas J2: " + gameOptions.vidas2);
-                        indicadorV=3; //duración del aviso
-                        imagenV = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida');// se añade el aviso
-                      }  
+                        if(indicadorV2<=0){
+                        	indicadorV2=2; //duración del aviso
+                            imagenV2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.2, 'indicadorVida');// se añade el aviso
+                         
+                        }
+                         }  
             		powerUP_sound.play();
                 break;
 
@@ -881,7 +907,7 @@ class playGame extends Phaser.Scene {
                     if(duracion2<0){
                         duracion2 = 5; //duracion del doble salto
                         saltos2 = 2; //ahora tenemos como maximo 2 saltos
-                        imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.15, 'indicadorDobleSalto');//se añade el aviso
+                        imagenDobleSalto2 = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.15, 'indicadorDobleSalto');//se añade el aviso
                     }; 
                     
                  
@@ -997,13 +1023,16 @@ class playGame extends Phaser.Scene {
             imagenD2.visible=false;
         } 
         if(indicadorV<=0){
-            imagenV.visible=false;
+        	console.log("La vida debería ser invisible");
+            imagenV.destroy();
         } 
         if(indicadorV2<=0){
             imagenV2.visible=false;
         } 
         if(duracion1<=0){
+        	
             imagenDobleSalto.visible=false;
+      
             saltos1=1;
         }
         if(duracion2<=0){
