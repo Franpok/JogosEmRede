@@ -779,18 +779,12 @@ class playGame extends Phaser.Scene {
         WEB_Salto = false;
         }
         
-        if (WEB_Desconexion){
-        WEB_Desconexion = false;
-        this.scene.start("menuMuerte3");
-        
+        if (WEB_Desconexion) {
+        	WEB_Desconexion = false;
+        	sonido.stop();
+        	this.scene.start("desconectado");
         }
-        
-        
-        
-        
-        
-        
-        
+           
         
         if (WEB_Daño){
         console.log("Me he hecho pupita");
