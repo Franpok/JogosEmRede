@@ -1,6 +1,6 @@
-class muerto extends Phaser.Scene {
+class desconexion extends Phaser.Scene {
     constructor() {
-        super("menuMuerte");
+        super("menuMuerte3");
     }
     preload(){
         this.load.image("back", "resources/back.png")
@@ -8,8 +8,6 @@ class muerto extends Phaser.Scene {
         this.load.image("estasmuertachacha2", "resources/j2ganaALT.png")
     }
     create(){
-    borrarPartida();
-    borrarJugador();
     crearPartidaBool = false;
     StartGame = false;
         var fondo = this.add.image(540,360,'fondo');

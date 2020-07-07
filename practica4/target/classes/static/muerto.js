@@ -8,6 +8,10 @@ class muerto extends Phaser.Scene {
         this.load.image("estasmuertachacha2", "resources/j2ganaALT.png")
     }
     create(){
+    borrarPartida();
+    borrarJugador();
+    crearPartidaBool = false;
+    StartGame = false;
         var fondo = this.add.image(540,360,'fondo');
    var resultado = this.add.image(540,260, "estasmuertachacha2")
     
@@ -17,7 +21,6 @@ class muerto extends Phaser.Scene {
     this.clickButton = back
          .setInteractive()
          .on('pointerdown', () =>  this.scene.start("menuPrincipal"))
-         .on('pointerdown', () =>  borrarPartida())
          
   }
     

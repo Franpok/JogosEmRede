@@ -4,6 +4,10 @@ socket.onopen = function() {
 	console.log("Conexión establecida");
 }
 
+window.onbeforeunload = function(){
+	cerrarVentana();
+};
+
 socket.onmessage = function (event) {
 	var aux = JSON.parse(event.data)
 	ID_Funcion = aux.idFuncion
@@ -73,6 +77,10 @@ socket.onmessage = function (event) {
 		WEB_J1randObstaculo = aux.randObst;
 		WEB_J2randObstaculo = aux.randObst;
 		generarObstaculo();
+		break;
+		
+		case(10):
+		cambiarDesconexion();
 		break;
 		
 		default:
@@ -169,6 +177,16 @@ function jugadorGenerarObstaculo(){ //Mi función que recibe los datos que neces
 function jugadorGenerarPowerup(){ //Mi función que recibe los datos que necesito del jugador 2
 	let message ={
 			idFuncion: 6,
+			idPartida: ID_Partida,
+			idJugador: J1_id
+	}
+	socket.send(JSON.stringify(message)); //No se si tendré que recibir o actualizar en cliente
+
+}
+
+function cerrarVentana(){ //Mi función que recibe los datos que necesito del jugador 2
+	let message ={
+			idFuncion: 10,
 			idPartida: ID_Partida,
 			idJugador: J1_id
 	}

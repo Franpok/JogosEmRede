@@ -24,7 +24,7 @@ window.onload = function () {
         type: Phaser.AUTO,
         width: 1080,
         height: 720,
-        scene: [menu, creditos, muerto, playGame, salir, muerto2, controles, skins, primera],
+        scene: [menu, creditos, muerto, playGame, salir, muerto2, controles, skins, primera, desconexion],
         backgroundColor: 0x444444,
 
         // physics settings
@@ -48,7 +48,7 @@ var WEB_generarPowerup = false;
 var WEB_generarObstaculo = false;
 var WEB_Daño = false;
 var WEB_cogerPowerup = false;
-
+var WEB_Desconexion = false;
 
 let sonido;
 let dano;
@@ -779,6 +779,15 @@ class playGame extends Phaser.Scene {
         WEB_Salto = false;
         }
         
+        if (WEB_Desconexion){
+        WEB_Desconexion = false;
+        this.scene.start("menuMuerte3");
+        
+        }
+        
+        
+        
+        
         
         
         
@@ -868,9 +877,9 @@ class playGame extends Phaser.Scene {
                 case 1:
                 	J2_CogerPowerup = true;
                 	J2_Powerup = 1;
-                    if(duracion1<0){
-                        duracion1 = 5; //duracion del doble salto
-                        saltos1 = 2; //ahora tenemos como maximo 2 saltos
+                    if(duracion2<0){
+                        duracion2 = 5; //duracion del doble salto
+                        saltos2 = 2; //ahora tenemos como maximo 2 saltos
                         imagenDobleSalto = this.add.image(gameOptions.playerStartPosition, game.config.height * 0.55, 'indicadorDobleSalto');//se añade el aviso
                     }; 
                     
@@ -1199,6 +1208,11 @@ function recibirDaño(){
 function generarObstaculo(){
 			console.log("Voy a generar un obstaculo");
 			WEB_generarObstaculo = true;
+}
+
+function cambiarDesconexion(){
+			console.log("Voy a desconectar");
+			WEB_Desconexion = true;
 }
 
 function resize() { //FUNCION RESIZE

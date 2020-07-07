@@ -239,14 +239,45 @@ public class Handler extends TextWebSocketHandler {
 			numJugadoresActual--;
 			break;
 			
+		
+		
+	case(10): 
+		System.err.println("He roto la ventana");
+		int a10 = node.get("idPartida").asInt();
+		int b10 = node.get("idJugador").asInt();
+		Partida A10 = partidillas.get(a10);
+		Jugador borradito = new Jugador();
+		Partida nuevita = new Partida();
+		int elOtroPlayer = A10.getJ2().getId();
+		int unPlayer = A10.getJ1().getId();
+		msg.put("idFuncion", 10);
+		if (b10 == A10.getJ1().getId()) {
+			WebSocketSession sesionaux10 = A10.getJ2().getSession();
+			jugadoriños.set(b10,borradito);
+			numJugadoresActual--;
+			jugadoriños.set(elOtroPlayer,borradito);
+			numJugadoresActual--;
+			partidillas.set(a10, nuevita);
+			numPartidaActual--;
+
+			sesionaux10.sendMessage(new TextMessage(msg.toString()));
+		}else {
+			WebSocketSession sesionaux210 = A10.getJ1().getSession();
+			
+			jugadoriños.set(b10,borradito);
+			numJugadoresActual--;
+			jugadoriños.set(unPlayer,borradito);
+			numJugadoresActual--;
+			partidillas.set(a10, nuevita);
+			numPartidaActual--;
+			sesionaux210.sendMessage(new TextMessage(msg.toString()));
 		}
+	}
 		//HACER FOR EACH DONDE RECORRO CADA PARTIDA SACANDO A CADA JUGADOR PARA COMPROBAR SU TIEMPO Y VER SI ALGUNO TARDA MÁS DE 15 SEGUNDOS
 		//For each jugador in partida
 		
 		//Si es true, llamaré a borrar partida
-		if(JugadorDesconectado(LocalDateTime.now())) {
-			
-		}//Else no hago nada ya que sigue conectado correctamente
+		
 		
 	}
 		
